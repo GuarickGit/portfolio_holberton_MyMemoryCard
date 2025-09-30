@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Route de test
 app.get("/", (req, res) => {
   res.json({
-    message: "🎮 MyMemoryCard API est lancée!",
+    message: "🎮 MyMemoryCard API démarrée !",
     version: "1.0.0",
     endpoints: {
       auth: "/auth/signup, /auth/login, /auth/logout"
@@ -31,11 +31,11 @@ app.get("/", (req, res) => {
   });
 });
 
-// 11. Import des routes (on les créera juste après)
-// import authRoutes from "./routes/authRoutes.js";
+// Import des routes
+import authRoutes from "./routes/authRoutes.js";
 
-// 12. Utilisation des routes
-// app.use("/auth", authRoutes);
+// Utilisation des routes
+app.use("/auth", authRoutes);
 
 // Gestion des routes inexistantes (404)
 app.use((req, res) => {
