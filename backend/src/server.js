@@ -33,10 +33,11 @@ app.get("/", (req, res) => {
 
 // Import des routes
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 // Utilisation des routes
 app.use("/auth", authRoutes);
-
+app.use("/users", userRoutes);
 // Gestion des routes inexistantes (404)
 app.use((req, res) => {
   res.status(404).json({

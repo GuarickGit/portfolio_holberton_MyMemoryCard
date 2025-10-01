@@ -1,6 +1,6 @@
 import express from "express";
 
-// Import des controllers
+
 import { signup, login, logout } from "../controllers/authController.js";
 
 // Création du router

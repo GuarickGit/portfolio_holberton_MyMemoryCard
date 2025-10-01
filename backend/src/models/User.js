@@ -74,7 +74,7 @@ export const findUserByEmail = async (email) => {
  * @param {string} id - ID de l'utilisateur (UUID)
  * @returns {Object|null} L'utilisateur trouvé ou null
  */
-export const findUserByID = async (id) => {
+export const findUserById = async (id) => {
   const query = `
     SELECT id, username, email, avatar_url, banner_url, bio, exp, level, created_at
     FROM users
