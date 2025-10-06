@@ -3,8 +3,15 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv"; // Pour lire les variables du fichier .env
 
+// Import des routes
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import gameRoutes from './routes/gameRoutes.js';
+import collectionRoutes from './routes/collectionRoutes.js';
+
 //Configuration
 dotenv.config() // Chargement des variables d'environnement AVANT tout le reste
+
 const app = express();
 const PORT = process.env.PORT || 5000; // Définition du port (depuis .env ou 5000 par défaut)
 
@@ -25,19 +32,22 @@ app.get("/", (req, res) => {
   res.json({
     message: "🎮 MyMemoryCard API démarrée !",
     version: "1.0.0",
+    sprint: "Sprint 2 - Collections",
     endpoints: {
-      auth: "/auth/signup, /auth/login, /auth/logout"
+      auth: "/auth/signup, /auth/login, /auth/logout",
+      users: "/users/me",
+      games: "/games/search",
+      collections: "/collections (POST, GET, PATCH /:gameId, DELETE /:gameId)"
     }
   });
 });
 
-// Import des routes
-import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-
 // Utilisation des routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.use("/games", gameRoutes);
+app.use("/collections", collectionRoutes);
+
 // Gestion des routes inexistantes (404)
 app.use((req, res) => {
   res.status(404).json({
