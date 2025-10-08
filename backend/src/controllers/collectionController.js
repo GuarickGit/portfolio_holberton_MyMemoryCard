@@ -114,19 +114,19 @@ export const getMyCollection = async (req, res) => {
 
 /**
  * Met à jour un jeu dans la collection (status ou rating)
- * PATCH /collections/:gameId
+ * PATCH /collections/:rawgId
  * Body: { status, user_rating }
  */
 export const updateGameInCollection = async (req, res) => {
   try {
     const userId = req.userId;
-    const gameId = parseInt(req.params.gameId);
+    const rawgId = parseInt(req.params.rawgId);
     const { status, user_rating } = req.body;
 
-    // Vérifie que gameId est un nombre valide
-    if (isNaN(gameId)) {
+    // Vérifie que rawgId est un nombre valide
+    if (isNaN(rawgId)) {
       return res.status(400).json({
-        error: 'Id de jeu invalide'
+        error: 'Id RAWG de jeu invalide'
       });
     }
 
@@ -155,6 +155,17 @@ export const updateGameInCollection = async (req, res) => {
         });
       }
     }
+
+    // Récupère le game.id à partir du rawg_id
+    const game = await findGameByRawgId(rawgId);
+
+    if (!game) {
+      return res.status(404).json({
+        error: 'Ce jeu n\'existe pas dans la base de données'
+      });
+    }
+
+    const gameId = game.id
 
     // Validation que le jeu est dans la collection
     const existingEntry = await findCollectionEntry(userId, gameId);
@@ -188,19 +199,30 @@ export const updateGameInCollection = async (req, res) => {
 
 /**
  * Supprime un jeu de la collection
- * DELETE /collections/:gameId
+ * DELETE /collections/:rawgId
  */
 export const removeGameFromCollection = async (req, res) => {
   try {
     const userId = req.userId;
-    const gameId = parseInt(req.params.gameId);
+    const rawgId = parseInt(req.params.rawgId);
 
-    // Vérifie que gameId est un nombre valide
-    if (isNaN(gameId)) {
+    // Vérifie que rawgId est un nombre valide
+    if (isNaN(rawgId)) {
       return res.status(400).json({
         error: 'ID de jeu invalide'
       });
     }
+
+    // Récupère le game.id à partir du rawg_id
+    const game = await findGameByRawgId(rawgId)
+
+    if (!game) {
+      return res.status(404).json({
+        error: 'Ce jeu n\'existe pas dans la base de données'
+      });
+    }
+
+    const gameId = game.id
 
     // Vérifie que le jeu est dans la collection
     const existingEntry = await findCollectionEntry(userId, gameId);

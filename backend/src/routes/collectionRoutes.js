@@ -35,12 +35,12 @@ router.get('/', getMyCollection);
  * Met à jour un jeu dans la collection (status ou rating)
  * Body: { status, user_rating }
  */
-router.patch('/:gameId', updateGameInCollection);
+router.patch('/:rawgId', updateGameInCollection);
 
 /**
  * DELETE /collections/:gameId
  * Supprime un jeu de la collection
  */
-router.delete('/:gameId', removeGameFromCollection);
+router.delete('/:rawgId', removeGameFromCollection);
 
 export default router;
