@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 import gameRoutes from './routes/gameRoutes.js';
 import collectionRoutes from './routes/collectionRoutes.js';
 import memoryRoutes from './routes/memoryRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
 //Configuration
 dotenv.config() // Chargement des variables d'environnement AVANT tout le reste
@@ -39,7 +40,8 @@ app.get("/", (req, res) => {
       users: "/users/me",
       games: "/games/search",
       collections: "/collections (POST, GET, PATCH /:gameId, DELETE /:gameId)",
-      memories: "/memories (GET, POST, PUT /:id, DELETE /:id, GET /game/:gameId, GET /user/:userId)"
+      memories: "/memories (GET, POST, PUT /:id, DELETE /:id, GET /game/:gameId, GET /user/:userId)",
+      reviews: "/reviews (GET, POST, PUT /:id, DELETE /:id, GET /game/:rawgId, GET /user/:userId)"
     }
   });
 });
@@ -50,6 +52,7 @@ app.use("/users", userRoutes);
 app.use("/games", gameRoutes);
 app.use("/collections", collectionRoutes);
 app.use("/memories", memoryRoutes);
+app.use('/reviews', reviewRoutes);
 
 // Gestion des routes inexistantes (404)
 app.use((req, res) => {
