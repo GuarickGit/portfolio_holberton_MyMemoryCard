@@ -1,5 +1,3 @@
-// src/routes/collectionRoutes.js
-
 import express from 'express';
 import {
   addGameToCollection,
