@@ -10,6 +10,8 @@ import gameRoutes from './routes/gameRoutes.js';
 import collectionRoutes from './routes/collectionRoutes.js';
 import memoryRoutes from './routes/memoryRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
+import likeRoutes from './routes/likeRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 
 //Configuration
 dotenv.config() // Chargement des variables d'environnement AVANT tout le reste
@@ -34,14 +36,16 @@ app.get("/", (req, res) => {
   res.json({
     message: "🎮 MyMemoryCard API démarrée !",
     version: "1.0.0",
-    sprint: "Sprint 2 - Collections",
+    sprint: "Sprint 5 - Likes & Comments",
     endpoints: {
       auth: "/auth/signup, /auth/login, /auth/logout",
       users: "/users/me",
       games: "/games/search",
       collections: "/collections (POST, GET, PATCH /:gameId, DELETE /:gameId)",
       memories: "/memories (GET, POST, PUT /:id, DELETE /:id, GET /game/:gameId, GET /user/:userId)",
-      reviews: "/reviews (GET, POST, PUT /:id, DELETE /:id, GET /game/:rawgId, GET /user/:userId)"
+      reviews: "/reviews (GET, POST, PUT /:id, DELETE /:id, GET /game/:rawgId, GET /user/:userId)",
+      likes: "/likes (POST, DELETE, GET /:targetType/:targetId, GET /:targetType/:targetId/check)",
+      comments: "/comments (POST, GET /:targetType/:targetId, PUT /:commentId, DELETE /:commentId)"
     }
   });
 });
@@ -53,6 +57,8 @@ app.use("/games", gameRoutes);
 app.use("/collections", collectionRoutes);
 app.use("/memories", memoryRoutes);
 app.use('/reviews', reviewRoutes);
+app.use('/likes', likeRoutes);
+app.use('/comments', commentRoutes);
 
 // Gestion des routes inexistantes (404)
 app.use((req, res) => {
