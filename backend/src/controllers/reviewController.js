@@ -1,4 +1,6 @@
 import * as Review from '../models/Review.js';
+import { addXpToUser } from '../models/User.js';
+import { XP_REWARDS } from '../utils/xpHelper.js';
 
 /**
  * Crée une nouvelle review
@@ -49,6 +51,14 @@ export const createReview = async (req, res) => {
     // Création de la review
     const review = await Review.createReview(userId, gameId, rating, content);
 
+    // Ajoute de l'XP à l'utilisateur
+    try {
+      await addXpToUser(userId, XP_REWARDS.CREATE_REVIEW);
+    } catch (xpError) {
+      console.error('Erreur lors de l\'ajout d\'XP', xpError);
+    }
+
+    // Retourne la review créée
     res.status(201).json({
       message: 'Review créée avec succès',
       review

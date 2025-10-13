@@ -216,3 +216,57 @@ export const getUserPublicProfile = async (userId) => {
     throw error;
   }
 };
+
+
+/**
+ * Ajoute de l'XP à un utilisateur et recalcule son niveau
+ * @param {string} userId - ID de l'utilisateur
+ * @param {number} xpAmount - Quantité d'XP à ajouter
+ * @returns {Object} L'utilisateur mis à jour avec nouveau XP et niveau
+ */
+export const addXpToUser = async (userId, xpAmount) => {
+  // Ajoute l'XP
+  const query = `
+    UPDATE users
+    SET exp = exp + $1
+    WHERE id = $2
+    RETURNING id, username, email, avatar_url, banner_url, bio, exp, level, created_at
+  `;
+
+  const values = [xpAmount, userId];
+
+  try {
+    const result = await pool.query(query, values);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    const user = result.rows[0];
+
+    // Importe la fonction de calcul de niveau
+    const { calculateLevel } = await import('../utils/xpHelper.js');
+
+    // Calcule le nouveau niveau
+    const newLevel = calculateLevel(user.exp);
+
+    // Si le niveau a changé, le mettre à jour en base
+    if (newLevel !== user.level) {
+      const updateLevelQuery = `
+        UPDATE users
+        SET level = $1
+        WHERE id = $2
+        RETURNING id, username, email, avatar_url, banner_url, bio, exp, level, created_at
+      `;
+
+      const updateLevelResult = await pool.query(updateLevelQuery, [newLevel, userId]);
+      return updateLevelResult.rows[0];
+    }
+
+    // Sinon retourne l'utilisateur avec XP mis à jour
+    return user;
+
+  } catch (error) {
+    throw error;
+  }
+};

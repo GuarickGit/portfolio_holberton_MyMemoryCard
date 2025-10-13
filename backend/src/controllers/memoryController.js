@@ -1,4 +1,6 @@
 import * as Memory from '../models/Memory.js';
+import { addXpToUser } from '../models/User.js';
+import { XP_REWARDS } from '../utils/xpHelper.js';
 
 /**
  * Crée un nouveau souvenir
@@ -27,6 +29,15 @@ export const createMemory = async (req, res) => {
     // Création du souvenir
     const memory = await Memory.createMemory(userId, gameId, content);
 
+    // Ajoute de l'XP à l'utilisateur
+    try {
+      await addXpToUser(userId, XP_REWARDS.CREATE_MEMORY);
+    } catch (xpError) {
+      // Si l'ajout d'XP échoue, on log mais on ne bloque pas la création du souvenir
+      console.error('Erreur lors de l\'ajout d\'XP:', xpError);
+    }
+
+    // Retourne le souvenir créé
     res.status(201).json({
       message: 'Souvenir créé avec succès',
       memory
