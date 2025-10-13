@@ -144,7 +144,7 @@ export const updateUser = async (id, updateData) => {
 
   // Si aucun champ à mettre à jour, on retourne l'utilisateur tel quel
   if (fields.length === 0) {
-    return await findUserByID(id);
+    return await findUserById(id);
   }
 
   // Ajouter l'ID à la fin des valeurs
@@ -169,4 +169,50 @@ export const updateUser = async (id, updateData) => {
       // En cas d'erreur, on la relance pour que le controller la gère
       throw error;
     }
+};
+
+
+/**
+ * Récupère le profil public d'un utilisateur avec ses statistiques
+ * @param {string} userId - ID de l'utilisateur
+ * @returns {Object|null} Profil public avec stats ou null
+ */
+export const getUserPublicProfile = async (userId) => {
+  const query = `
+    SELECT
+      u.id,
+      u.username,
+      u.avatar_url,
+      u.banner_url,
+      u.bio,
+      u.exp,
+      u.level,
+      u.created_at,
+      (SELECT COUNT(*) FROM collections WHERE user_id = u.id) as games_count,
+      (SELECT COUNT(*) FROM memories WHERE user_id = u.id) as memories_count,
+      (SELECT COUNT(*) FROM reviews WHERE user_id = u.id) as reviews_count
+    FROM users u
+    WHERE u.id = $1
+  `;
+
+  const values = [userId];
+
+  try {
+    const result = await pool.query(query, values);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    const user = result.rows[0];
+    return {
+      ...user,
+      games_count: parseInt(user.games_count),
+      memories_count: parseInt(user.memories_count),
+      reviews_count: parseInt(user.reviews_count)
+    };
+
+  } catch (error) {
+    throw error;
+  }
 };

@@ -1,4 +1,4 @@
-import { findUserById } from "../models/User.js";
+import { findUserById, updateUser, getUserPublicProfile } from "../models/User.js";
 
 /**
  * Récupère les informations de l'utilisateur connecté
@@ -35,6 +35,98 @@ export const getMe = async (req, res) => {
 
   } catch (error) {
     console.error("Erreur lors de la récupération du profil :", error);
+    res.status(500).json({
+      error: "Erreur serveur lors de la récupération du profil."
+    });
+  }
+};
+
+
+/**
+ * Met à jour le profil de l'utilisateur connecté
+ * @route PUT /users/me
+ * @body { username?, bio?, avatar_url?, banner_url? }
+ */
+export const updateMe = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { username, bio, avatar_url, banner_url } = req.body;
+
+    // Construit l'objet des données à mettre à jour
+    const updateData = {};
+
+    if (username !== undefined) updateData.username = username;
+    if (bio !== undefined) updateData.bio = bio;
+    if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
+    if (banner_url !== undefined) updateData.banner_url = banner_url;
+
+    // Vérifie qu'il y a au moins un champ à mettre à jour
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({
+        error: "Aucune donnée à mettre à jour."
+      });
+    }
+
+    // Mettre à jour l'utilisateur
+    const updatedUser = await updateUser(userId, updateData);
+
+    // Retourne l'utilisateur mis à jour
+    res.status(200).json({
+      message: "Profil mis à jour avec succès",
+      user: {
+        id: updatedUser.id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        avatar_url: updatedUser.avatar_url,
+        banner_url: updatedUser.banner_url,
+        bio: updatedUser.bio,
+        exp: updatedUser.exp,
+        level: updatedUser.level,
+        created_at: updatedUser.created_at
+      }
+    });
+
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du profil :", error);
+
+    // Gestion de l'erreur de username déjà pris
+    if (error.code === '23505') {  // Contrainte UNIQUE violée
+      return res.status(409).json({
+        error: "Ce nom d'utilisateur est déjà utilisé."
+      });
+    }
+
+    res.status(500).json({
+      error: "Erreur serveur lors de la mise à jour du profil."
+    });
+  }
+};
+
+
+/**
+ * Récupère le profil public d'un utilisateur
+ * @route GET /users/:userId
+ */
+export const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Récupére le profil public avec statistiques
+    const profile = await getUserPublicProfile(userId);
+
+    if (!profile) {
+      return res.status(404).json({
+        error: "Utilisateur non trouvé."
+      });
+    }
+
+    // Retourne le profil public
+    res.status(200).json({
+      user: profile
+    });
+
+  } catch (error) {
+    console.error("Erreur lors de la récupération du profil public :", error);
     res.status(500).json({
       error: "Erreur serveur lors de la récupération du profil."
     });
