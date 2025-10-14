@@ -12,6 +12,7 @@ import memoryRoutes from './routes/memoryRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import likeRoutes from './routes/likeRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
+import followRoutes from './routes/followRoutes.js';
 
 //Configuration
 dotenv.config() // Chargement des variables d'environnement AVANT tout le reste
@@ -45,7 +46,8 @@ app.get("/", (req, res) => {
       memories: "/memories (GET, POST, PUT /:id, DELETE /:id, GET /game/:gameId, GET /user/:userId)",
       reviews: "/reviews (GET, POST, PUT /:id, DELETE /:id, GET /game/:rawgId, GET /user/:userId)",
       likes: "/likes (POST, DELETE, GET /:targetType/:targetId, GET /:targetType/:targetId/check)",
-      comments: "/comments (POST, GET /:targetType/:targetId, PUT /:commentId, DELETE /:commentId)"
+      comments: "/comments (POST, GET /:targetType/:targetId, PUT /:commentId, DELETE /:commentId)",
+      follows: "/follows/:userId (POST, DELETE, GET /:userId/followers, GET /:userId/following, GET /:userId/check)"
     }
   });
 });
@@ -59,6 +61,7 @@ app.use("/memories", memoryRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/likes', likeRoutes);
 app.use('/comments', commentRoutes);
+app.use('/follows', followRoutes);
 
 // Gestion des routes inexistantes (404)
 app.use((req, res) => {
