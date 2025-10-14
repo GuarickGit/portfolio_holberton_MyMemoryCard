@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { isValidEmail, isValidPassword, isValidUsername } from '../utils/validators.js'
 
 // Import des fonctions du modèle User
 import { createUser, findUserByEmail } from "../models/User.js";
@@ -13,10 +14,31 @@ export const signup = async (req, res) => {
     // Récupère les données du body
     const { username, email, password } = req.body;
 
-    // Validation basique
+    // Validation des champs
     if (!username || !email || !password) {
       return res.status(400).json({
-        error: "Tous les champs sont requis (username, email, password)"
+        error: "Tous les champs sont requis."
+      });
+    }
+
+    // Validation du format username
+    if (!isValidUsername(username)) {
+      return res.status(400).json({
+        error: "Le pseudo doit contenir entre 3 et 30 caractères (lettres, chiffres, underscore, tiret uniquement)."
+      });
+    }
+
+    // Validation du format email
+    if (!isValidEmail(email)) {
+      return res.status(400).json({
+        error: "Format d'email invalide."
+      });
+    }
+
+    // Validation du mot de passe
+    if (!isValidPassword(password)) {
+      return res.status(400).json({
+        error: "Le mot de passe doit contenir au moins 6 caractères."
       });
     }
 
@@ -24,7 +46,7 @@ export const signup = async (req, res) => {
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
       return res.status(409).json({ //409 = Conflit de ressources
-        error: "Cet email est déjà utilisé"
+        error: "Cet email est déjà utilisé."
       });
     }
 
@@ -41,7 +63,7 @@ export const signup = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    // REnvoyer la réponse avec le token et les infos user
+    // Renvoyer la réponse avec le token et les infos user
     res.status(201).json({
       message: "Utilisateur crée avec succès",
       token,
