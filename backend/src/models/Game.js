@@ -215,11 +215,99 @@ export const getTrendingGames = async (days = 30, limit = 10, minAdds = 2) => {
   }
 };
 
+
+/**
+ * Récupère les détails d'un jeu avec ses statistiques
+ * Si le jeu n'existe pas en BDD, le crée automatiquement depuis RAWG + IGDB
+ * @param {Number} rawgId - ID RAWG du jeu
+ * @returns {Object} Détails du jeu avec stats
+ */
+export const getGameWithStats = async (rawgId) => {
+  try {
+    // 1. Chercher le jeu en BDD
+    let result = await pool.query(`
+      SELECT
+        g.*,
+        COUNT(DISTINCT c.id) as total_in_collections,
+        COUNT(DISTINCT CASE WHEN c.status = 'playing' THEN c.id END) as playing_count,
+        COUNT(DISTINCT CASE WHEN c.status = 'completed' THEN c.id END) as completed_count,
+        COUNT(DISTINCT CASE WHEN c.status = 'wishlist' THEN c.id END) as wishlist_count,
+        COUNT(DISTINCT CASE WHEN c.status = 'abandoned' THEN c.id END) as abandoned_count,
+        COUNT(DISTINCT r.id) as total_reviews,
+        COALESCE(AVG(r.rating), 0) as average_user_rating,
+        COUNT(DISTINCT m.id) as total_memories
+      FROM games g
+      LEFT JOIN collections c ON g.id = c.game_id
+      LEFT JOIN reviews r ON g.id = r.game_id
+      LEFT JOIN memories m ON g.id = m.game_id
+      WHERE g.rawg_id = $1
+      GROUP BY g.id
+    `, [rawgId]);
+
+    // 2. Si le jeu n'existe pas, le créer automatiquement
+    if (result.rows.length === 0) {
+      console.log(`Jeu ${rawgId} non trouvé en BDD, création automatique...`);
+
+      // Créer le jeu avec findOrCreate (RAWG + IGDB)
+      await findOrCreate(rawgId);
+
+      // Refaire la requête maintenant que le jeu existe
+      result = await pool.query(`
+        SELECT
+          g.*,
+          COUNT(DISTINCT c.id) as total_in_collections,
+          COUNT(DISTINCT CASE WHEN c.status = 'playing' THEN c.id END) as playing_count,
+          COUNT(DISTINCT CASE WHEN c.status = 'completed' THEN c.id END) as completed_count,
+          COUNT(DISTINCT CASE WHEN c.status = 'wishlist' THEN c.id END) as wishlist_count,
+          COUNT(DISTINCT CASE WHEN c.status = 'abandoned' THEN c.id END) as abandoned_count,
+          COUNT(DISTINCT r.id) as total_reviews,
+          COALESCE(AVG(r.rating), 0) as average_user_rating,
+          COUNT(DISTINCT m.id) as total_memories
+        FROM games g
+        LEFT JOIN collections c ON g.id = c.game_id
+        LEFT JOIN reviews r ON g.id = r.game_id
+        LEFT JOIN memories m ON g.id = m.game_id
+        WHERE g.rawg_id = $1
+        GROUP BY g.id
+      `, [rawgId]);
+    }
+
+    const game = result.rows[0];
+
+    return {
+      id: game.id,
+      rawg_id: game.rawg_id,
+      name: game.name,
+      background_image: game.background_image,
+      cover_url: game.cover_url,
+      released: game.released,
+      rating: parseFloat(game.rating),
+      platforms: game.platforms,
+      genres: game.genres,
+      stats: {
+        total_in_collections: parseInt(game.total_in_collections),
+        playing_count: parseInt(game.playing_count),
+        completed_count: parseInt(game.completed_count),
+        wishlist_count: parseInt(game.wishlist_count),
+        abandoned_count: parseInt(game.abandoned_count),
+        total_reviews: parseInt(game.total_reviews),
+        average_user_rating: parseFloat(parseFloat(game.average_user_rating).toFixed(2)),
+        total_memories: parseInt(game.total_memories)
+      }
+    };
+
+  } catch (error) {
+    console.error('Erreur dans getGameWithStats:', error.message);
+    throw error;
+  }
+};
+
 export default {
   findGameByRawgId,
   findGameById,
   findOrCreate,
   createGame,
   getTopGames,
-  getTrendingGames
+  getTrendingGames,
+  getGameWithStats
 };

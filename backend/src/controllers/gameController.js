@@ -102,3 +102,41 @@ export const getTrendingGames = async (req, res) => {
     });
   }
 };
+
+
+/**
+ * GET /games/:rawgId
+ * Récupère les détails d'un jeu avec ses statistiques
+ */
+export const getGameDetails = async (req, res) => {
+  try {
+    const rawgId = parseInt(req.params.rawgId);
+
+    // Validation
+    if (isNaN(rawgId)) {
+      return res.status(400).json({
+        error: 'ID de jeu invalide'
+      });
+    }
+
+    const gameDetails = await Game.getGameWithStats(rawgId);
+
+    return res.status(200).json({
+      game: gameDetails
+    });
+
+  } catch (error) {
+    console.error('Erreur dans getGameDetails:', error.message);
+
+    // Gestion d'erreur si le jeu n'existe pas sur RAWG
+    if (error.message.includes('404') || error.message.includes('Not found')) {
+      return res.status(404).json({
+        error: 'Ce jeu n\'existe pas sur RAWG'
+      });
+    }
+
+    return res.status(500).json({
+      error: 'Erreur lors de la récupération des détails du jeu'
+    });
+  }
+};

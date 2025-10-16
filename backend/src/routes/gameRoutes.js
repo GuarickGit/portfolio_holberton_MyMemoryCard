@@ -13,4 +13,7 @@ router.get('/trending', verifyToken, gameController.getTrendingGames);
 // GET /games/search - Rechercher des jeux sur RAWG
 router.get('/search', verifyToken, gameController.searchGamesController);
 
+// GET /games/:rawgId - Détails d'un jeu
+router.get('/:rawgId', verifyToken, gameController.getGameDetails);
+
 export default router;
