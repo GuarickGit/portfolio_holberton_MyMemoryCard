@@ -1,4 +1,5 @@
 import { searchGames } from '../services/rawgService.js';
+import * as Game from '../models/Game.js';
 
 /**
  * Recherche des jeux via l'API RAWG
@@ -38,6 +39,66 @@ export const searchGamesController = async (req, res) => {
     console.error('Erreur dans searchGamesController:', error.message);
     return res.status(500).json({
       error: 'Erreur serveur lors de la recherche de jeux'
+    });
+  }
+};
+
+
+/**
+ * GET /games/top
+ * Récupère les jeux les plus populaires de la plateforme
+ */
+export const getTopGames = async (req, res) => {
+  try {
+    // Limite optionnelle (défaut: 10, max: 50)
+    const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+
+    const topGames = await Game.getTopGames(limit);
+
+    return res.status(200).json({
+      count: topGames.length,
+      games: topGames
+    });
+
+  } catch (error) {
+    console.error('Erreur dans getTopGames:', error.message);
+    return res.status(500).json({
+      error: 'Erreur lors de la récupération des jeux populaires'
+    });
+  }
+};
+
+
+/**
+ * GET /games/trending
+ * Récupère les jeux tendance (ajoutés récemment par plusieurs users)
+ */
+export const getTrendingGames = async (req, res) => {
+  try {
+    // Paramètres optionnels
+    const days = Math.min(parseInt(req.query.days) || 30, 90);  // Max 90 jours
+    const limit = Math.min(parseInt(req.query.limit) || 10, 50); // Max 50 jeux
+    const minAdds = parseInt(req.query.min_adds) || 2;
+
+    let trendingGames = await Game.getTrendingGames(days, limit, minAdds);
+
+    // Fallback : si aucun jeu avec minAdds, on essaie avec minAdds = 1
+    if (trendingGames.length === 0 && minAdds > 1) {
+      console.log(`Aucun jeu trending avec min_adds=${minAdds}, tentative avec min_adds=1`);
+      trendingGames = await Game.getTrendingGames(days, limit, 1);
+    }
+
+    return res.status(200).json({
+      count: trendingGames.length,
+      period_days: days,
+      min_adds: minAdds,
+      games: trendingGames
+    });
+
+  } catch (error) {
+    console.error('Erreur dans getTrendingGames:', error.message);
+    return res.status(500).json({
+      error: 'Erreur lors de la récupération des jeux tendance'
     });
   }
 };

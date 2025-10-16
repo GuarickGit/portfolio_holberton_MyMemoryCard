@@ -270,3 +270,93 @@ export const addXpToUser = async (userId, xpAmount) => {
     throw error;
   }
 };
+
+
+/**
+ * Recherche des utilisateurs par username
+ * @param {String} searchQuery - Terme de recherche
+ * @param {Number} limit - Nombre de résultats max (défaut: 10)
+ * @returns {Array} Liste d'utilisateurs correspondants
+ */
+export const searchUsers = async (searchQuery, limit = 10) => {
+  try {
+    // ILIKE = recherche insensible à la casse (PostgreSQL)
+    // % = wildcard (n'importe quel caractère avant/après)
+    const result = await pool.query(
+      `SELECT
+        id,
+        username,
+        avatar_url,
+        bio,
+        level,
+        created_at
+      FROM users
+      WHERE username ILIKE $1
+      ORDER BY username ASC
+      LIMIT $2`,
+      [`%${searchQuery}%`, limit]
+    );
+
+    return result.rows;
+
+  } catch (error) {
+    console.error('Erreur dans searchUsers:', error.message);
+    throw error;
+  }
+};
+
+
+/**
+ * Récupère les statistiques complètes d'un utilisateur
+ * @param {String} userId - UUID de l'utilisateur
+ * @returns {Object} Stats complètes du user
+ */
+export const getUserStats = async (userId) => {
+  try {
+    // Une seule requête SQL avec toutes les sous-requêtes
+    const result = await pool.query(`
+      SELECT
+        (SELECT COUNT(*) FROM collections WHERE user_id = $1) AS total_games,
+        (SELECT COUNT(*) FROM collections WHERE user_id = $1 AND status = 'playing') AS games_playing,
+        (SELECT COUNT(*) FROM collections WHERE user_id = $1 AND status = 'completed') AS games_completed,
+        (SELECT COUNT(*) FROM collections WHERE user_id = $1 AND status = 'wishlist') AS games_wishlist,
+        (SELECT COUNT(*) FROM collections WHERE user_id = $1 AND status = 'abandoned') AS games_abandoned,
+        (SELECT COUNT(*) FROM memories WHERE user_id = $1) AS total_memories,
+        (SELECT COUNT(*) FROM reviews WHERE user_id = $1) AS total_reviews,
+        (SELECT COUNT(*) FROM likes WHERE user_id = $1) AS total_likes_given,
+        (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id IN (
+          SELECT id FROM memories WHERE user_id = $1
+        )) AS total_likes_received_memories,
+        (SELECT COUNT(*) FROM likes WHERE target_type = 'review' AND target_id IN (
+          SELECT id FROM reviews WHERE user_id = $1
+        )) AS total_likes_received_reviews,
+        (SELECT COUNT(*) FROM follows WHERE follower_id = $1) AS total_following,
+        (SELECT COUNT(*) FROM follows WHERE following_id = $1) AS total_followers
+    `, [userId]);
+
+    const stats = result.rows[0];
+
+    // Calcul du total de likes reçus
+    const totalLikesReceived =
+      parseInt(stats.total_likes_received_memories) +
+      parseInt(stats.total_likes_received_reviews);
+
+    return {
+      total_games: parseInt(stats.total_games),
+      games_playing: parseInt(stats.games_playing),
+      games_completed: parseInt(stats.games_completed),
+      games_wishlist: parseInt(stats.games_wishlist),
+      games_abandoned: parseInt(stats.games_abandoned),
+      total_memories: parseInt(stats.total_memories),
+      total_reviews: parseInt(stats.total_reviews),
+      total_likes_given: parseInt(stats.total_likes_given),
+      total_likes_received: totalLikesReceived,
+      total_following: parseInt(stats.total_following),
+      total_followers: parseInt(stats.total_followers)
+    };
+
+  } catch (error) {
+    console.error('Erreur dans getUserStats:', error.message);
+    throw error;
+  }
+};

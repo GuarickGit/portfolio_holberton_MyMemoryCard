@@ -1,5 +1,5 @@
 import express from "express";
-import { getMe, updateMe, getUserProfile } from "../controllers/userController.js"
+import { getMe, updateMe, getUserProfile, searchUsersController, getUserStatsController } from "../controllers/userController.js"; // ← AJOUTE searchUsersController
 import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -15,6 +15,18 @@ router.get("/me", verifyToken, getMe);
  * Met à jour le profil de l'utilisateur connecté
  */
 router.put("/me", verifyToken, updateMe);
+
+/**
+ * GET /users/search
+ * Rechercher des utilisateurs
+ */
+router.get('/search', verifyToken, searchUsersController); // ← DÉPLACE ICI (AVANT /:userId)
+
+/**
+ * GET /users/:userId/stats
+ * Récupère les statistiques d'un utilisateur
+ */
+router.get('/:userId/stats', verifyToken, getUserStatsController);
 
 /**
  * GET /users/:userId

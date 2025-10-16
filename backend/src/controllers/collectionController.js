@@ -6,8 +6,7 @@ import {
   removeFromCollection
 } from '../models/Collection.js';
 
-import { findGameByRawgId, createGame } from '../models/Game.js';
-import { getGameDetails } from '../services/rawgService.js';
+import { findGameByRawgId, findOrCreate } from '../models/Game.js';
 
 /**
  * Ajoute un jeu à la collection de l'utilisateur
@@ -43,22 +42,8 @@ export const addGameToCollection = async (req, res) => {
       }
     }
 
-    // Vérifie si le jeu existe en base (par rawg_id)
-    let game = await findGameByRawgId(rawg_id);
-
-    // Si le jeu n'existe pas, le récupérer depuis RAWG et le créer en base
-    if (!game) {
-      const rawgGameData = await getGameDetails(rawg_id);
-
-      if (!rawgGameData) {
-        return res.status(404).json({
-          error: 'Jeu introuvable sur RAWG'
-        });
-      }
-
-      // Créer le jeu en base
-      game = await createGame(rawgGameData);
-    }
+    // Trouve le jeu ou le crée avec RAWG + IGDB
+    const game = await findOrCreate(rawg_id);
 
     // Vérifie si le jeu est déjà dans la collection de l'user
     const existingEntry = await findCollectionEntry(userId, game.id);

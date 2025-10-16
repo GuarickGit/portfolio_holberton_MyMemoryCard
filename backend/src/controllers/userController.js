@@ -1,4 +1,4 @@
-import { findUserById, updateUser, getUserPublicProfile } from "../models/User.js";
+import { findUserById, updateUser, getUserPublicProfile, searchUsers, getUserStats } from "../models/User.js";
 
 /**
  * Récupère les informations de l'utilisateur connecté
@@ -129,6 +129,82 @@ export const getUserProfile = async (req, res) => {
     console.error("Erreur lors de la récupération du profil public :", error);
     res.status(500).json({
       error: "Erreur serveur lors de la récupération du profil."
+    });
+  }
+};
+
+
+/**
+ * GET /users/search
+ * Recherche des utilisateurs par username
+ */
+export const searchUsersController = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    // Validation : query param 'q' obligatoire
+    if (!q || q.trim().length === 0) {
+      return res.status(400).json({
+        error: 'Le paramètre de recherche "q" est obligatoire'
+      });
+    }
+
+    // Validation : minimum 2 caractères
+    if (q.trim().length < 2) {
+      return res.status(400).json({
+        error: 'La recherche doit contenir au moins 2 caractères'
+      });
+    }
+
+    // Limite optionnelle (défaut: 10, max: 50)
+    const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+
+    const users = await searchUsers(q.trim(), limit);
+
+    return res.status(200).json({
+      count: users.length,
+      results: users
+    });
+
+  } catch (error) {
+    console.error('Erreur dans searchUsersController:', error.message);
+    return res.status(500).json({
+      error: 'Erreur serveur lors de la recherche d\'utilisateurs'
+    });
+  }
+};
+
+
+/**
+ * GET /users/:userId/stats
+ * Récupère les statistiques complètes d'un utilisateur
+ */
+export const getUserStatsController = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Vérifier que l'utilisateur existe
+    const user = await findUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'Utilisateur non trouvé'
+      });
+    }
+
+    // Récupérer les stats
+    const stats = await getUserStats(userId);
+
+    return res.status(200).json({
+      user_id: userId,
+      username: user.username,
+      stats: stats
+    });
+
+  } catch (error) {
+    console.error('Erreur dans getUserStatsController:', error.message);
+    return res.status(500).json({
+      error: 'Erreur serveur lors de la récupération des statistiques'
     });
   }
 };
