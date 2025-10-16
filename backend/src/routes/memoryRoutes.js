@@ -13,7 +13,7 @@ const router = express.Router();
 
 // Routes publiques
 router.get('/', getMemories);  // feed global
-router.get('/game/:gameId', getGameMemories);
+router.get('/game/:rawgId', getGameMemories);
 router.get('/user/:userId', getUserMemories);
 
 // Routes protégées (nécessitent un token JWT)

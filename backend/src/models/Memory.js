@@ -69,47 +69,43 @@ export const getAllMemories = async (sort = 'recent', limit = 20, offset = 0) =>
 
 
 /**
- * Récupère les souvenirs d'un jeu spécifique
- * @param {number} gameId - ID RAWG du jeu
- * @param {number} limit - Nombre de résultats
- * @param {number} offset - Décalage pour la pagination
- * @returns {array} Liste des souvenirs du jeu
+ * Récupère tous les souvenirs liés à un jeu (par rawg_id)
+ * @param {Number} rawgId - ID RAWG du jeu
+ * @returns {Array} Liste des souvenirs du jeu
  */
 export const getMemoriesByGame = async (rawgId, limit = 20, offset = 0) => {
-
-  const gameQuery = `SELECT id FROM games WHERE rawg_id = $1`;
-  const gameResult = await pool.query(gameQuery, [rawgId]);
-
-  if (gameResult.rows.length === 0) {
-    return [];  // Aucun souvenir si le jeu n'existe pas
-  }
-
-  const gameId = gameResult.rows[0].id;
-
-  const query = `
-    SELECT
-      m.id,
-      m.user_id,
-      m.game_id,
-      m.content,
-      m.created_at,
-      u.username,
-      u.avatar_url,
-      g.name AS game_name,
-      g.background_image AS game_image
-    FROM memories m
-    JOIN users u ON m.user_id = u.id
-    JOIN games g ON m.game_id = g.id
-    WHERE m.game_id = $1
-    ORDER BY m.created_at DESC
-    LIMIT $2 OFFSET $3
+  try {
+    const query = `
+      SELECT
+        m.id,
+        m.user_id,
+        m.game_id,
+        m.content,
+        m.created_at,
+        u.username,
+        u.avatar_url,
+        u.level,
+        g.name as game_name,
+        g.cover_url,
+        g.background_image as game_image,
+        g.rawg_id,
+        (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
+        (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
+      FROM memories m
+      INNER JOIN users u ON m.user_id = u.id
+      INNER JOIN games g ON m.game_id = g.id
+      WHERE g.rawg_id = $1
+      ORDER BY m.created_at DESC
+      LIMIT $2 OFFSET $3
     `;
-    // WHERE m.game_id = $1 → Filtre sur un jeu spécifique
 
-    const values = [gameId, limit, offset];
-    const result = await pool.query(query, values);
-
+    const result = await pool.query(query, [rawgId, limit, offset]);
     return result.rows;
+
+  } catch (error) {
+    console.error('Erreur dans getMemoriesByGame:', error.message);
+    throw error;
+  }
 };
 
 

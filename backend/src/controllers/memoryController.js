@@ -106,18 +106,18 @@ export const getMemories = async (req, res) => {
 
 /**
  * Récupère les souvenirs d'un jeu spécifique
- * GET /memories/game/:gameId?limit=20&offset=0
+ * GET /memories/game/:rawgId?limit=20&offset=0
  */
 export const getGameMemories = async (req, res) => {
   try {
-    const { gameId } = req.params;
+    const rawgId = parseInt(req.params.rawgId);  // ← CHANGÉ : rawgId au lieu de gameId
     const limit = parseInt(req.query.limit) || 20;
     const offset = parseInt(req.query.offset) || 0;
 
-    // Validation du gameId
-    if (!gameId || isNaN(gameId)) {
+    // Validation du rawgId
+    if (isNaN(rawgId)) {
       return res.status(400).json({
-        error: 'gameId invalide'
+        error: 'ID de jeu invalide'
       });
     }
 
@@ -135,14 +135,14 @@ export const getGameMemories = async (req, res) => {
     }
 
     // Récupération des souvenirs
-    const memories = await Memory.getMemoriesByGame(parseInt(gameId), limit, offset);
+    const memories = await Memory.getMemoriesByGame(rawgId, limit, offset);
 
     res.status(200).json({
       memories,
       pagination: {
         limit,
         offset,
-        count: memories.length  // Nombre de résultats retournés
+        count: memories.length
       }
     });
 
