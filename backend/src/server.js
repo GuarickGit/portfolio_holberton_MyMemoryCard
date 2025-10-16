@@ -13,6 +13,7 @@ import reviewRoutes from './routes/reviewRoutes.js';
 import likeRoutes from './routes/likeRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
 import followRoutes from './routes/followRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 //Configuration
 dotenv.config() // Chargement des variables d'environnement AVANT tout le reste
@@ -62,6 +63,7 @@ app.use('/reviews', reviewRoutes);
 app.use('/likes', likeRoutes);
 app.use('/comments', commentRoutes);
 app.use('/follows', followRoutes);
+app.use('/admin', adminRoutes);
 
 // Gestion des routes inexistantes (404)
 app.use((req, res) => {
