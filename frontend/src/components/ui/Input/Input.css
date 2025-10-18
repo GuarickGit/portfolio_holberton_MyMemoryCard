@@ -1,0 +1,30 @@
+/* Style de l'input */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #1a1a1a;
+  border: 2px solid #2d2d2d;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+/* Placeholder (texte gris quand vide) */
+.input::placeholder {
+  color: #666666;
+}
+
+/* Au focus (quand on clique dedans) */
+.input:focus {
+  outline: none;
+  border-color: #00d4ff;
+}
+
+/* Responsive - plus grand sur tablette/desktop */
+@media (min-width: 768px) {
+  .input {
+    padding: 14px 18px;
+    font-size: 18px;
+  }
+}
