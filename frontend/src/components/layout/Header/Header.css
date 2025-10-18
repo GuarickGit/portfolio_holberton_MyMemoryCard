@@ -32,7 +32,7 @@
 }
 
 .header-logo img {
-  height: 32px;
+  height: 38px;
   width: auto;
   transition: opacity 0.2s;
 }
@@ -114,8 +114,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  padding: 8px 0 16px 0;
+  gap: 18px;
+  padding: 12px 0 16px 0;
 }
 
 .header-nav-link {
