@@ -1,0 +1,83 @@
+/* Ajustement de la hauteur pour 4 champs (comparé au login) */
+.signup-modal .modal-inner {
+  padding: 52px 36px;
+}
+
+.signup-title {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.signup-subtitle {
+  color: #b0b0b0;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 14px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+/* Override des styles Input pour la popup */
+.signup-form .input {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s;
+}
+
+.signup-form .input:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: #0ad06f;
+  box-shadow: 0 0 20px rgba(10, 208, 111, 0.3);
+}
+
+.signup-form .input::placeholder {
+  color: #666;
+}
+
+/* Espacement du bouton */
+.signup-form .button {
+  margin-top: 8px;
+}
+
+/* Footer */
+.signup-footer {
+  text-align: center;
+  color: #b0b0b0;
+  font-size: 14px;
+}
+
+.signup-link {
+  background: none;
+  border: none;
+  color: #00d4ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+  font-size: inherit;
+}
+
+.signup-link:hover {
+  color: #0ad06f;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .signup-modal .modal-inner {
+    padding: 44px 28px;
+  }
+
+  .signup-title {
+    font-size: 32px;
+  }
+}
