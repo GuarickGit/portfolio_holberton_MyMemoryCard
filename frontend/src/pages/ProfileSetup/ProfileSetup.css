@@ -1,0 +1,171 @@
+.profile-setup {
+  min-height: calc(100vh - 120px); /* Header + Footer */
+  padding: 80px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-setup-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+/* ===================================
+   HEADER
+   =================================== */
+
+.profile-setup-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.profile-setup-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #0ad06f 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.profile-setup-subtitle {
+  color: #b0b0b0;
+  font-size: 18px;
+}
+
+/* ===================================
+   FORM
+   =================================== */
+
+.profile-setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.profile-setup-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-setup-section-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Input group (Input + Bouton Preview) */
+.profile-setup-input-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-setup-input-group .input {
+  flex: 1;
+}
+
+.profile-setup-preview-btn {
+  padding: 12px 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.profile-setup-preview-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #0ad06f;
+}
+
+/* ===================================
+   ACTIONS
+   =================================== */
+
+.profile-setup-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.profile-setup-skip {
+  padding: 12px 32px;
+  background: none;
+  color: #b0b0b0;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.profile-setup-skip:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.profile-setup-skip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===================================
+   ERROR MESSAGE
+   =================================== */
+
+.error-message {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ff6b6b;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 768px) {
+  .profile-setup {
+    padding: 60px 20px;
+  }
+
+  .profile-setup-title {
+    font-size: 36px;
+  }
+
+  .profile-setup-subtitle {
+    font-size: 16px;
+  }
+
+  .profile-setup-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-setup-preview-btn {
+    width: 100%;
+  }
+
+  .profile-setup-actions {
+    flex-direction: column;
+  }
+
+  .profile-setup-actions .button,
+  .profile-setup-skip {
+    width: 100%;
+  }
+}

@@ -1,0 +1,74 @@
+.image-preview {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Type Banner (16:9) */
+.image-preview-banner {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 800px;
+}
+
+/* Type Avatar (1:1) */
+.image-preview-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+/* Image */
+.image-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fallback */
+.image-preview-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+}
+
+.image-preview-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.image-preview-text {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Loading */
+.image-preview-loading {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .image-preview-banner {
+    max-width: 100%;
+  }
+
+  .image-preview-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .image-preview-icon {
+    font-size: 36px;
+  }
+}

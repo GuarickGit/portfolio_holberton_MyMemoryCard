@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
     setUser(userData);
     setToken(userToken);
     localStorage.setItem('token', userToken);
-    localStorage.setItem('user', JSON.stringify(userData)); // Sauvegarde le user
+    localStorage.setItem('user', JSON.stringify(userData));
   }
 
   // Fonction de déconnexion
@@ -47,6 +47,13 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('user');
   }
 
+  // Fonction pour mettre à jour les infos du user
+  function updateUser(updatedUserData) {
+    const newUser = { ...user, ...updatedUserData };
+    setUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser)); // Met à jour aussi le localStorage
+  }
+
   const value = {
     user,
     token,
@@ -54,6 +61,7 @@ export function AuthProvider({ children }) {
     loading,
     loginUser,
     logoutUser,
+    updateUser,
   };
 
   // Affiche rien pendant le chargement
