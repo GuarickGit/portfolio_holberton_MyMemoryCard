@@ -1,0 +1,159 @@
+/* ===================================
+   FOOTER
+   =================================== */
+
+.footer {
+  background-color: #141414;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto; /* Pousse le footer en bas si le contenu est court */
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 32px 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* ===================================
+   SECTIONS
+   =================================== */
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-title {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* ===================================
+   LOGO + TAGLINE
+   =================================== */
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-logo {
+  display: inline-block;
+  width: fit-content;
+}
+
+.footer-logo img {
+  height: 32px;
+  width: auto;
+  transition: opacity 0.2s;
+}
+
+.footer-logo:hover img {
+  opacity: 0.8;
+}
+
+.footer-tagline {
+  color: #b0b0b0;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+/* ===================================
+   LIENS
+   =================================== */
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===================================
+   RÉSEAUX SOCIAUX
+   =================================== */
+
+.footer-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-social-link {
+  color: #b0b0b0;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.footer-social-link:hover {
+  color: #0ad06f;
+}
+
+/* Cache les RS pour l'instant */
+.footer-social-link.hidden {
+  display: none;
+}
+
+.footer-social-placeholder {
+  color: #666;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* ===================================
+   BOTTOM BAR (Copyright)
+   =================================== */
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 24px;
+}
+
+.footer-copyright {
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #666;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 32px 24px 24px 24px;
+  }
+
+  .footer-brand {
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-tagline {
+    max-width: 100%;
+  }
+
+  .footer-section {
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-links {
+    align-items: center;
+  }
+
+  .footer-copyright {
+    font-size: 12px;
+  }
+}
