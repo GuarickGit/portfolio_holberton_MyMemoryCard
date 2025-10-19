@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button/Button';
 import Input from '../../components/ui/Input/Input';
 import './Login.css';
 
-function Login({ onClose }) {
+function Login({ onClose, onSwitchToSignup }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -72,7 +72,10 @@ function Login({ onClose }) {
           </form>
 
           <p className="login-footer">
-            Pas encore de compte ? <a href="/signup">S'inscrire</a>
+            Pas encore de compte ? {' '}
+            <button onClick={onSwitchToSignup} className="login-link">
+              S'inscrire
+            </button>
           </p>
         </div>
 

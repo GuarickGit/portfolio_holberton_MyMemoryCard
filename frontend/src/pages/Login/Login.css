@@ -174,15 +174,20 @@
   font-size: 14px;
 }
 
-.login-footer a {
+.login-link {
+  background: none;
+  border: none;
   color: #00d4ff;
   font-weight: 600;
-  text-decoration: none;
+  cursor: pointer;
   transition: color 0.2s;
+  padding: 0;
+  font-size: inherit;
 }
 
-.login-footer a:hover {
+.login-link:hover {
   color: #0ad06f;
+  text-decoration: underline;
 }
 
 /* ===================================
