@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Search } from 'lucide-react';
 import Login from '../../../pages/Login/Login';
+import Signup from '../../../pages/Signup/Signup';
 import Logo from '../../../assets/images/Logo.png';
 import './Header.css';
 
 function Header() {
   // États
   const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -19,13 +21,25 @@ function Header() {
   function handleSearch(e) {
     e.preventDefault();
     console.log('Recherche:', searchQuery);
-    // NE PAS OUBLIER : Implémenter la recherche plus tard
+    // TODO : Implémenter la recherche plus tard
   }
 
   // Fonction de déconnexion
   function handleLogout() {
     logoutUser();
     setShowUserMenu(false);
+  }
+
+  // Fonction pour switcher de Login à Signup
+  function handleSwitchToSignup() {
+    setShowLogin(false);
+    setShowSignup(true);
+  }
+
+  // Fonction pour switcher de Signup à Login
+  function handleSwitchToLogin() {
+    setShowSignup(false);
+    setShowLogin(true);
   }
 
   // Ferme le menu quand on clique ailleurs
@@ -136,8 +150,19 @@ function Header() {
         </div>
       </header>
 
-      {/* Popup de connexion */}
-      {showLogin && <Login onClose={() => setShowLogin(false)} />}
+      {/* Popups d'authentification */}
+      {showLogin && (
+        <Login
+          onClose={() => setShowLogin(false)}
+          onSwitchToSignup={handleSwitchToSignup}
+        />
+      )}
+      {showSignup && (
+        <Signup
+          onClose={() => setShowSignup(false)}
+          onSwitchToLogin={handleSwitchToLogin}
+        />
+      )}
     </>
   );
 }
