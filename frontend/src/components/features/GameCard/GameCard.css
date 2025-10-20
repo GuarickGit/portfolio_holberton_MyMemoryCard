@@ -1,0 +1,167 @@
+.game-card {
+  /* La carte prend 100% de la largeur de son conteneur */
+  width: 100%;
+
+  /* Ratio 3:4 (jaquette de jeu classique) */
+  /* Si width = 300px, height sera automatiquement 400px */
+  aspect-ratio: 3 / 4;
+
+  /* Position relative pour l'overlay en absolute */
+  position: relative;
+
+  /* Coins arrondis */
+  border-radius: 8px;
+
+  /* Débordement caché (pour les coins arrondis de l'image) */
+  overflow: hidden;
+
+  /* Curseur pointer au survol */
+  cursor: pointer;
+
+  /* Transition douce pour les effets hover */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Effet hover : zoom léger + ombre */
+.game-card:hover {
+  /* Agrandit légèrement la carte */
+  transform: scale(1.05);
+
+  /* Ajoute une ombre portée */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Conteneur de l'image */
+.game-card__image-container {
+  /* Prend toute la hauteur de la carte */
+  width: 100%;
+  height: 100%;
+
+  /* Fond sombre si l'image charge */
+  background-color: var(--dark-gray);
+}
+
+/* Image de la jaquette */
+.game-card__image {
+  /* Prend toute la taille du conteneur */
+  width: 100%;
+  height: 100%;
+
+  /* Couvre tout l'espace sans déformation */
+  object-fit: cover;
+
+  /* Centre l'image */
+  object-position: center;
+}
+
+/* Placeholder si pas d'image */
+.game-card__placeholder {
+  /* Prend toute la taille */
+  width: 100%;
+  height: 100%;
+
+  /* Centre le texte */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Couleur de fond */
+  background-color: var(--dark-gray);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Overlay qui apparaît au survol */
+.game-card__overlay {
+  /* Positionné par-dessus l'image */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  /* Dégradé noir transparent vers opaque */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    transparent 100%
+  );
+
+  /* Espacement intérieur */
+  padding: 16px;
+
+  /* Transition douce pour l'apparition */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Afficher l'overlay au survol de la carte */
+.game-card:hover .game-card__overlay {
+  opacity: 1;
+}
+
+/* Titre du jeu */
+.game-card__title {
+  /* Couleur blanche */
+  color: var(--white);
+
+  /* Taille de police */
+  font-size: 16px;
+  font-weight: 600;
+
+  /* Marge en dessous */
+  margin: 0 0 8px 0;
+
+  /* Limiter à 2 lignes max */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Conteneur des infos (rating + année) */
+.game-card__info {
+  /* Disposition en ligne */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* Espacement */
+  gap: 12px;
+
+  /* Taille de police */
+  font-size: 14px;
+}
+
+/* Note du jeu */
+.game-card__rating {
+  color: #FFD700;
+  font-weight: 600;
+
+  /* Aligner icône + texte */
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Petit espace entre l'icône et le chiffre */
+}
+
+/* Année de sortie */
+.game-card__year {
+  color: var(--text-secondary);
+}
+
+/* RESPONSIVE - Mobile */
+@media (max-width: 768px) {
+  .game-card__title {
+    font-size: 14px;
+  }
+
+  .game-card__info {
+    font-size: 12px;
+  }
+
+  .game-card__overlay {
+    padding: 12px;
+  }
+}
