@@ -35,7 +35,7 @@ function ImagePreview({
         <div className="image-preview-fallback">
           <span className="image-preview-icon">{fallbackIcon}</span>
           <p className="image-preview-text">
-            {type === 'avatar' ? 'Aucun avatar' : 'Aucune bannière'}
+            {type === 'avatar' ? '' : 'Aucune bannière'}
           </p>
         </div>
       ) : (
