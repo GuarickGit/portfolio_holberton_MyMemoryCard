@@ -111,7 +111,7 @@ function ProfileSetup() {
         {/* Header */}
         <div className="profile-setup-header">
           <h1 className="profile-setup-title">
-            Complète ton profil ! 🎮
+            Complète ton profil !
           </h1>
           <p className="profile-setup-subtitle">
             Personnalise ton espace gaming
@@ -123,7 +123,7 @@ function ProfileSetup() {
 
           {/* Section Bannière */}
           <div className="profile-setup-section">
-            <h3 className="profile-setup-section-title">🖼️ Bannière de profil</h3>
+            <h3 className="profile-setup-section-title">Bannière de profil</h3>
 
             <ImagePreview
               src={previewBanner}
@@ -151,7 +151,7 @@ function ProfileSetup() {
 
           {/* Section Avatar */}
           <div className="profile-setup-section">
-            <h3 className="profile-setup-section-title">👤 Avatar</h3>
+            <h3 className="profile-setup-section-title">Avatar</h3>
 
             <ImagePreview
               src={previewAvatar}
@@ -179,7 +179,7 @@ function ProfileSetup() {
 
           {/* Section Bio */}
           <div className="profile-setup-section">
-            <h3 className="profile-setup-section-title">✍️ Bio</h3>
+            <h3 className="profile-setup-section-title">Bio</h3>
 
             <Textarea
               placeholder="Parle-nous de toi, de tes jeux préférés, de ton style de jeu..."
@@ -191,7 +191,7 @@ function ProfileSetup() {
             />
           </div>
 
-          {/* Message d'erreur (en bas, visible) */}
+          {/* Message d'erreur */}
           {error && <div className="error-message">{error}</div>}
 
           {/* Boutons */}
