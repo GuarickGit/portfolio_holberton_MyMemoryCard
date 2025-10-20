@@ -27,8 +27,7 @@ function Footer() {
           <nav className="footer-links">
             <FooterLink to="/about">À propos</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>
-            <FooterLink to="/legal">Mentions légales</FooterLink>
-            <FooterLink to="/privacy">Politique de confidentialité</FooterLink>
+            <FooterLink to="/faq">Foire aux questions</FooterLink>
           </nav>
         </div>
 
