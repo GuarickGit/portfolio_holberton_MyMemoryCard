@@ -52,7 +52,10 @@ export const getAllReviews = async (sort = 'recent', limit = 20, offset = 0) => 
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.background_image AS game_image
+      g.background_image AS game_image,
+      g.released,
+      (SELECT COUNT(*) FROM likes WHERE target_type = 'review' AND target_id = r.id) as likes_count,
+      (SELECT COUNT(*) FROM comments WHERE target_type = 'review' AND target_id = r.id) as comments_count
     FROM reviews r
     JOIN users u ON r.user_id = u.id
     JOIN games g ON r.game_id = g.id
@@ -103,7 +106,10 @@ export const getReviewsByGame = async (rawgId, limit = 20, offset = 0) => {
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.background_image AS game_image
+      g.background_image AS game_image,
+      g.released,
+      (SELECT COUNT(*) FROM likes WHERE target_type = 'review' AND target_id = r.id) as likes_count,
+      (SELECT COUNT(*) FROM comments WHERE target_type = 'review' AND target_id = r.id) as comments_count
     FROM reviews r
     JOIN users u ON r.user_id = u.id
     JOIN games g ON r.game_id = g.id
@@ -138,7 +144,10 @@ export const getReviewsByUser = async (userId, limit = 20, offset = 0) => {
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.background_image AS game_image
+      g.background_image AS game_image,
+      g.released,
+      (SELECT COUNT(*) FROM likes WHERE target_type = 'review' AND target_id = r.id) as likes_count,
+      (SELECT COUNT(*) FROM comments WHERE target_type = 'review' AND target_id = r.id) as comments_count
     FROM reviews r
     JOIN users u ON r.user_id = u.id
     JOIN games g ON r.game_id = g.id
@@ -235,7 +244,10 @@ export const getReviewsById = async (reviewId) => {
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.background_image AS game_image
+      g.background_image AS game_image,
+      g.released,
+      (SELECT COUNT(*) FROM likes WHERE target_type = 'review' AND target_id = r.id) as likes_count,
+      (SELECT COUNT(*) FROM comments WHERE target_type = 'review' AND target_id = r.id) as comments_count
     FROM reviews r
     JOIN users u ON r.user_id = u.id
     JOIN games g ON r.game_id = g.id
