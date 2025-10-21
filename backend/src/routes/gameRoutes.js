@@ -5,15 +5,15 @@ import * as gameController from '../controllers/gameController.js';
 const router = express.Router();
 
 // GET /games/top - Jeux les plus populaires
-router.get('/top', verifyToken, gameController.getTopGames);
+router.get('/top', gameController.getTopGames);
 
 // GET /games/trending - Jeux tendance
-router.get('/trending', verifyToken, gameController.getTrendingGames);
+router.get('/trending', gameController.getTrendingGames);
 
 // GET /games/search - Rechercher des jeux sur RAWG
-router.get('/search', verifyToken, gameController.searchGamesController);
+router.get('/search', gameController.searchGamesController);
 
 // GET /games/:rawgId - Détails d'un jeu
-router.get('/:rawgId', verifyToken, gameController.getGameDetails);
+router.get('/:rawgId', gameController.getGameDetails);
 
 export default router;
