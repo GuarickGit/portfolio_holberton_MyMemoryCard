@@ -49,7 +49,7 @@ export const getAllMemories = async (sort = 'recent', limit = 20, offset = 0) =>
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.background_image AS game_image,
+      g.cover_url AS game_image,
       (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
       (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
     FROM memories m
@@ -204,7 +204,7 @@ export const getMemoryById = async (memoryId) => {
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.background_image AS game_image,
+      g.cover_url AS game_image,
       (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
       (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
     FROM memories m
