@@ -32,6 +32,19 @@
   transform: translateY(0);
 }
 
+.button-secondary {
+  background: none;
+  color: white;
+}
+
+.button-secondary:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.button-seconday:active:not(:disabled) {
+  transform: translateY(0);
+}
+
 /* État désactivé */
 .button:disabled {
   opacity: 0.6;
