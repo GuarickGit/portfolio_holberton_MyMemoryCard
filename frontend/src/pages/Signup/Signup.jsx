@@ -88,15 +88,18 @@ function Signup({ onClose, onSwitchToLogin }) {
       alert(`Bienvenue ${data.user.username} !`);
 
     } catch (err) {
-      // Affichage de l'erreur
-      setError(err.message);
+      // Gestion universelle des erreurs
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err.message || 'Une erreur est survenue';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay">
       <div className="modal-content signup-modal" onClick={(e) => e.stopPropagation()}>
 
         {/* Bouton fermer */}

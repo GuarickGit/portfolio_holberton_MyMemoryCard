@@ -24,14 +24,18 @@ function Login({ onClose, onSwitchToSignup }) {
       onClose();
       alert(`Bienvenue ${data.user.username} !`);
     } catch (err) {
-      setError(err.message);
+      // Gestion universelle des erreurs
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err.message || 'Une erreur est survenue';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay">
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
 
         {/* Bouton fermer */}
