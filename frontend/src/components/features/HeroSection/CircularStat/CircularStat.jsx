@@ -39,9 +39,9 @@ const CircularStat = ({ label, value, color = 'green', percentage = null }) => {
   // Calcul du strokeDashoffset pour l'animation du cercle
   const radius = 45;
   const circumference = 2 * Math.PI * radius;
-  const dashoffset = percentage
+  const dashoffset = percentage !== null
     ? circumference - (animatedPercentage / 100) * circumference
-    : 0;
+    : circumference;  // Cercle vide si pas de percentage
 
   return (
     <div className={`circular-stat circular-stat--${color}`}>
@@ -54,16 +54,14 @@ const CircularStat = ({ label, value, color = 'green', percentage = null }) => {
           r={radius}
         />
         {/* Cercle de progression */}
-        {percentage !== null && (
-          <circle
-            className="circular-stat__circle-progress"
-            cx="50"
-            cy="50"
-            r={radius}
-            strokeDasharray={circumference}
-            strokeDashoffset={dashoffset}
-          />
-        )}
+        <circle
+          className="circular-stat__circle-progress"
+          cx="50"
+          cy="50"
+          r={radius}
+          strokeDasharray={circumference}
+          strokeDashoffset={dashoffset}
+        />
       </svg>
       <div className="circular-stat__content">
         <span className="circular-stat__value">{animatedValue}</span>
