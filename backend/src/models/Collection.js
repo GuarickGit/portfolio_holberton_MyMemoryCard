@@ -65,6 +65,7 @@ export const getUserCollection = async (userId) => {
         games.rawg_id,
         games.name,
         games.background_image,
+        games.cover_url,
         games.released,
         games.rating as rawg_rating,
         games.platforms,
