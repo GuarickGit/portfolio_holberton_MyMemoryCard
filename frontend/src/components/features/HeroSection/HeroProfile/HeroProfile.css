@@ -1,0 +1,219 @@
+/* ============================================
+   HERO PROFILE - Version connectée
+   ============================================ */
+
+.hero-profile {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* ============================================
+   HEADER - Avatar + Infos
+   ============================================ */
+
+.hero-profile__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.hero-profile__avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--color-primary);
+  flex-shrink: 0;
+}
+
+.hero-profile__info {
+  flex: 1;
+}
+
+.hero-profile__username {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.hero-profile__bio {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.5;
+}
+
+.hero-profile__follow-stats {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.hero-profile__follow-stats strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.hero-profile__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* ============================================
+   STATS CIRCULAIRES
+   ============================================ */
+
+.hero-profile__stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   COLLECTION
+   ============================================ */
+
+.hero-profile__collection {
+  margin-top: var(--spacing-xl);
+}
+
+.hero-profile__collection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.hero-profile__collection-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: 0.5px;
+}
+
+.hero-profile__collection-link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.hero-profile__collection-link:hover {
+  color: var(--color-secondary);
+}
+
+.hero-profile__collection-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-md);
+}
+
+.hero-profile__collection-cover {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hero-profile__collection-cover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .hero-profile__collection-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-profile__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-profile__avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .hero-profile__stats {
+    gap: var(--spacing-md);
+  }
+
+  .hero-profile__collection-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-sm);
+  }
+
+  .hero-profile__collection-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .hero-profile {
+    padding: var(--spacing-md);
+  }
+
+  .hero-profile__avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .hero-profile__stats {
+    gap: var(--spacing-sm);
+  }
+
+  .hero-profile__collection-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero-profile__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-profile__actions button {
+    width: 100%;
+  }
+}
