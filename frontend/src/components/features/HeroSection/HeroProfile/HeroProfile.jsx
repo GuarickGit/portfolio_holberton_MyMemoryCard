@@ -16,21 +16,30 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [collection, setCollection] = useState([]);
+  const [userProfile, setUserProfile] = useState(null);
   const [loadingStats, setLoadingStats] = useState(true);
 
-  // Charger les stats et la collection
+  // Charger les stats, la collection ET le profil complet
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoadingStats(true);
 
-        const [statsRes, collectionRes] = await Promise.all([
+        const [statsRes, collectionRes, profileRes] = await Promise.all([
           api.get(`/users/${user.id}/stats`),
-          api.get(`/collections?userId=${user.id}&limit=7`)
+          api.get(`/collections?userId=${user.id}&limit=7`),
+          api.get(`/users/${user.id}`)
         ]);
 
-        setStats(statsRes.data);
-        setCollection(collectionRes.data.collections || []);
+        // Les stats sont dans .stats
+        setStats(statsRes.data.stats || statsRes.data);
+
+        // La collection est dans .collection
+        setCollection(collectionRes.data.collection || []);
+
+        // Le profil complet avec level et exp
+        setUserProfile(profileRes.data);
+
       } catch (error) {
         console.error('Erreur chargement HeroProfile:', error);
       } finally {
@@ -45,9 +54,9 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
 
   // Calculer le pourcentage de niveau (exp / prochain niveau)
   const getLevelPercentage = () => {
-    if (!user?.exp || !user?.level) return 0;
-    const expForNextLevel = user.level * 100;
-    const currentExp = user.exp % 100;
+    if (!userProfile?.exp || !userProfile?.level) return 0;
+    const expForNextLevel = userProfile.level * 100;
+    const currentExp = userProfile.exp % 100;
     return Math.min((currentExp / expForNextLevel) * 100, 100);
   };
 
@@ -90,42 +99,42 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
       </div>
 
       {/* Stats circulaires */}
-      {!loadingStats && stats && (
+      {!loadingStats && stats && userProfile && (
         <div className="hero-profile__stats">
           <CircularStat
             label="Niveau"
-            value={user.level}
+            value={parseInt(userProfile.level) || 1}
             color="green"
             percentage={getLevelPercentage()}
           />
           <CircularStat
             label="jeux vidéos"
-            value={stats.total_games}
+            value={parseInt(stats.total_games) || 0}
             color="blue"
           />
           <CircularStat
             label="en cours"
-            value={stats.games_playing}
+            value={parseInt(stats.games_playing) || 0}
             color="orange"
           />
           <CircularStat
             label="terminés"
-            value={stats.games_completed}
+            value={parseInt(stats.games_completed) || 0}
             color="red"
           />
           <CircularStat
             label="reviews"
-            value={stats.total_reviews}
+            value={parseInt(stats.total_reviews) || 0}
             color="pink"
           />
           <CircularStat
             label="souvenirs"
-            value={stats.total_memories}
+            value={parseInt(stats.total_memories) || 0}
             color="cyan"
           />
           <CircularStat
             label="likes"
-            value={stats.total_likes_received}
+            value={parseInt(stats.total_likes_received) || 0}
             color="yellow"
           />
           <CircularStat
@@ -152,10 +161,10 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
             {collection.slice(0, 7).map((item) => (
               <img
                 key={item.id}
-                src={item.game_cover_url || '/placeholder-game.png'}
-                alt={item.game_name}
+                src={item.cover_url || '/placeholder-game.png'}
+                alt={item.name || 'Jeu'}
                 className="hero-profile__collection-cover"
-                onClick={() => navigate(`/games/${item.game_id}`)}
+                onClick={() => navigate(`/games/${item.rawg_id}`)}
               />
             ))}
           </div>
