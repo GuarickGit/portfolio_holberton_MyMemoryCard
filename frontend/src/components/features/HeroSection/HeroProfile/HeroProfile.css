@@ -154,14 +154,27 @@
    RESPONSIVE
    ============================================ */
 
-/* Tablets */
-@media (max-width: 1024px) {
+/* Large Desktop (1400px+) - 7 jeux */
+.hero-profile__collection-grid {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* Desktop (1024px - 1399px) - 6 jeux */
+@media (max-width: 1399px) {
+  .hero-profile__collection-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Tablet landscape (900px - 1023px) - 5 jeux */
+@media (max-width: 1023px) {
   .hero-profile__collection-grid {
     grid-template-columns: repeat(5, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+/* Tablet portrait (768px - 899px) - 4 jeux */
+@media (max-width: 899px) {
   .hero-profile__header {
     flex-direction: column;
     align-items: center;
@@ -179,7 +192,6 @@
 
   .hero-profile__collection-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--spacing-sm);
   }
 
   .hero-profile__collection-header {
@@ -189,8 +201,16 @@
   }
 }
 
-/* Mobile */
-@media (max-width: 480px) {
+/* Mobile large (480px - 767px) - 3 jeux */
+@media (max-width: 767px) {
+  .hero-profile__collection-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Mobile small (< 480px) - 2 jeux */
+@media (max-width: 479px) {
   .hero-profile {
     padding: var(--spacing-md);
   }
@@ -205,7 +225,7 @@
   }
 
   .hero-profile__collection-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .hero-profile__actions {
