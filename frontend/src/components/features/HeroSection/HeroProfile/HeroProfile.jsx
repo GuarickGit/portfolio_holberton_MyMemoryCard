@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CircularStat from '../CircularStat/CircularStat';
 import Button from '../../../ui/Button/Button';
+import GameCard from '../../GameCard/GameCard';
 import api from '../../../../services/api';
 import './HeroProfile.css';
 
@@ -17,18 +18,20 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
   const [stats, setStats] = useState(null);
   const [collection, setCollection] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
+  const [totalGamesInDB, setTotalGamesInDB] = useState(1000); // Valeur par défaut
   const [loadingStats, setLoadingStats] = useState(true);
 
-  // Charger les stats, la collection ET le profil complet
+  // Charger les stats, la collection, le profil ET le nombre total de jeux
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoadingStats(true);
 
-        const [statsRes, collectionRes, profileRes] = await Promise.all([
+        const [statsRes, collectionRes, profileRes, gamesCountRes] = await Promise.all([
           api.get(`/users/${user.id}/stats`),
           api.get(`/collections?userId=${user.id}&limit=7`),
-          api.get(`/users/${user.id}`)
+          api.get(`/users/${user.id}`),
+          api.get('/games/count')
         ]);
 
         // Les stats sont dans .stats
@@ -38,7 +41,10 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
         setCollection(collectionRes.data.collection || []);
 
         // Le profil complet avec level et exp
-        setUserProfile(profileRes.data);
+        setUserProfile(profileRes.data.user);
+
+        // Nombre total de jeux en DB
+        setTotalGamesInDB(gamesCountRes.data.total_games || 1000);
 
       } catch (error) {
         console.error('Erreur chargement HeroProfile:', error);
@@ -52,12 +58,91 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
     }
   }, [user?.id]);
 
-  // Calculer le pourcentage de niveau (exp / prochain niveau)
+  // ============================================
+  // FORMULES DE PROGRESSION (basées sur xpHelper.js backend)
+  // ============================================
+
+  /**
+   * Calcule le pourcentage de progression vers le prochain niveau
+   * Formule identique au backend : xpHelper.js > getProgressToNextLevel()
+   */
   const getLevelPercentage = () => {
     if (!userProfile?.exp || !userProfile?.level) return 0;
-    const expForNextLevel = userProfile.level * 100;
-    const currentExp = userProfile.exp % 100;
-    return Math.min((currentExp / expForNextLevel) * 100, 100);
+
+    const level = userProfile.level;
+    const exp = userProfile.exp;
+
+    // XP du début du niveau actuel
+    const currentLevelXp = Math.pow(level - 1, 2) * 50;
+
+    // XP nécessaire pour le prochain niveau
+    const nextLevelXp = Math.pow(level, 2) * 50;
+
+    // XP gagnés dans le niveau actuel
+    const xpInCurrentLevel = exp - currentLevelXp;
+
+    // XP nécessaires pour passer au niveau suivant
+    const xpNeededForLevel = nextLevelXp - currentLevelXp;
+
+    // Pourcentage (max 100%)
+    return Math.min(100, Math.floor((xpInCurrentLevel / xpNeededForLevel) * 100));
+  };
+
+  /**
+   * Jeux vidéos : Pourcentage par rapport au total de jeux en DB
+   */
+  const getGamesPercentage = () => {
+    if (!totalGamesInDB) return 0;
+    return Math.min((stats.total_games / totalGamesInDB) * 100, 100);
+  };
+
+  /**
+   * En cours : Pourcentage de jeux en cours / total jeux de l'utilisateur
+   */
+  const getPlayingPercentage = () => {
+    if (!stats?.total_games) return 0;
+    return Math.min((stats.games_playing / stats.total_games) * 100, 100);
+  };
+
+  /**
+   * Terminés : Pourcentage de jeux terminés / total jeux de l'utilisateur
+   */
+  const getCompletedPercentage = () => {
+    if (!stats?.total_games) return 0;
+    return Math.min((stats.games_completed / stats.total_games) * 100, 100);
+  };
+
+  /**
+   * Reviews : Pourcentage par rapport au total de jeux en DB
+   */
+  const getReviewsPercentage = () => {
+    if (!totalGamesInDB) return 0;
+    return Math.min((stats.total_reviews / totalGamesInDB) * 100, 100);
+  };
+
+  /**
+   * Souvenirs : Pourcentage par rapport au total de jeux en DB
+   */
+  const getMemoriesPercentage = () => {
+    if (!totalGamesInDB) return 0;
+    return Math.min((stats.total_memories / totalGamesInDB) * 100, 100);
+  };
+
+  /**
+   * Likes : Pourcentage de likes reçus / (reviews + souvenirs)
+   */
+  const getLikesPercentage = () => {
+    const totalContent = (stats?.total_reviews || 0) + (stats?.total_memories || 0);
+    if (totalContent === 0) return 0;
+    return Math.min((stats.total_likes_received / totalContent) * 100, 100);
+  };
+
+  /**
+   * Succès : Pourcentage de succès obtenus (hardcodé pour le MVP)
+   */
+  const getAchievementsPercentage = () => {
+    const totalAchievements = 50; // TODO: Récupérer du backend plus tard
+    return Math.min((21 / totalAchievements) * 100, 100);
   };
 
   return (
@@ -111,41 +196,48 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
             label="jeux vidéos"
             value={parseInt(stats.total_games) || 0}
             color="blue"
+            percentage={getGamesPercentage()}
           />
           <CircularStat
             label="en cours"
             value={parseInt(stats.games_playing) || 0}
             color="orange"
+            percentage={getPlayingPercentage()}
           />
           <CircularStat
             label="terminés"
             value={parseInt(stats.games_completed) || 0}
             color="red"
+            percentage={getCompletedPercentage()}
           />
           <CircularStat
             label="reviews"
             value={parseInt(stats.total_reviews) || 0}
             color="pink"
+            percentage={getReviewsPercentage()}
           />
           <CircularStat
             label="souvenirs"
             value={parseInt(stats.total_memories) || 0}
             color="cyan"
+            percentage={getMemoriesPercentage()}
           />
           <CircularStat
             label="likes"
             value={parseInt(stats.total_likes_received) || 0}
             color="yellow"
+            percentage={getLikesPercentage()}
           />
           <CircularStat
             label="succès"
             value={21}
             color="purple"
+            percentage={getAchievementsPercentage()}
           />
         </div>
       )}
 
-      {/* Collection carousel */}
+      {/* Collection avec GameCard */}
       {collection.length > 0 && (
         <div className="hero-profile__collection">
           <div className="hero-profile__collection-header">
@@ -159,12 +251,15 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
           </div>
           <div className="hero-profile__collection-grid">
             {collection.slice(0, 7).map((item) => (
-              <img
+              <GameCard
                 key={item.id}
-                src={item.cover_url || '/placeholder-game.png'}
-                alt={item.name || 'Jeu'}
-                className="hero-profile__collection-cover"
-                onClick={() => navigate(`/games/${item.rawg_id}`)}
+                game={{
+                  rawg_id: item.rawg_id,
+                  name: item.name,
+                  cover_url: item.cover_url,
+                  rating: item.rating,
+                  released: item.released
+                }}
               />
             ))}
           </div>
