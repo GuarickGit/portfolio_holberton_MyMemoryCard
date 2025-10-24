@@ -1,0 +1,141 @@
+/* ============================================
+   CIRCULAR STAT - Statistiques circulaires
+   ============================================ */
+
+.circular-stat {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circular-stat__svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circular-stat__circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 8;
+}
+
+.circular-stat__circle-progress {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.circular-stat__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 1;
+}
+
+.circular-stat__value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.circular-stat__label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: lowercase;
+  font-weight: 500;
+  max-width: 80px;
+  line-height: 1.2;
+}
+
+/* ============================================
+   COULEURS DES CERCLES
+   ============================================ */
+
+/* Vert - Niveau */
+.circular-stat--green .circular-stat__circle-progress {
+  stroke: #10b981;
+}
+
+/* Bleu - Jeux vidéos */
+.circular-stat--blue .circular-stat__circle-progress {
+  stroke: #3b82f6;
+}
+
+/* Orange - En cours */
+.circular-stat--orange .circular-stat__circle-progress {
+  stroke: #f97316;
+}
+
+/* Rouge - Terminés */
+.circular-stat--red .circular-stat__circle-progress {
+  stroke: #ef4444;
+}
+
+/* Rose - Reviews */
+.circular-stat--pink .circular-stat__circle-progress {
+  stroke: #ec4899;
+}
+
+/* Bleu clair - Souvenirs */
+.circular-stat--cyan .circular-stat__circle-progress {
+  stroke: #06b6d4;
+}
+
+/* Jaune - Likes */
+.circular-stat--yellow .circular-stat__circle-progress {
+  stroke: #eab308;
+}
+
+/* Violet - Succès */
+.circular-stat--purple .circular-stat__circle-progress {
+  stroke: #a855f7;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .circular-stat {
+    width: 100px;
+    height: 100px;
+  }
+
+  .circular-stat__value {
+    font-size: 1.5rem;
+  }
+
+  .circular-stat__label {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .circular-stat {
+    width: 80px;
+    height: 80px;
+  }
+
+  .circular-stat__value {
+    font-size: 1.25rem;
+  }
+
+  .circular-stat__label {
+    font-size: 0.6rem;
+  }
+
+  .circular-stat__circle-bg,
+  .circular-stat__circle-progress {
+    stroke-width: 6;
+  }
+}
