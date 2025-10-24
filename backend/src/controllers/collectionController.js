@@ -26,7 +26,7 @@ export const addGameToCollection = async (req, res) => {
     }
 
     // Validations du status
-    const validStatuses = ['playing', 'completed', "wishlist", 'abandoned'];
+    const validStatuses = ['not_started', 'playing', 'completed', "wishlist", 'abandoned'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
         error: `Le status doit être : ${validStatuses.join(', ')}`
@@ -124,7 +124,7 @@ export const updateGameInCollection = async (req, res) => {
 
     // Validation du status si fourni
     if (status !== undefined) {
-      const validStatuses = ['playing', 'completed', 'wishlist', 'abandoned'];
+      const validStatuses = ['not_started', 'playing', 'completed', 'wishlist', 'abandoned'];
       if (!validStatuses.includes(status)) {
         return res.status(400).json({
           error: `Le status doit être : ${validStatuses.join(', ')}`

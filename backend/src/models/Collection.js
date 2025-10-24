@@ -24,7 +24,7 @@ export const findCollectionEntry = async (userId, gameId) => {
  * Ajoute un jeu à la collection d'un utilisateur
  * @param {string} userId - L'ID de l'utilisateur
  * @param {number} gameId - L'ID du jeu
- * @param {string} status - Le statut du jeu (playing, completed, wishlist)
+ * @param {string} status - Le statut du jeu (playing, completed, wishlist, not_started)
  * @param {number|null} userRating - La note de l'utilisateur (optionnelle)
  * @returns {Object} - L'entrée de collection créée
  */
@@ -67,7 +67,7 @@ export const getUserCollection = async (userId) => {
         games.background_image,
         games.cover_url,
         games.released,
-        games.rating as rawg_rating,
+        games.rating,
         games.platforms,
         games.genres
       FROM collections
