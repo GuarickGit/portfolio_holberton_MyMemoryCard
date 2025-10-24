@@ -37,7 +37,7 @@ const Home = () => {
       ]);
 
       setData({
-        topGames: gamesRes.data.games?.slice(0, 6) || [],
+        topGames: gamesRes.data.games?.slice(0, 5) || [],
         recentReviews: reviewsRes.data.reviews || [],
         recentMemories: memoriesRes.data.memories || []
       });
