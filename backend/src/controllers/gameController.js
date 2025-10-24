@@ -1,5 +1,6 @@
 import { searchGames } from '../services/rawgService.js';
 import * as Game from '../models/Game.js';
+import pool from '../config/index.js';
 
 /**
  * Recherche des jeux via l'API RAWG
@@ -137,6 +138,26 @@ export const getGameDetails = async (req, res) => {
 
     return res.status(500).json({
       error: 'Erreur lors de la récupération des détails du jeu'
+    });
+  }
+};
+
+/**
+ * GET /games/count
+ * Récupère le nombre total de jeux dans la base de données
+ */
+export const getTotalGamesCount = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT COUNT(*) FROM games');
+    const count = parseInt(result.rows[0].count);
+
+    return res.status(200).json({
+      total_games: count
+    });
+  } catch (error) {
+    console.error('Erreur dans getTotalGamesCount:', error.message);
+    return res.status(500).json({
+      error: 'Erreur serveur lors de la récupération du nombre de jeux'
     });
   }
 };
