@@ -1,0 +1,59 @@
+/* ============================================
+   HERO SECTION - Composant réutilisable
+   ============================================ */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Overlay sombre pour améliorer la lisibilité */
+.hero-section__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 1;
+}
+
+.hero-section__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 70vh;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 60vh;
+  }
+}

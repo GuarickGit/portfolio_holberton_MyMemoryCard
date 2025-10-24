@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import HeroSection from '../../components/features/HeroSection/HeroSection';
 import GameCard from '../../components/features/GameCard/GameCard.jsx';
 import ReviewCard from '../../components/features/ReviewCard/ReviewCard.jsx';
 import MemoryCard from '../../components/features/MemoryCard/MemoryCard.jsx';
@@ -9,6 +11,7 @@ import './Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     topGames: [],
@@ -49,25 +52,12 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* HERO SECTION */}
-      <section className="hero">
-        <div className="hero__overlay"></div>
-        <div className="hero__content">
-          <h1 className="hero__title">
-            Sauvegardez vos souvenirs de jeux vidéo
-          </h1>
-          <p className="hero__subtitle">
-            Créez votre collection, partagez vos expériences et revivez vos meilleurs moments gaming
-          </p>
-          <Button
-            variant="primary"
-            size="large"
-            onClick={() => navigate('/signup')}
-          >
-            Commencer gratuitement
-          </Button>
-        </div>
-      </section>
+      {/* HERO SECTION - CTA ou Profile selon connexion */}
+      <HeroSection
+        type={isAuthenticated ? 'profile' : 'cta'}
+        user={isAuthenticated ? user : null}
+        isOwnProfile={true}
+      />
 
       {/* MESSAGE D'ERREUR */}
       {error && (
