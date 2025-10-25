@@ -1,0 +1,102 @@
+/* ============================================
+   GAME CONTENT - Reviews + Memories
+   ============================================ */
+
+.game-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* ============================================
+   SECTION (Reviews ou Memories)
+   ============================================ */
+
+.game-content__section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.game-content__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.game-content__header h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  position: relative;
+  padding-bottom: var(--spacing-xs);
+}
+
+/* Underline sur les titres */
+.game-content__header h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+}
+
+/* ============================================
+   GRID (3 cartes)
+   ============================================ */
+
+.game-content__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.game-content__empty {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-lg);
+}
+
+/* ============================================
+   SEPARATOR
+   ============================================ */
+
+.game-content__separator {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.3) 80%,
+    transparent 100%
+  );
+  margin: var(--spacing-xl) 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 968px) {
+  .game-content__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-content__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

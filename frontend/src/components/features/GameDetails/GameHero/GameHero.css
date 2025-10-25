@@ -1,0 +1,157 @@
+.game-hero {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  margin-bottom: 100px; /* ← Augmenté pour laisser place à la cover qui déborde */
+  overflow: visible; /* ← Changé de hidden à visible */
+}
+
+.game-hero__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(0);
+  overflow: hidden; /* ← Garde le background contenu */
+}
+
+.game-hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(to right,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.7) 20%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.7) 80%,
+      rgba(0, 0, 0, 1) 100%
+    ),
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+}
+
+.game-hero__content {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 100%;
+  display: flex;
+  align-items: center; /* Centré verticalement */
+  gap: 2rem;
+  padding-top: 3rem;
+  padding-left: 4rem;
+}
+
+.game-hero__cover {
+  flex-shrink: 0;
+  width: 220px;
+  height: 330px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  background-color: #1a1a1a;
+  transform: translateY(30px); /* Déborde en bas */
+}
+
+.game-hero__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-hero__info {
+  flex: 1;
+  color: #fff;
+  padding-bottom: 30px;
+}
+
+.game-hero__title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+  line-height: 1.2;
+}
+
+.game-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.game-hero__year {
+  font-weight: 500;
+  color: #ddd;
+}
+
+.game-hero__separator {
+  color: #666;
+}
+
+.game-hero__rating {
+  font-weight: 600;
+  color: #ffd700;
+}
+
+.game-hero__section {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.game-hero__label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+  color: #bbb;
+}
+
+.game-hero__values {
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .game-hero {
+    height: 350px;
+    margin-bottom: 100px;
+  }
+
+  .game-hero__content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .game-hero__cover {
+    width: 180px;
+    height: 270px;
+    transform: translateY(100px);
+  }
+
+  .game-hero__info {
+    text-align: center;
+    padding-bottom: 1rem;
+  }
+
+  .game-hero__title {
+    font-size: 2rem;
+  }
+
+  .game-hero__meta {
+    justify-content: center;
+  }
+}

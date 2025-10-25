@@ -1,0 +1,202 @@
+.game-info {
+  width: 100%;
+  padding: 0;
+}
+
+.game-info__container {
+  max-width: 1200px;
+  margin: -60px auto 0; /* ← Même centrage que GameHero */
+  padding: 0 2rem; /* ← Même padding que GameHero */
+  display: flex;
+}
+
+.game-info__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 280px;
+}
+
+/* ACTION ITEMS (boutons verticaux style Sens Critique) */
+.game-info__action-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #222;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.game-info__action-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.game-info__action-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.game-info__action-item:disabled:hover {
+  background: transparent;
+}
+
+.game-info__action-item--active {
+  color: #4a9eff;
+}
+
+/* DÉCALAGE SPÉCIFIQUE POUR LES ÉTOILES */
+.game-info__action-item--rating {
+  flex-direction: column;
+  align-items: flex-start; /* ← Garde flex-start pour l'ensemble */
+  gap: 0.5rem;
+  padding-left: 1.25rem;
+}
+
+/* DÉCALAGE POUR LES AUTRES BOUTONS */
+.game-info__action-item:not(.game-info__action-item--rating) {
+  padding-left: 20px; /* ← Décalage interne pour statut/critique/souvenir */
+}
+
+.game-info__rating-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: center; /* ← Centre les étoiles et "Ma note" */
+}
+
+.game-info__action-label {
+  font-size: 0.85rem;
+  color: #888;
+  text-align: center; /* ← Centre "Ma note" sous les étoiles */
+}
+
+/* RATING STARS */
+.game-info__stars {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center; /* ← Centre les étoiles horizontalement */
+}
+
+.game-info__star {
+  color: #444;
+  fill: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.game-info__star--filled {
+  color: #ffd700;
+  fill: #ffd700;
+}
+
+.game-info__star--disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.game-info__star:not(.game-info__star--disabled):hover {
+  transform: scale(1.15);
+}
+
+/* DROPDOWN */
+.game-info__action-dropdown {
+  position: relative;
+}
+
+.game-info__action-dropdown .game-info__action-item {
+  justify-content: space-between;
+}
+
+.game-info__action-dropdown .game-info__action-item .rotate {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.game-info__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-top: none;
+  z-index: 10;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.game-info__dropdown button {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #222;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.game-info__dropdown button:last-child {
+  border-bottom: none;
+}
+
+.game-info__dropdown button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.game-info__dropdown button.danger {
+  color: #ff4444;
+}
+
+.game-info__dropdown button.danger:hover {
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.game-info__dropdown hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .game-info__container {
+    padding-left: 0;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .game-info__actions {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .game-info__action-item--rating {
+    padding-left: 1.25rem;
+  }
+
+  .game-info__action-item:not(.game-info__action-item--rating) {
+    padding-left: 1.25rem;
+  }
+}
