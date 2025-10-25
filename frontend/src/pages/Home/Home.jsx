@@ -88,6 +88,10 @@ const Home = () => {
                 Voir tous les jeux →
               </Button>
             </div>
+
+          {/* SÉPARATEUR */}
+          <div className="home__separator"></div>
+
             <div className="home__games-grid">
               {data.topGames.length > 0 ? (
                 data.topGames.map((game) => (
@@ -114,6 +118,10 @@ const Home = () => {
                 Voir toutes les reviews →
               </Button>
             </div>
+
+          {/* SÉPARATEUR */}
+          <div className="home__separator"></div>
+
             <div className="home__cards-grid">
               {data.recentReviews.length > 0 ? (
                 data.recentReviews.map((review) => (
@@ -139,6 +147,10 @@ const Home = () => {
                 Voir tous les souvenirs →
               </Button>
             </div>
+
+          {/* SÉPARATEUR */}
+          <div className="home__separator"></div>
+
             <div className="home__cards-grid">
               {data.recentMemories.length > 0 ? (
                 data.recentMemories.map((memory) => (

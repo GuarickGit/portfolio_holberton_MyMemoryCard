@@ -47,14 +47,47 @@
 }
 
 /* ============================================
+   SEPARATEURS
+   ============================================ */
+
+.home__separator {
+  width: 100%;
+  max-width: 1400px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.3) 80%,
+    transparent 100%
+  );
+  margin: var(--spacing-xl) auto;
+}
+
+/* Variante avec dégradé coloré */
+.home__separator--colored {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--color-primary) 20%,
+    var(--color-secondary) 50%,
+    var(--color-primary) 80%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+/* ============================================
    GRIDS
    ============================================ */
 
-/* Grid pour les jeux (plus petites cartes) */
+/* Grid pour les jeux (plus petites cartes) - CENTRÉ */
 .home__games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(5, minmax(150px, 200px));
   gap: var(--spacing-lg);
+  justify-content: center; /* Centre les cartes */
+  margin: 0 auto; /* Centre la grid elle-même */
 }
 
 /* Grid pour reviews et memories (plus grandes cartes) */
@@ -124,10 +157,22 @@
    RESPONSIVE
    ============================================ */
 
-/* Tablets */
-@media (max-width: 768px) {
+/* Large Desktop (1200px+) - 5 jeux */
+.home__games-grid {
+  grid-template-columns: repeat(5, minmax(150px, 200px));
+}
+
+/* Desktop (900px - 1199px) - 4 jeux */
+@media (max-width: 1199px) {
   .home__games-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(4, minmax(150px, 200px));
+  }
+}
+
+/* Tablets (768px - 899px) - 3 jeux */
+@media (max-width: 899px) {
+  .home__games-grid {
+    grid-template-columns: repeat(3, minmax(150px, 200px));
     gap: var(--spacing-md);
   }
 
@@ -145,14 +190,21 @@
   }
 }
 
-/* Mobile */
-@media (max-width: 480px) {
+/* Mobile (480px - 767px) - 2 jeux */
+@media (max-width: 767px) {
   .home__games-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(140px, 180px));
     gap: var(--spacing-sm);
   }
 
   .home__section {
     padding: var(--spacing-md);
+  }
+}
+
+/* Mobile small (< 480px) - 2 jeux plus petits */
+@media (max-width: 479px) {
+  .home__games-grid {
+    grid-template-columns: repeat(2, minmax(120px, 150px));
   }
 }
