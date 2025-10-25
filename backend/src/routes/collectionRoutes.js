@@ -3,7 +3,8 @@ import {
   addGameToCollection,
   getMyCollection,
   updateGameInCollection,
-  removeGameFromCollection
+  removeGameFromCollection,
+  getGameStatus
 } from '../controllers/collectionController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -14,6 +15,12 @@ const router = express.Router();
  * On applique verifyToken à toutes les routes
  */
 router.use(verifyToken);
+
+/**
+ * GET /collections/game/:rawgId/status
+ * Vérifie si le jeu est dans la collection et retourne son status
+ */
+router.get('/game/:rawgId/status', getGameStatus);
 
 /**
  * POST /collections
@@ -29,14 +36,14 @@ router.post('/', addGameToCollection);
 router.get('/', getMyCollection);
 
 /**
- * PATCH /collections/:gameId
+ * PATCH /collections/:rawgId
  * Met à jour un jeu dans la collection (status ou rating)
  * Body: { status, user_rating }
  */
 router.patch('/:rawgId', updateGameInCollection);
 
 /**
- * DELETE /collections/:gameId
+ * DELETE /collections/:rawgId
  * Supprime un jeu de la collection
  */
 router.delete('/:rawgId', removeGameFromCollection);

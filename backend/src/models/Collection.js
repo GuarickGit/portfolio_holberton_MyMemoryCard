@@ -158,3 +158,29 @@ export const removeFromCollection = async (userId, gameId) => {
     throw error;
   }
 };
+
+
+/**
+ * Récupère le status d'un jeu dans la collection d'un utilisateur
+ * @param {string} userId - L'ID de l'utilisateur
+ * @param {number} rawgId - L'ID RAWG du jeu
+ * @returns {Object|null} - { status, user_rating } ou null si pas dans la collection
+ */
+export const getGameStatusByRawgId = async (userId, rawgId) => {
+  try {
+    const query = `
+      SELECT collections.status, collections.user_rating
+      FROM collections
+      INNER JOIN games ON collections.game_id = games.id
+      WHERE collections.user_id = $1 AND games.rawg_id = $2
+    `;
+
+    const result = await pool.query(query, [userId, rawgId]);
+
+    return result.rows.length > 0 ? result.rows[0] : null;
+
+  } catch (error) {
+    console.error('Erreur dans getGameStatusByRawgId:', error.message);
+    throw error;
+  }
+};

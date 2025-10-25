@@ -3,7 +3,8 @@ import {
   addToCollection,
   getUserCollection,
   updateCollectionEntry,
-  removeFromCollection
+  removeFromCollection,
+  getGameStatusByRawgId
 } from '../models/Collection.js';
 
 import { findGameByRawgId, findOrCreate } from '../models/Game.js';
@@ -229,6 +230,48 @@ export const removeGameFromCollection = async (req, res) => {
     console.error('Erreur dans removeGameFromCollection:', error.message);
     return res.status(500).json({
       error: 'Erreur serveur lors de la suppression'
+    });
+  }
+};
+
+
+/**
+ * Récupère le status d'un jeu dans la collection
+ * GET /collections/game/:rawgId/status
+ */
+export const getGameStatus = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const rawgId = parseInt(req.params.rawgId);
+
+    // Vérifie que rawgId est un nombre valide
+    if (isNaN(rawgId)) {
+      return res.status(400).json({
+        error: 'ID RAWG de jeu invalide'
+      });
+    }
+
+    // Récupère le status
+    const collectionEntry = await getGameStatusByRawgId(userId, rawgId);
+
+    if (!collectionEntry) {
+      return res.status(200).json({
+        inCollection: false,
+        status: null,
+        user_rating: null
+      });
+    }
+
+    return res.status(200).json({
+      inCollection: true,
+      status: collectionEntry.status,
+      user_rating: collectionEntry.user_rating
+    });
+
+  } catch (error) {
+    console.error('Erreur dans getGameStatus:', error.message);
+    return res.status(500).json({
+      error: 'Erreur serveur lors de la récupération du status'
     });
   }
 };
