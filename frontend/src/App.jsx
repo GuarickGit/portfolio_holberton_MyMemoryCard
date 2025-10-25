@@ -12,6 +12,7 @@ import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import Faq from './pages/Faq/Faq';
 import Footer from './components/layout/Footer/Footer';
+import GameDetails from './pages/GameDetails/GameDetails';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/faq" element={<Faq />} />
+              <Route path="/games/:rawgId" element={<GameDetails />} />
             </Routes>
           </main>
 
