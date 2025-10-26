@@ -63,42 +63,42 @@
 
 /* Vert - Niveau */
 .circular-stat--green .circular-stat__circle-progress {
-  stroke: #10b981;
+  stroke: #34c759;
 }
 
 /* Bleu - Jeux vidéos */
 .circular-stat--blue .circular-stat__circle-progress {
-  stroke: #3b82f6;
+  stroke: #2fa6d7;
 }
 
 /* Orange - En cours */
 .circular-stat--orange .circular-stat__circle-progress {
-  stroke: #f97316;
+  stroke: #ff9300;
 }
 
 /* Rouge - Terminés */
 .circular-stat--red .circular-stat__circle-progress {
-  stroke: #ef4444;
+  stroke: #ff4500;
 }
 
 /* Rose - Reviews */
 .circular-stat--pink .circular-stat__circle-progress {
-  stroke: #ec4899;
+  stroke: #e171e2;
 }
 
 /* Bleu clair - Souvenirs */
 .circular-stat--cyan .circular-stat__circle-progress {
-  stroke: #06b6d4;
+  stroke: #43e4f7;
 }
 
 /* Jaune - Likes */
 .circular-stat--yellow .circular-stat__circle-progress {
-  stroke: #eab308;
+  stroke: #ffcc00;
 }
 
 /* Violet - Succès */
 .circular-stat--purple .circular-stat__circle-progress {
-  stroke: #a855f7;
+  stroke: #9b51e0;
 }
 
 /* ============================================
