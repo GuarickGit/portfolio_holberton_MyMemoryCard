@@ -149,20 +149,29 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
     <div className="hero-profile">
       {/* Section Avatar + Infos */}
       <div className="hero-profile__header">
-        <img
-          src={user.avatar_url || '/default-avatar.png'}
-          alt={user.username}
-          className="hero-profile__avatar"
-        />
+        {/* COLONNE GAUCHE : Avatar + Follow Stats */}
+        <div className="hero-profile__left">
+          <img
+            src={user.avatar_url || '/default-avatar.png'}
+            alt={user.username}
+            className="hero-profile__avatar"
+          />
+          <div className="hero-profile__follow-stats">
+            <div className="hero-profile__follow-stat">
+              <strong>{stats?.total_following || 0}</strong>
+              <span>abonnés</span>
+            </div>
+            <div className="hero-profile__follow-stat">
+              <strong>{stats?.total_followers || 0}</strong>
+              <span>abonnements</span>
+            </div>
+          </div>
+        </div>
+
+        {/* COLONNE DROITE : Username + Bio + Boutons */}
         <div className="hero-profile__info">
           <h1 className="hero-profile__username">{user.username}</h1>
           <p className="hero-profile__bio">{user.bio || 'Aucune bio'}</p>
-          <div className="hero-profile__follow-stats">
-            <span><strong>{stats?.total_following || 0}</strong> abonnés</span>
-            <span><strong>{stats?.total_followers || 0}</strong> abonnements</span>
-          </div>
-
-          {/* Boutons */}
           <div className="hero-profile__actions">
             {isOwnProfile ? (
               <Button
