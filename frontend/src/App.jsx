@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import ScrollToTop from './components/features/ScrollToTop';
 import Header from './components/layout/Header/Header';
 import Home from './pages/Home/Home';
 import Games from './pages/Games/Games';
@@ -18,6 +19,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <div style={{
           display: 'flex',
           flexDirection: 'column',
