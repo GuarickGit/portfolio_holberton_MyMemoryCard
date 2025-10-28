@@ -88,10 +88,12 @@ function Signup({ onClose, onSwitchToLogin }) {
       alert(`Bienvenue ${data.user.username} !`);
 
     } catch (err) {
-      // Gestion universelle des erreurs
-      const errorMessage = typeof err === 'string'
-        ? err
-        : err.message || 'Une erreur est survenue';
+      // Extraire le message d'erreur du backend
+      const errorMessage = err.response?.data?.error
+        || err.response?.data?.message
+        || err.message
+        || 'Une erreur est survenue';
+
       setError(errorMessage);
     } finally {
       setLoading(false);
