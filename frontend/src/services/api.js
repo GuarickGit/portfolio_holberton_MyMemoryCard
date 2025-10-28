@@ -77,6 +77,10 @@ api.interceptors.response.use(
         console.error('Ressource introuvable');
         break;
 
+      case 409:
+        console.error(`Erreur ${status}:`, data?.error || 'Conflit');
+        break;
+
       case 500:
         console.error('Erreur serveur');
         break;
@@ -85,8 +89,8 @@ api.interceptors.response.use(
         console.error(`Erreur ${status}:`, data?.error || 'Erreur inconnue');
     }
 
-    // Retourne l'erreur formatée
-    return Promise.reject(data?.error || error.message || 'Une erreur est survenue');
+    // IMPORTANT : Rejeter l'erreur COMPLÈTE pour que les composants puissent accéder à error.response
+    return Promise.reject(error);
   }
 );
 
