@@ -59,6 +59,22 @@ const ReviewCreate = () => {
     });
   };
 
+  // Formater les genres correctement
+  const formatGenres = (genres) => {
+    if (!genres || genres.length === 0) return '';
+
+    // Si c'est un array d'objets {name: "Action"}, extraire les noms
+    if (Array.isArray(genres)) {
+      return genres
+        .map(g => typeof g === 'string' ? g : g.name)
+        .filter(Boolean)
+        .join(', ');
+    }
+
+    // Si c'est déjà une string, la retourner
+    return genres;
+  };
+
   // LOADING
   if (loading) {
     return (
@@ -103,7 +119,13 @@ const ReviewCreate = () => {
               <h1>Écrire une critique</h1>
               <h2>{game.name}</h2>
               <p className="review-create__meta">
-                {game.released && new Date(game.released).getFullYear()} • {game.genres?.join(', ')}
+                {game.released && new Date(game.released).getFullYear()}
+                {game.genres && game.genres.length > 0 && (
+                  <>
+                    {' • '}
+                    {formatGenres(game.genres)}
+                  </>
+                )}
               </p>
             </div>
           </div>

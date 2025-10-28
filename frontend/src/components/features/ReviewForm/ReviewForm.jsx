@@ -75,16 +75,25 @@ const ReviewForm = ({
       const method = initialData ? 'put' : 'post';
 
       const response = await api[method](endpoint, {
-        gameId: gameId,
-        ...formData
+        gameId,
+        rating: formData.rating,
+        title: formData.title,
+        content: formData.content,
+        spoiler: formData.spoiler
       });
 
       onSuccess(response.data.review.id);
 
     } catch (err) {
       console.error('Erreur soumission review:', err);
+
+      // Extraire le message d'erreur spécifique du backend
+      const errorMessage = err.response?.data?.error
+        || err.response?.data?.message
+        || 'Une erreur est survenue';
+
       setErrors({
-        submit: err.response?.data?.message || 'Une erreur est survenue'
+        submit: errorMessage
       });
     } finally {
       setSubmitting(false);
