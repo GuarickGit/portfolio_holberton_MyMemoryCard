@@ -7,7 +7,7 @@ import pool from '../config/index.js';
  * @param {string} content - Contenu du souvenir
  * @returns {object} Le souvenir créé
  */
-export const createMemory = async (userId, rawgId, content) => {
+export const createMemory = async (userId, rawgId, title, content, spoiler = false) => {
   // Récupère le game.id à partir du rawg_id
   const gameQuery = `SELECT id FROM games WHERE rawg_id = $1`;
   const gameResult = await pool.query(gameQuery, [rawgId]);
@@ -19,12 +19,12 @@ export const createMemory = async (userId, rawgId, content) => {
   const gameId = gameResult.rows[0].id;
 
   const query = `
-    INSERT INTO memories (user_id, game_id, content)
-    VALUES ($1, $2, $3)
-    RETURNING id, user_id, game_id, content, created_at
+    INSERT INTO memories (user_id, game_id, title, content, spoiler)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING id, user_id, game_id, title, content, spoiler, created_at
     `;
 
-    const values = [userId, gameId, content];
+    const values = [userId, gameId, title, content, spoiler];
     const result = await pool.query(query, values);
 
     return result.rows[0];
@@ -44,6 +44,8 @@ export const getAllMemories = async (sort = 'recent', limit = 20, offset = 0) =>
       m.id,
       m.user_id,
       m.game_id,
+      m.title,
+      m.spoiler,
       m.content,
       m.created_at,
       u.username,
@@ -82,6 +84,8 @@ export const getMemoriesByGame = async (rawgId, limit = 20, offset = 0) => {
         m.id,
         m.user_id,
         m.game_id,
+        m.title,
+        m.spoiler,
         m.content,
         m.created_at,
         u.username,
@@ -124,6 +128,8 @@ export const getMemoriesByUser = async (userId, limit = 20, offset = 0) => {
       m.id,
       m.user_id,
       m.game_id,
+      m.title,
+      m.spoiler,
       m.content,
       m.created_at,
       u.username,
@@ -199,6 +205,8 @@ export const getMemoryById = async (memoryId) => {
       m.id,
       m.user_id,
       m.game_id,
+      m.title,
+      m.spoiler,
       m.content,
       m.created_at,
       u.username,

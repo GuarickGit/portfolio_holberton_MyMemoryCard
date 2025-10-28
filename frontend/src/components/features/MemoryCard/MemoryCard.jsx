@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle } from 'lucide-react';
+import { Heart, MessageCircle, AlertTriangle } from 'lucide-react';
 import './MemoryCard.css';
 
 /**
@@ -9,6 +10,7 @@ import './MemoryCard.css';
  */
 const MemoryCard = ({ memory }) => {
   const navigate = useNavigate();
+  const [showSpoiler, setShowSpoiler] = useState(false);
 
   const handleReadMore = () => {
     navigate(`/memories/${memory.id}`);
@@ -56,9 +58,40 @@ const MemoryCard = ({ memory }) => {
         </div>
       </div>
 
-      {/* BOTTOM SECTION : Texte + Footer (pleine largeur) */}
+      {/* BOTTOM SECTION : Titre + Texte + Footer */}
       <div className="memory-card__bottom">
-        <p className="memory-card__text">{truncatedContent}</p>
+        {/* TITRE DU SOUVENIR */}
+        {memory.title && (
+          <h4 className="memory-card__title">{memory.title}</h4>
+        )}
+
+        {/* BADGE SPOILER */}
+        {memory.spoiler && (
+          <div className="memory-card__spoiler-badge">
+            <AlertTriangle size={14} />
+            <span>Contient des spoilers</span>
+          </div>
+        )}
+
+        {/* TEXTE (flouté si spoiler) - Position relative pour le bouton */}
+        <div className="memory-card__content-wrapper">
+          <div className={`memory-card__content ${memory.spoiler && !showSpoiler ? 'memory-card__content--blurred' : ''}`}>
+            <p className="memory-card__text">{truncatedContent}</p>
+          </div>
+
+          {/* Bouton révéler spoiler (DEHORS du div flouté) */}
+          {memory.spoiler && !showSpoiler && (
+            <button
+              className="memory-card__reveal-spoiler"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSpoiler(true);
+              }}
+            >
+              Afficher les spoilers
+            </button>
+          )}
+        </div>
 
         <div className="memory-card__footer">
           <button

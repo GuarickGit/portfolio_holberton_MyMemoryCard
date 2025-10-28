@@ -8,7 +8,7 @@ import pool from '../config/index.js';
  * @param {string} content - Contenu de la review
  * @returns {object} La review créée
  */
-export const createReview = async (userId, rawgId, rating, content) => {
+export const createReview = async (userId, rawgId, rating, title, content, spoiler = false) => {
   // Récupère le game.id à partir du rawg_id
   const gameQuery = `SELECT id FROM games WHERE rawg_id = $1`;
   const gameResult = await pool.query(gameQuery, [rawgId]);
@@ -21,12 +21,12 @@ export const createReview = async (userId, rawgId, rating, content) => {
 
   // Crée la review avec le game.id
   const query = `
-    INSERT INTO reviews (user_id, game_id, rating, content)
-    VALUES ($1, $2, $3, $4)
-    RETURNING id, user_id, game_id, rating, content, created_at
+    INSERT INTO reviews (user_id, game_id, rating, title, content, spoiler)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING id, user_id, game_id, rating, title, content, spoiler, created_at
     `;
 
-    const values = [userId, gameId, rating, content];
+    const values = [userId, gameId, rating, title, content, spoiler];
     const result = await pool.query(query,values);
 
     return result.rows[0];
@@ -47,6 +47,8 @@ export const getAllReviews = async (sort = 'recent', limit = 20, offset = 0) => 
       r.user_id,
       r.game_id,
       r.rating,
+      r.title,
+      r.spoiler,
       r.content,
       r.created_at,
       u.username,
@@ -101,6 +103,8 @@ export const getReviewsByGame = async (rawgId, limit = 20, offset = 0) => {
       r.user_id,
       r.game_id,
       r.rating,
+      r.title,
+      r.spoiler,
       r.content,
       r.created_at,
       u.username,
@@ -139,6 +143,8 @@ export const getReviewsByUser = async (userId, limit = 20, offset = 0) => {
       r.user_id,
       r.game_id,
       r.rating,
+      r.title,
+      r.spoiler,
       r.content,
       r.created_at,
       u.username,
@@ -239,6 +245,8 @@ export const getReviewsById = async (reviewId) => {
       r.user_id,
       r.game_id,
       r.rating,
+      r.title,
+      r.spoiler,
       r.content,
       r.created_at,
       u.username,

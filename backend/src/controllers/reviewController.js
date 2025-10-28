@@ -10,13 +10,13 @@ import { XP_REWARDS } from '../utils/xpHelper.js';
  */
 export const createReview = async (req, res) => {
   try {
-    const { gameId, rating, content } = req.body;
+    const { gameId, rating, title, content, spoiler } = req.body;
     const userId = req.userId; // Fourni par le middleware JWT
 
     // Validation des champs obligatoires
-    if (!gameId || !rating || !content) {
+    if (!gameId || !rating || !title || !content) {
       return res.status(400).json({
-        error: 'gameId, rating et content sont requis'
+        error: 'gameId, rating, title et content sont requis'
       });
     }
 
@@ -24,6 +24,13 @@ export const createReview = async (req, res) => {
     if (rating < 1 || rating > 5) {
       return res.status(400).json({
         error: 'La note doit être entre 1 et 5'
+      });
+    }
+
+    // Validation du titre
+    if (title.trim().length === 0) {
+      return res.status(400).json({
+        error: 'Le titre ne peut pas être vide'
       });
     }
 
@@ -49,7 +56,7 @@ export const createReview = async (req, res) => {
     }
 
     // Création de la review
-    const review = await Review.createReview(userId, gameId, rating, content);
+    const review = await Review.createReview(userId, gameId, rating, title, content, spoiler);
 
     // Ajoute de l'XP à l'utilisateur
     try {

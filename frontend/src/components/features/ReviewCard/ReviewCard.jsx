@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Heart, MessageCircle } from 'lucide-react';
+import { Star, Heart, MessageCircle, AlertTriangle } from 'lucide-react';
 import './ReviewCard.css';
 
 const ReviewCard = ({ review }) => {
   const navigate = useNavigate();
+  const [showSpoiler, setShowSpoiler] = useState(false);
 
   const handleReadMore = () => {
     navigate(`/reviews/${review.id}`);
@@ -68,9 +70,40 @@ const ReviewCard = ({ review }) => {
         </div>
       </div>
 
-      {/* BOTTOM SECTION : Texte + Footer (pleine largeur) */}
+      {/* BOTTOM SECTION : Titre + Texte + Footer */}
       <div className="review-card__bottom">
-        <p className="review-card__text">{truncatedContent}</p>
+        {/* TITRE DE LA REVIEW */}
+        {review.title && (
+          <h4 className="review-card__title">{review.title}</h4>
+        )}
+
+        {/* BADGE SPOILER */}
+        {review.spoiler && (
+          <div className="review-card__spoiler-badge">
+            <AlertTriangle size={14} />
+            <span>Contient des spoilers</span>
+          </div>
+        )}
+
+        {/* TEXTE (flouté si spoiler) - Position relative pour le bouton */}
+        <div className="review-card__content-wrapper">
+          <div className={`review-card__content ${review.spoiler && !showSpoiler ? 'review-card__content--blurred' : ''}`}>
+            <p className="review-card__text">{truncatedContent}</p>
+          </div>
+
+          {/* Bouton révéler spoiler (DEHORS du div flouté) */}
+          {review.spoiler && !showSpoiler && (
+            <button
+              className="review-card__reveal-spoiler"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSpoiler(true);
+              }}
+            >
+              Afficher les spoilers
+            </button>
+          )}
+        </div>
 
         <div className="review-card__footer">
           <button

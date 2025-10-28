@@ -12,6 +12,9 @@
   width: 100%;
   max-width: 550px;
 
+  /* Hauteur fixe pour uniformiser les cards */
+  height: 340px;
+
   /* Transition */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
@@ -66,7 +69,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-
 }
 
 .review-card__avatar {
@@ -111,12 +113,58 @@
   gap: 3px;
 }
 
-/* BOTTOM SECTION : Texte + Footer (pleine largeur sous l'image) */
+/* BOTTOM SECTION : Titre + Texte + Footer */
 .review-card__bottom {
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+/* TITRE DE LA REVIEW */
+.review-card__title {
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* BADGE SPOILER */
+.review-card__spoiler-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(255, 68, 68, 0.15);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  border-radius: 4px;
+  color: #ff4444;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.review-card__spoiler-badge svg {
+  flex-shrink: 0;
+}
+
+/* WRAPPER pour le contenu + bouton */
+.review-card__content-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* CONTENT (peut être flouté) */
+.review-card__content {
+  position: relative;
+}
+
+.review-card__content--blurred {
+  filter: blur(8px);
+  user-select: none;
 }
 
 /* TEXTE */
@@ -133,18 +181,44 @@
   overflow: hidden;
 }
 
+/* BOUTON RÉVÉLER SPOILER */
+.review-card__reveal-spoiler {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 8px 16px;
+  background: rgba(255, 68, 68, 0.9);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.review-card__reveal-spoiler:hover {
+  background: rgba(255, 68, 68, 1);
+}
+
 /* FOOTER */
 .review-card__footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+  margin-top: 12px;
 }
 
 .review-card__read-more {
   background: none;
   border: none;
 
-  color: var(--primary-green);
+  color: white;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -154,7 +228,7 @@
 }
 
 .review-card__read-more:hover {
-  color: var(--primary-cyan);
+  color: rgb(79, 240, 133);
 }
 
 .review-card__stats {
@@ -179,11 +253,18 @@
 @media (max-width: 1024px) {
   .review-card {
     max-width: 100%;
+    height: auto;
+    min-height: 400px;
   }
 }
 
 /* RESPONSIVE - Mobile */
 @media (max-width: 768px) {
+  .review-card {
+    height: auto;
+    min-height: 450px;
+  }
+
   .review-card__top {
     flex-direction: column;
   }

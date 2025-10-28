@@ -10,13 +10,19 @@ import { XP_REWARDS } from '../utils/xpHelper.js';
  */
 export const createMemory = async (req, res) => {
   try {
-    const { gameId, content } = req.body;  // Données envoyées par le frontend
+    const { gameId, title, content, spoiler } = req.body;  // Données envoyées par le frontend
     const userId = req.userId;  // Fourni par le middleware JWT verifyToken
 
     // Validation
-    if (!gameId || !content) {
+    if (!gameId || !title || !content) {
       return res.status(400).json({
-        error: 'gameId et content sont requis'
+        error: 'gameId, title et content sont requis'
+      });
+    }
+
+    if (title.trim().length === 0) {
+      return res.status(400).json({
+        error: 'Le titre ne peut pas être vide'
       });
     }
 
@@ -27,7 +33,7 @@ export const createMemory = async (req, res) => {
     }
 
     // Création du souvenir
-    const memory = await Memory.createMemory(userId, gameId, content);
+    const memory = await Memory.createMemory(userId, gameId, title, content, spoiler);
 
     // Ajoute de l'XP à l'utilisateur
     try {
