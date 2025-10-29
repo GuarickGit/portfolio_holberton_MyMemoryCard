@@ -18,6 +18,8 @@ import ReviewCreate from './pages/ReviewCreate/ReviewCreate';
 import MemoryCreate from './pages/MemoryCreate/MemoryCreate';
 import GameReviews from './pages/GameReviews/GameReviews';
 import GameMemories from './pages/GameMemories/GameMemories';
+import ReviewEdit from './pages/ReviewEdit/ReviewEdit';
+import MemoryEdit from './pages/MemoryEdit/MemoryEdit';
 
 function App() {
   return (
@@ -49,6 +51,8 @@ function App() {
               <Route path="/games/:rawgId/memory/new" element={<MemoryCreate />} />
               <Route path="/games/:rawgId/reviews" element={<GameReviews />} />
               <Route path="/games/:rawgId/memories" element={<GameMemories />} />
+              <Route path="/reviews/:id/edit" element={<ReviewEdit />} />
+              <Route path="/memories/:id/edit" element={<MemoryEdit />} />
             </Routes>
           </main>
 
