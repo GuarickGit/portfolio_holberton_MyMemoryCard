@@ -1,0 +1,150 @@
+.collection-game-card {
+  /* La carte prend 100% de la largeur de son conteneur */
+  width: 100%;
+
+  /* Ratio 3:4 (jaquette de jeu classique) */
+  aspect-ratio: 3 / 4;
+
+  /* Position relative pour l'overlay en absolute */
+  position: relative;
+
+  /* Coins arrondis */
+  border-radius: 8px;
+
+  /* Débordement caché */
+  overflow: hidden;
+
+  /* Curseur pointer au survol */
+  cursor: pointer;
+
+  /* Transition douce */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Effet hover */
+.collection-game-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* CONTENEUR DE L'IMAGE */
+.collection-game-card__image-container {
+  width: 100%;
+  height: 100%;
+  background-color: var(--dark-gray);
+  position: relative;
+}
+
+/* IMAGE */
+.collection-game-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* PLACEHOLDER */
+.collection-game-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--dark-gray);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* STATUS BADGE - En haut de l'image */
+.collection-game-card__status-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+/* OVERLAY - Apparaît au survol */
+.collection-game-card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  /* Dégradé */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    transparent 100%
+  );
+
+  /* Espacement */
+  padding: 16px;
+
+  /* Transition */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Afficher l'overlay au survol */
+.collection-game-card:hover .collection-game-card__overlay {
+  opacity: 1;
+}
+
+/* TITRE */
+.collection-game-card__title {
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+
+  /* Limiter à 2 lignes */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* INFO - Rating + Année */
+.collection-game-card__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* RATING */
+.collection-game-card__rating {
+  display: flex;
+  gap: 2px;
+}
+
+/* ANNÉE */
+.collection-game-card__year {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* RESPONSIVE - Mobile */
+@media (max-width: 768px) {
+  .collection-game-card__title {
+    font-size: 14px;
+  }
+
+  .collection-game-card__info {
+    font-size: 12px;
+  }
+
+  .collection-game-card__overlay {
+    padding: 12px;
+  }
+}

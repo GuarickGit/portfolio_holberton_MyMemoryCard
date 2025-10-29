@@ -1,0 +1,233 @@
+.collection {
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  background-color: var(--background);
+}
+
+/* LOADING & ERROR */
+.collection__loading,
+.collection__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 50vh;
+  color: var(--text-primary);
+}
+
+.collection__error button {
+  padding: 12px 24px;
+  background-color: var(--primary-green);
+  color: var(--background);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.collection__error button:hover {
+  background-color: var(--primary-cyan);
+}
+
+/* SPINNER */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--dark-gray);
+  border-top: 4px solid var(--primary-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* HEADER */
+.collection__header {
+  max-width: 1400px;
+  margin: 0 auto 40px;
+}
+
+.collection__title-section {
+  margin-bottom: 24px;
+}
+
+.collection__title-section h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 8px 0;
+}
+
+.collection__count {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* CONTROLS - Filtres + Tri */
+.collection__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* FILTRES */
+.collection__filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.collection__filter {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.collection__filter:hover {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+}
+
+.collection__filter.active {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+  color: var(--background);
+}
+
+/* TRI */
+.collection__sort {
+  padding: 10px 16px;
+  background-color: var(--dark-gray);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.collection__sort:hover {
+  border-color: var(--primary-green);
+}
+
+.collection__sort:focus {
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+/* GRILLE */
+.collection__grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+/* EMPTY STATE */
+.collection__empty {
+  max-width: 600px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: var(--dark-gray);
+  border-radius: 12px;
+}
+
+.collection__empty p {
+  color: var(--text-secondary);
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.collection__empty button {
+  padding: 12px 24px;
+  background-color: var(--primary-green);
+  color: var(--background);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.collection__empty button:hover {
+  background-color: var(--primary-cyan);
+}
+
+/* RESPONSIVE - Tablette */
+@media (max-width: 968px) {
+  .collection {
+    padding: 80px 16px 40px;
+  }
+
+  .collection__title-section h1 {
+    font-size: 28px;
+  }
+
+  .collection__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .collection__filters {
+    justify-content: center;
+  }
+
+  .collection__sort {
+    width: 100%;
+  }
+
+  .collection__grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+}
+
+/* RESPONSIVE - Mobile */
+@media (max-width: 768px) {
+  .collection__title-section h1 {
+    font-size: 24px;
+  }
+
+  .collection__count {
+    font-size: 14px;
+  }
+
+  .collection__filters {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .collection__filter {
+    width: 100%;
+    text-align: center;
+  }
+
+  .collection__grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+}
+
+/* RESPONSIVE - Petit mobile */
+@media (max-width: 480px) {
+  .collection__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
