@@ -311,3 +311,33 @@ export const deleteMemory = async (req, res) => {
     });
   }
 };
+
+
+/**
+ * Récupère un souvenir par son ID
+ * GET /memories/:id
+ */
+export const getMemoryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Récupération du souvenir
+    const memory = await Memory.getMemoryById(id);
+
+    if (!memory) {
+      return res.status(404).json({
+        error: 'Souvenir introuvable'
+      });
+    }
+
+    res.status(200).json({
+      memory
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération du souvenir:', error);
+    res.status(500).json({
+      error: 'Erreur serveur lors de la récupération du souvenir'
+    });
+  }
+};

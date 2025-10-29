@@ -6,7 +6,8 @@ import {
   getGameMemories,
   getUserMemories,
   updateMemory,
-  deleteMemory
+  deleteMemory,
+  getMemoryById
 } from '../controllers/memoryController.js';
 
 const router = express.Router();
@@ -15,6 +16,7 @@ const router = express.Router();
 router.get('/', getMemories);  // feed global
 router.get('/game/:rawgId', getGameMemories);
 router.get('/user/:userId', getUserMemories);
+router.get('/:id', getMemoryById);
 
 // Routes protégées (nécessitent un token JWT)
 router.post('/', verifyToken, createMemory)  // ajouter souvenir
