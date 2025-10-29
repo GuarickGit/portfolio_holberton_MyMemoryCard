@@ -1,0 +1,143 @@
+.memory-create {
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  background-color: var(--background);
+}
+
+.memory-create__container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.memory-create__loading,
+.memory-create__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 50vh;
+  color: var(--text-primary);
+}
+
+.memory-create__error button {
+  padding: 12px 24px;
+  background-color: var(--primary-green);
+  color: var(--background);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.memory-create__error button:hover {
+  background-color: var(--primary-cyan);
+}
+
+.memory-create__header {
+  margin-bottom: 32px;
+}
+
+.memory-create__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-bottom: 24px;
+}
+
+.memory-create__back:hover {
+  color: var(--primary-green);
+}
+
+.memory-create__game {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  background-color: var(--dark-gray);
+  border-radius: 12px;
+}
+
+.memory-create__cover {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.memory-create__game-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.memory-create__game-info h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.memory-create__game-info h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.memory-create__meta {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* RESPONSIVE - Tablette */
+@media (max-width: 768px) {
+  .memory-create {
+    padding: 80px 16px 40px;
+  }
+
+  .memory-create__game {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .memory-create__cover {
+    width: 140px;
+    height: 187px;
+  }
+
+  .memory-create__game-info h2 {
+    font-size: 24px;
+  }
+}
+
+/* RESPONSIVE - Mobile */
+@media (max-width: 480px) {
+  .memory-create__game-info h1 {
+    font-size: 14px;
+  }
+
+  .memory-create__game-info h2 {
+    font-size: 20px;
+  }
+
+  .memory-create__meta {
+    font-size: 12px;
+  }
+}
