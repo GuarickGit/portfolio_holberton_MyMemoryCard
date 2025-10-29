@@ -253,6 +253,7 @@ export const getReviewsById = async (reviewId) => {
       u.avatar_url,
       g.name AS game_name,
       g.cover_url AS game_image,
+      g.background_image,
       g.released,
       (SELECT COUNT(*) FROM likes WHERE target_type = 'review' AND target_id = r.id) as likes_count,
       (SELECT COUNT(*) FROM comments WHERE target_type = 'review' AND target_id = r.id) as comments_count
