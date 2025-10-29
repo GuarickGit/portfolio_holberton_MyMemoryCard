@@ -92,8 +92,7 @@ export const getMemoriesByGame = async (rawgId, limit = 20, offset = 0) => {
         u.avatar_url,
         u.level,
         g.name as game_name,
-        g.cover_url,
-        g.background_image as game_image,
+        g.cover_url as game_image,
         g.rawg_id,
         (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
         (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
