@@ -16,6 +16,8 @@ import Footer from './components/layout/Footer/Footer';
 import GameDetails from './pages/GameDetails/GameDetails';
 import ReviewCreate from './pages/ReviewCreate/ReviewCreate';
 import MemoryCreate from './pages/MemoryCreate/MemoryCreate';
+import GameReviews from './pages/GameReviews/GameReviews';
+import GameMemories from './pages/GameMemories/GameMemories';
 
 function App() {
   return (
@@ -44,7 +46,9 @@ function App() {
               <Route path="/faq" element={<Faq />} />
               <Route path="/games/:rawgId" element={<GameDetails />} />
               <Route path="/games/:rawgId/review/new" element={<ReviewCreate />} />
-			  <Route path="/games/:rawgId/memory/new" element={<MemoryCreate />} />
+              <Route path="/games/:rawgId/memory/new" element={<MemoryCreate />} />
+              <Route path="/games/:rawgId/reviews" element={<GameReviews />} />
+              <Route path="/games/:rawgId/memories" element={<GameMemories />} />
             </Routes>
           </main>
 
