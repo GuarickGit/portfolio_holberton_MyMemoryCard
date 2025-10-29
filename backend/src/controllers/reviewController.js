@@ -345,3 +345,33 @@ export const deleteReview = async (req, res) => {
     });
   }
 };
+
+
+/**
+ * Récupère une review par son ID
+ * GET /reviews/:id
+ */
+export const getReviewById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Récupération de la review
+    const review = await Review.getReviewsById(id);
+
+    if (!review) {
+      return res.status(404).json({
+        error: 'Review introuvable'
+      });
+    }
+
+    res.status(200).json({
+      review
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération de la review:', error);
+    res.status(500).json({
+      error: 'Erreur serveur lors de la récupération de la review'
+    });
+  }
+};

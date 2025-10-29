@@ -6,7 +6,8 @@ import {
   getGameReviews,
   getUserReviews,
   updateReview,
-  deleteReview
+  deleteReview,
+  getReviewById
 } from '../controllers/reviewController.js';
 
 const router = express.Router();
@@ -15,6 +16,7 @@ const router = express.Router();
 router.get('/', getReviews);                      // GET /reviews (feed global)
 router.get('/game/:rawgId', getGameReviews);
 router.get('/user/:userId', getUserReviews);
+router.get('/:id', getReviewById);
 
 // Routes protégées (nécessitent un token JWT)
 router.post('/', verifyToken, createReview);
