@@ -1,115 +1,124 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 import { Heart, MessageCircle, AlertTriangle } from 'lucide-react';
 import './MemoryCard.css';
 
-/**
- * MemoryCard - Composant réutilisable pour afficher un souvenir
- *
- * @param {Object} memory - Objet memory contenant toutes les infos
- */
 const MemoryCard = ({ memory }) => {
   const navigate = useNavigate();
-  const [showSpoiler, setShowSpoiler] = useState(false);
+  const { user } = useAuth();
+  const [spoilerRevealed, setSpoilerRevealed] = useState(false);
 
-  const handleReadMore = () => {
+  // Vérifier si l'utilisateur connecté est le propriétaire
+  const isOwner = user && user.id === memory.user_id;
+
+  const handleCardClick = (e) => {
+    // Ne pas naviguer si on clique sur le bouton spoiler ou modifier
+    if (
+      e.target.closest('.memory-card__reveal-spoiler') ||
+      e.target.closest('.memory-card__edit-button')
+    ) {
+      return;
+    }
     navigate(`/memories/${memory.id}`);
   };
 
-  // Extraire l'année de la date de sortie du jeu
-  const releaseYear = memory.released
-    ? new Date(memory.released).getFullYear()
-    : null;
+  const handleRevealSpoiler = (e) => {
+    e.stopPropagation();
+    setSpoilerRevealed(true);
+  };
 
-  // Limiter le contenu à 150 caractères
-  const truncatedContent = memory.content.length > 150
-    ? memory.content.substring(0, 150) + '...'
-    : memory.content;
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    navigate(`/memories/${memory.id}/edit`);
+  };
 
   return (
-    <div className="memory-card">
-      {/* TOP SECTION : Image + Header côte à côte */}
+    <div className="memory-card" onClick={handleCardClick}>
+      {/* TOP SECTION */}
       <div className="memory-card__top">
-        {/* Image du jeu */}
+        {/* IMAGE */}
         <div className="memory-card__image">
-          <img
-            src={memory.game_image}
-            alt={memory.game_name}
-          />
+          <img src={memory.game_image} alt={memory.game_name} />
         </div>
 
-        {/* Header : Avatar + Titre */}
+        {/* HEADER CONTENT */}
         <div className="memory-card__header-content">
+          {/* HEADER - Avatar + Username */}
           <div className="memory-card__header">
             <img
-              src={memory.avatar_url}
+              src={memory.avatar_url || '/default-avatar.png'}
               alt={memory.username}
               className="memory-card__avatar"
             />
             <span className="memory-card__username">{memory.username}</span>
           </div>
 
+          {/* GAME INFO */}
           <div className="memory-card__game-info">
             <h3 className="memory-card__game-title">
               {memory.game_name}
-              {releaseYear && <span className="memory-card__year">, {releaseYear}</span>}
+              {memory.year && <span className="memory-card__year"> ({memory.year})</span>}
             </h3>
           </div>
         </div>
       </div>
 
-      {/* BOTTOM SECTION : Titre + Texte + Footer */}
+      {/* BOTTOM SECTION */}
       <div className="memory-card__bottom">
-        {/* TITRE DU SOUVENIR */}
-        {memory.title && (
-          <h4 className="memory-card__title">{memory.title}</h4>
-        )}
+        {/* TITRE */}
+        <h4 className="memory-card__title">{memory.title}</h4>
 
-        {/* BADGE SPOILER */}
-        {memory.spoiler && (
+        {/* SPOILER BADGE */}
+        {memory.spoiler && !spoilerRevealed && (
           <div className="memory-card__spoiler-badge">
             <AlertTriangle size={14} />
-            <span>Contient des spoilers</span>
+            Contient des spoilers
           </div>
         )}
 
-        {/* TEXTE (flouté si spoiler) - Position relative pour le bouton */}
+        {/* CONTENT WRAPPER */}
         <div className="memory-card__content-wrapper">
-          <div className={`memory-card__content ${memory.spoiler && !showSpoiler ? 'memory-card__content--blurred' : ''}`}>
-            <p className="memory-card__text">{truncatedContent}</p>
+          <div className={`memory-card__content ${memory.spoiler && !spoilerRevealed ? 'memory-card__content--blurred' : ''}`}>
+            <p className="memory-card__text">{memory.content}</p>
           </div>
 
-          {/* Bouton révéler spoiler (DEHORS du div flouté) */}
-          {memory.spoiler && !showSpoiler && (
+          {/* BOUTON RÉVÉLER SPOILER */}
+          {memory.spoiler && !spoilerRevealed && (
             <button
               className="memory-card__reveal-spoiler"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowSpoiler(true);
-              }}
+              onClick={handleRevealSpoiler}
             >
-              Afficher les spoilers
+              Révéler le spoiler
             </button>
           )}
         </div>
 
+        {/* FOOTER */}
         <div className="memory-card__footer">
-          <button
-            className="memory-card__read-more"
-            onClick={handleReadMore}
-          >
-            Lire le souvenir
-          </button>
+          <div className="memory-card__footer-left">
+            <button className="memory-card__read-more">
+              Lire le souvenir
+            </button>
 
+            {/* BOUTON MODIFIER - Visible seulement si propriétaire */}
+            {isOwner && (
+              <button className="memory-card__edit-button" onClick={handleEdit}>
+                Modifier
+              </button>
+            )}
+          </div>
+
+          {/* STATS */}
           <div className="memory-card__stats">
-            <span className="memory-card__stat">
+            <div className="memory-card__stat">
               <Heart size={16} />
-              {memory.likes_count}
-            </span>
-            <span className="memory-card__stat">
+              <span>{memory.likes_count || 0}</span>
+            </div>
+            <div className="memory-card__stat">
               <MessageCircle size={16} />
-              {memory.comments_count}
-            </span>
+              <span>{memory.comments_count || 0}</span>
+            </div>
           </div>
         </div>
       </div>

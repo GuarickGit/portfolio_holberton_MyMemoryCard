@@ -1,127 +1,141 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 import { Star, Heart, MessageCircle, AlertTriangle } from 'lucide-react';
 import './ReviewCard.css';
 
 const ReviewCard = ({ review }) => {
   const navigate = useNavigate();
-  const [showSpoiler, setShowSpoiler] = useState(false);
+  const { user } = useAuth();
+  const [spoilerRevealed, setSpoilerRevealed] = useState(false);
 
-  const handleReadMore = () => {
+  // Vérifier si l'utilisateur connecté est le propriétaire
+  const isOwner = user && user.id === review.user_id;
+
+  const handleCardClick = (e) => {
+    // Ne pas naviguer si on clique sur le bouton spoiler ou modifier
+    if (
+      e.target.closest('.review-card__reveal-spoiler') ||
+      e.target.closest('.review-card__edit-button')
+    ) {
+      return;
+    }
     navigate(`/reviews/${review.id}`);
   };
 
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <Star
-          key={i}
-          size={16}
-          fill={i <= review.rating ? '#FFD700' : 'none'}
-          color={i <= review.rating ? '#FFD700' : 'var(--text-secondary)'}
-        />
-      );
-    }
-    return stars;
+  const handleRevealSpoiler = (e) => {
+    e.stopPropagation();
+    setSpoilerRevealed(true);
   };
 
-  const releaseYear = review.released
-    ? new Date(review.released).getFullYear()
-    : null;
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    navigate(`/reviews/${review.id}/edit`);
+  };
 
-  const truncatedContent = review.content.length > 150
-    ? review.content.substring(0, 150) + '...'
-    : review.content;
+  // Génère les étoiles
+  const renderStars = () => {
+    return Array.from({ length: 5 }, (_, index) => (
+      <Star
+        key={index}
+        size={16}
+        fill={index < review.rating ? '#FFD700' : 'none'}
+        stroke={index < review.rating ? '#FFD700' : '#666'}
+      />
+    ));
+  };
 
   return (
-    <div className="review-card">
-      {/* TOP SECTION : Image + Header côte à côte */}
+    <div className="review-card" onClick={handleCardClick}>
+      {/* TOP SECTION */}
       <div className="review-card__top">
-        {/* Image du jeu */}
+        {/* IMAGE */}
         <div className="review-card__image">
-          <img
-            src={review.game_image}
-            alt={review.game_name}
-          />
+          <img src={review.game_image} alt={review.game_name} />
         </div>
 
-        {/* Header : Avatar + Titre + Rating */}
+        {/* HEADER CONTENT */}
         <div className="review-card__header-content">
+          {/* HEADER - Avatar + Username */}
           <div className="review-card__header">
             <img
-              src={review.avatar_url}
+              src={review.avatar_url || '/default-avatar.png'}
               alt={review.username}
               className="review-card__avatar"
             />
             <span className="review-card__username">{review.username}</span>
           </div>
 
+          {/* GAME INFO */}
           <div className="review-card__game-info">
             <h3 className="review-card__game-title">
               {review.game_name}
-              {releaseYear && <span className="review-card__year">, {releaseYear}</span>}
+              {review.year && <span className="review-card__year"> ({review.year})</span>}
             </h3>
           </div>
 
+          {/* RATING */}
           <div className="review-card__rating">
             {renderStars()}
           </div>
         </div>
       </div>
 
-      {/* BOTTOM SECTION : Titre + Texte + Footer */}
+      {/* BOTTOM SECTION */}
       <div className="review-card__bottom">
-        {/* TITRE DE LA REVIEW */}
-        {review.title && (
-          <h4 className="review-card__title">{review.title}</h4>
-        )}
+        {/* TITRE */}
+        <h4 className="review-card__title">{review.title}</h4>
 
-        {/* BADGE SPOILER */}
-        {review.spoiler && (
+        {/* SPOILER BADGE */}
+        {review.spoiler && !spoilerRevealed && (
           <div className="review-card__spoiler-badge">
             <AlertTriangle size={14} />
-            <span>Contient des spoilers</span>
+            Contient des spoilers
           </div>
         )}
 
-        {/* TEXTE (flouté si spoiler) - Position relative pour le bouton */}
+        {/* CONTENT WRAPPER */}
         <div className="review-card__content-wrapper">
-          <div className={`review-card__content ${review.spoiler && !showSpoiler ? 'review-card__content--blurred' : ''}`}>
-            <p className="review-card__text">{truncatedContent}</p>
+          <div className={`review-card__content ${review.spoiler && !spoilerRevealed ? 'review-card__content--blurred' : ''}`}>
+            <p className="review-card__text">{review.content}</p>
           </div>
 
-          {/* Bouton révéler spoiler (DEHORS du div flouté) */}
-          {review.spoiler && !showSpoiler && (
+          {/* BOUTON RÉVÉLER SPOILER */}
+          {review.spoiler && !spoilerRevealed && (
             <button
               className="review-card__reveal-spoiler"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowSpoiler(true);
-              }}
+              onClick={handleRevealSpoiler}
             >
-              Afficher les spoilers
+              Révéler le spoiler
             </button>
           )}
         </div>
 
+        {/* FOOTER */}
         <div className="review-card__footer">
-          <button
-            className="review-card__read-more"
-            onClick={handleReadMore}
-          >
-            Lire la review
-          </button>
+          <div className="review-card__footer-left">
+            <button className="review-card__read-more">
+              Lire la critique
+            </button>
 
+            {/* BOUTON MODIFIER - Visible seulement si propriétaire */}
+            {isOwner && (
+              <button className="review-card__edit-button" onClick={handleEdit}>
+                Modifier
+              </button>
+            )}
+          </div>
+
+          {/* STATS */}
           <div className="review-card__stats">
-            <span className="review-card__stat">
+            <div className="review-card__stat">
               <Heart size={16} />
-              {review.likes_count}
-            </span>
-            <span className="review-card__stat">
+              <span>{review.likes_count || 0}</span>
+            </div>
+            <div className="review-card__stat">
               <MessageCircle size={16} />
-              {review.comments_count}
-            </span>
+              <span>{review.comments_count || 0}</span>
+            </div>
           </div>
         </div>
       </div>

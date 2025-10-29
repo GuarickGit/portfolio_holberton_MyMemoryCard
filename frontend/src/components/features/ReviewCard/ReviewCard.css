@@ -212,6 +212,13 @@
   align-items: center;
   flex-shrink: 0;
   margin-top: 12px;
+  gap: 12px;
+}
+
+.review-card__footer-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .review-card__read-more {
@@ -229,6 +236,26 @@
 
 .review-card__read-more:hover {
   color: rgb(79, 240, 133);
+}
+
+/* BOUTON MODIFIER */
+.review-card__edit-button {
+  background-color: rgba(255, 92, 92, 0.9);
+  border: 1px solid var(--primary-green);
+
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-left: 8px;
+
+  transition: all 0.3s ease;
+}
+
+.review-card__edit-button:hover {
+  background-color: rgba(253, 38, 38, 0.9);
 }
 
 .review-card__stats {
@@ -286,6 +313,16 @@
   .review-card__game-title {
     font-size: 14px;
     white-space: normal;
+  }
+
+  .review-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .review-card__footer-left {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 

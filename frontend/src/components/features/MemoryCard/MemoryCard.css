@@ -13,7 +13,7 @@
   max-width: 550px;
 
   /* Hauteur fixe pour uniformiser les cards */
-  height: 300px;
+  height: 340px;
 
   /* Transition */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -120,7 +120,7 @@
   color: var(--white);
   font-size: 15px;
   font-weight: 600;
-  margin: 0;
+  margin-bottom: 8px;
   line-height: 1.4;
 }
 
@@ -206,6 +206,13 @@
   align-items: center;
   flex-shrink: 0;
   margin-top: 12px;
+  gap: 12px;
+}
+
+.memory-card__footer-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .memory-card__read-more {
@@ -223,6 +230,25 @@
 
 .memory-card__read-more:hover {
   color: rgb(79, 240, 133);
+}
+
+/* BOUTON MODIFIER */
+.memory-card__edit-button {
+  background-color: rgba(255, 92, 92, 0.9);
+  border: 1px solid var(--primary-green);
+
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+
+  transition: all 0.3s ease;
+}
+
+.memory-card__edit-button:hover {
+  background-color: rgba(253, 38, 38, 0.9);
 }
 
 .memory-card__stats {
@@ -280,6 +306,16 @@
   .memory-card__game-title {
     font-size: 14px;
     white-space: normal;
+  }
+
+  .memory-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .memory-card__footer-left {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
