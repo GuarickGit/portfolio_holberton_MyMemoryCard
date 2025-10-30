@@ -1,5 +1,5 @@
 import express from "express";
-import { getMe, updateMe, getUserProfile, searchUsersController, getUserStatsController } from "../controllers/userController.js"; // ← AJOUTE searchUsersController
+import { getMe, updateMe, getUserProfile, searchUsersController, getUserStatsController } from "../controllers/userController.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -20,7 +20,7 @@ router.put("/me", verifyToken, updateMe);
  * GET /users/search
  * Rechercher des utilisateurs
  */
-router.get('/search', verifyToken, searchUsersController); // ← DÉPLACE ICI (AVANT /:userId)
+router.get('/search', verifyToken, searchUsersController);
 
 /**
  * GET /users/:userId/stats
