@@ -4,7 +4,8 @@ import {
   getMyCollection,
   updateGameInCollection,
   removeGameFromCollection,
-  getGameStatus
+  getGameStatus,
+  getPublicCollection
 } from '../controllers/collectionController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -21,6 +22,12 @@ router.use(verifyToken);
  * Vérifie si le jeu est dans la collection et retourne son status
  */
 router.get('/game/:rawgId/status', getGameStatus);
+
+/**
+ * GET /collections/user/:userId
+ * Récupère la collection publique d'un utilisateur spécifique
+ */
+router.get('/user/:userId', getPublicCollection);
 
 /**
  * POST /collections

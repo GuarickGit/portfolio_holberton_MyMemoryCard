@@ -275,3 +275,37 @@ export const getGameStatus = async (req, res) => {
     });
   }
 };
+
+
+/**
+ * Récupère la collection publique d'un utilisateur spécifique
+ * GET /collections/user/:userId
+ */
+export const getPublicCollection = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Validation de l'UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(userId)) {
+      return res.status(400).json({
+        error: 'ID utilisateur invalide'
+      });
+    }
+
+    // Récupère la collection
+    const collection = await getUserCollection(userId);
+
+    return res.status(200).json({
+      userId: userId,
+      count: collection.length,
+      collection: collection
+    });
+
+  } catch (error) {
+    console.error('Erreur dans getPublicCollection:', error.message);
+    return res.status(500).json({
+      error: 'Erreur serveur lors de la récupération de la collection'
+    });
+  }
+};
