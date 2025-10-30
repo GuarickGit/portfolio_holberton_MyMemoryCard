@@ -12,29 +12,24 @@ const MemoryCard = ({ memory }) => {
   // Vérifier si l'utilisateur connecté est le propriétaire
   const isOwner = user && user.id === memory.user_id;
 
-  const handleCardClick = (e) => {
-    // Ne pas naviguer si on clique sur le bouton spoiler ou modifier
-    if (
-      e.target.closest('.memory-card__reveal-spoiler') ||
-      e.target.closest('.memory-card__edit-button')
-    ) {
-      return;
-    }
-    navigate(`/memories/${memory.id}`);
-  };
-
-  const handleRevealSpoiler = (e) => {
-    e.stopPropagation();
+  const handleRevealSpoiler = () => {
     setSpoilerRevealed(true);
   };
 
-  const handleEdit = (e) => {
-    e.stopPropagation();
+  const handleEdit = () => {
     navigate(`/memories/${memory.id}/edit`);
   };
 
+  const handleProfileClick = () => {
+    navigate(`/profile/${memory.user_id}`);
+  };
+
+  const handleReadMore = () => {
+    navigate(`/memories/${memory.id}`);
+  };
+
   return (
-    <div className="memory-card" onClick={handleCardClick}>
+    <div className="memory-card">
       {/* TOP SECTION */}
       <div className="memory-card__top">
         {/* IMAGE */}
@@ -50,8 +45,16 @@ const MemoryCard = ({ memory }) => {
               src={memory.avatar_url || '/default-avatar.png'}
               alt={memory.username}
               className="memory-card__avatar"
+              onClick={handleProfileClick}
+              style={{ cursor: 'pointer' }}
             />
-            <span className="memory-card__username">{memory.username}</span>
+            <span
+              className="memory-card__username"
+              onClick={handleProfileClick}
+              style={{ cursor: 'pointer' }}
+            >
+              {memory.username}
+            </span>
           </div>
 
           {/* GAME INFO */}
@@ -97,7 +100,10 @@ const MemoryCard = ({ memory }) => {
         {/* FOOTER */}
         <div className="memory-card__footer">
           <div className="memory-card__footer-left">
-            <button className="memory-card__read-more">
+            <button
+              className="memory-card__read-more"
+              onClick={handleReadMore}
+            >
               Lire le souvenir
             </button>
 

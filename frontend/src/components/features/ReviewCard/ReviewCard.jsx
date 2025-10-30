@@ -12,25 +12,20 @@ const ReviewCard = ({ review }) => {
   // Vérifier si l'utilisateur connecté est le propriétaire
   const isOwner = user && user.id === review.user_id;
 
-  const handleCardClick = (e) => {
-    // Ne pas naviguer si on clique sur le bouton spoiler ou modifier
-    if (
-      e.target.closest('.review-card__reveal-spoiler') ||
-      e.target.closest('.review-card__edit-button')
-    ) {
-      return;
-    }
-    navigate(`/reviews/${review.id}`);
-  };
-
-  const handleRevealSpoiler = (e) => {
-    e.stopPropagation();
+  const handleRevealSpoiler = () => {
     setSpoilerRevealed(true);
   };
 
-  const handleEdit = (e) => {
-    e.stopPropagation();
+  const handleEdit = () => {
     navigate(`/reviews/${review.id}/edit`);
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/profile/${review.user_id}`);
+  };
+
+  const handleReadMore = () => {
+    navigate(`/reviews/${review.id}`);
   };
 
   // Génère les étoiles
@@ -46,7 +41,7 @@ const ReviewCard = ({ review }) => {
   };
 
   return (
-    <div className="review-card" onClick={handleCardClick}>
+    <div className="review-card">
       {/* TOP SECTION */}
       <div className="review-card__top">
         {/* IMAGE */}
@@ -62,8 +57,16 @@ const ReviewCard = ({ review }) => {
               src={review.avatar_url || '/default-avatar.png'}
               alt={review.username}
               className="review-card__avatar"
+              onClick={handleProfileClick}
+              style={{ cursor: 'pointer' }}
             />
-            <span className="review-card__username">{review.username}</span>
+            <span
+              className="review-card__username"
+              onClick={handleProfileClick}
+              style={{ cursor: 'pointer' }}
+            >
+              {review.username}
+            </span>
           </div>
 
           {/* GAME INFO */}
@@ -114,7 +117,10 @@ const ReviewCard = ({ review }) => {
         {/* FOOTER */}
         <div className="review-card__footer">
           <div className="review-card__footer-left">
-            <button className="review-card__read-more">
+            <button
+              className="review-card__read-more"
+              onClick={handleReadMore}
+            >
               Lire la critique
             </button>
 
