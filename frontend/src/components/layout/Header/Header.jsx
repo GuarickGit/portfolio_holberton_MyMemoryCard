@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Search } from 'lucide-react';
+import SearchDropdown from '../SearchDropdown/SearchDropdown';
 import Login from '../../../pages/Login/Login';
 import Signup from '../../../pages/Signup/Signup';
+import api from '../../../services/api';
 import Logo from '../../../assets/images/Logo.png';
+import { searchGames } from '../../../services/rawgService';
 import './Header.css';
 
 function Header() {
@@ -14,15 +17,89 @@ function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
 
+  // États pour la recherche
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [searchResults, setSearchResults] = useState({
+    games: [],
+    users: []
+  });
+  const [searchLoading, setSearchLoading] = useState(false);
+
+  // Refs
+  const searchRef = useRef(null);
+  const debounceTimer = useRef(null);
+
   // Context Auth
   const { user, isAuthenticated, logoutUser } = useAuth();
 
-  // Fonction de recherche
+  // Fonction de recherche avec debounce
+  const performSearch = async (query) => {
+    if (query.trim().length < 2) {
+      setSearchResults({ games: [], users: [] });
+      setShowSearchDropdown(false);
+      return;
+    }
+
+    setSearchLoading(true);
+    setShowSearchDropdown(true);
+
+    try {
+      // Recherche de jeux (RAWG)
+      const gamesResponse = await fetch(
+        `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_API_KEY}&search=${query}&page_size=10`
+      );
+      const gamesData = await searchGames(query, 10);
+
+      // Recherche d'utilisateurs (Backend)
+      const usersResponse = await api.get(`/users/search?q=${query}&limit=10`);
+
+      setSearchResults({
+        games: gamesData.results || [],
+        users: usersResponse.data.results || []
+      });
+    } catch (error) {
+      console.error('Erreur lors de la recherche:', error);
+      setSearchResults({ games: [], users: [] });
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  // Gérer le changement de recherche avec debounce
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    // Clear le timer précédent
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    // Créer un nouveau timer
+    debounceTimer.current = setTimeout(() => {
+      performSearch(query);
+    }, 300); // 300ms de délai
+  };
+
+  // Fonction de soumission (optionnel, on peut la garder)
   function handleSearch(e) {
     e.preventDefault();
-    console.log('Recherche:', searchQuery);
-    // TODO : Implémenter la recherche plus tard
+    if (searchQuery.trim().length >= 2) {
+      performSearch(searchQuery);
+    }
   }
+
+  // Fermer le dropdown quand on clique ailleurs
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSearchDropdown(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Fonction de déconnexion
   function handleLogout() {
@@ -42,7 +119,7 @@ function Header() {
     setShowLogin(true);
   }
 
-  // Ferme le menu quand on clique ailleurs
+  // Ferme le menu utilisateur quand on clique ailleurs
   useEffect(() => {
     function handleClickOutside(event) {
       if (showUserMenu && !event.target.closest('.header-user-menu')) {
@@ -67,18 +144,39 @@ function Header() {
           {/* Centre : Search bar + Navbar ensemble */}
           <div className="header-center">
             {/* Barre de recherche */}
-            <form onSubmit={handleSearch} className="header-search">
-              <input
-                type="text"
-                placeholder="Recherche"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="header-search-input"
-              />
-              <button type="submit" className="header-search-button">
-                <Search size={20} />
-              </button>
-            </form>
+            <div ref={searchRef} className="header-search-container">
+              <form onSubmit={handleSearch} className="header-search">
+                <input
+                  type="text"
+                  placeholder="Rechercher un jeu ou un utilisateur..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onFocus={() => {
+                    if (searchQuery.trim().length >= 2) {
+                      setShowSearchDropdown(true);
+                    }
+                  }}
+                  className="header-search-input"
+                />
+                <button type="submit" className="header-search-button">
+                  <Search size={20} />
+                </button>
+              </form>
+
+              {/* Dropdown de recherche */}
+              {showSearchDropdown && (
+                <SearchDropdown
+                  games={searchResults.games}
+                  users={searchResults.users}
+                  loading={searchLoading}
+                  query={searchQuery}
+                  onClose={() => {
+                    setShowSearchDropdown(false);
+                    setSearchQuery('');
+                  }}
+                />
+              )}
+            </div>
 
             {/* Navbar */}
             <nav className="header-nav">

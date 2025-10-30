@@ -253,6 +253,21 @@
 }
 
 /* ===================================
+   SEARCH CONTAINER (pour le dropdown)
+   =================================== */
+
+.header-search-container {
+  width: 100%;
+  position: relative;
+}
+
+.header-search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* ===================================
    RESPONSIVE MOBILE
    =================================== */
 

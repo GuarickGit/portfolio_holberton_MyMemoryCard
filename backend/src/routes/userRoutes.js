@@ -20,7 +20,7 @@ router.put("/me", verifyToken, updateMe);
  * GET /users/search
  * Rechercher des utilisateurs
  */
-router.get('/search', verifyToken, searchUsersController);
+router.get('/search', searchUsersController);
 
 /**
  * GET /users/:userId/stats
