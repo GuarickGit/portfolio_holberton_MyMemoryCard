@@ -29,7 +29,7 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
 
         const [statsRes, collectionRes, profileRes, gamesCountRes] = await Promise.all([
           api.get(`/users/${user.id}/stats`),
-          api.get(`/collections?userId=${user.id}&limit=7`),
+          api.get(`/collections/user/${user.id}`),
           api.get(`/users/${user.id}`),
           api.get('/games/count')
         ]);
