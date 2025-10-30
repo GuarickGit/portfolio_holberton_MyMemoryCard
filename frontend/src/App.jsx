@@ -23,6 +23,7 @@ import MemoryEdit from './pages/MemoryEdit/MemoryEdit';
 import Collection from './pages/Collection/Collection';
 import ReviewDetail from './pages/ReviewDetail/ReviewDetail';
 import MemoryDetail from './pages/MemoryDetail/MemoryDetail';
+import ProfileEdit from './pages/ProfilEdit/ProfileEdit';
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
               <Route path="/profile/:userId/collection" element={<Collection />} />
               <Route path="/reviews/:id" element={<ReviewDetail />} />
               <Route path="/memories/:id" element={<MemoryDetail />} />
+              <Route path="/profile/edit" element={<ProfileEdit />} />
             </Routes>
           </main>
 

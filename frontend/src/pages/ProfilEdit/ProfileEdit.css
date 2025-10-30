@@ -1,0 +1,233 @@
+.profile-edit {
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  background-color: var(--background);
+}
+
+.profile-edit__container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.profile-edit__header {
+  margin-bottom: 32px;
+}
+
+.profile-edit__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-bottom: 16px;
+}
+
+.profile-edit__back:hover {
+  color: var(--primary-green);
+}
+
+.profile-edit__header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0;
+}
+
+/* FORMULAIRE */
+.profile-edit__form {
+  background-color: var(--dark-gray);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+/* SECTIONS */
+.profile-edit__section {
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-edit__section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 24px;
+}
+
+.profile-edit__section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0 0 16px 0;
+}
+
+.profile-edit__section-hint {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0 0 16px 0;
+}
+
+/* PREVIEW SECTION */
+.profile-edit__preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* AVATAR PREVIEW */
+.profile-edit__avatar-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-edit__avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* BANNER PREVIEW */
+.profile-edit__banner-preview {
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-edit__banner-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* INPUT GROUP */
+.profile-edit__input-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--background);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: border-color 0.3s;
+}
+
+.profile-edit__input-group:focus-within {
+  border-color: var(--primary-green);
+}
+
+.profile-edit__input-group svg {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.profile-edit__input-group input,
+.profile-edit__input-group textarea {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+  resize: none;
+}
+
+.profile-edit__input-group input::placeholder,
+.profile-edit__input-group textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.profile-edit__input-group textarea {
+  line-height: 1.5;
+}
+
+/* CHAR COUNT */
+.profile-edit__char-count {
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-align: right;
+  margin: 8px 0 0 0;
+}
+
+/* MESSAGES */
+.profile-edit__error,
+.profile-edit__success {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.profile-edit__error {
+  background-color: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  color: #f44336;
+}
+
+.profile-edit__success {
+  background-color: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: #4caf50;
+}
+
+/* ACTIONS */
+.profile-edit__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 24px;
+}
+
+/* RESPONSIVE - Tablette */
+@media (max-width: 768px) {
+  .profile-edit {
+    padding: 80px 16px 40px;
+  }
+
+  .profile-edit__form {
+    padding: 24px;
+  }
+
+  .profile-edit__header h1 {
+    font-size: 28px;
+  }
+
+  .profile-edit__actions {
+    flex-direction: column-reverse;
+  }
+
+  .profile-edit__actions button {
+    width: 100%;
+  }
+}
+
+/* RESPONSIVE - Mobile */
+@media (max-width: 480px) {
+  .profile-edit__section {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+  }
+
+  .profile-edit__section h2 {
+    font-size: 16px;
+  }
+
+  .profile-edit__header h1 {
+    font-size: 24px;
+  }
+}
