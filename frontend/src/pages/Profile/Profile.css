@@ -4,7 +4,7 @@
 
 .profile-page {
   min-height: 100vh;
-  background: var(--color-bg-primary);
+  background: var(--bg-primary);
 }
 
 /* ============================================
@@ -24,13 +24,13 @@
   width: 50px;
   height: 50px;
   border: 4px solid rgba(10, 208, 111, 0.2);
-  border-top-color: var(--color-primary);
+  border-top-color: var(--accent-green);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 .profile-loading p {
-  color: var(--color-text-secondary);
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
@@ -54,12 +54,12 @@
 
 .profile-error h2 {
   font-size: 2rem;
-  color: var(--color-text-primary);
+  color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
 }
 
 .profile-error p {
-  color: var(--color-text-secondary);
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
@@ -68,11 +68,9 @@
    ============================================ */
 
 .profile-section {
-  width: 100%;
   max-width: 1400px;
-  margin: 0 auto var(--spacing-xxl);
-  padding: 0 var(--spacing-lg);
-  background: var(--color-bg-primary); /* Fond noir */
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
 }
 
 .profile-section__header {
@@ -80,33 +78,44 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
 
 .profile-section__header h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .profile-section__view-all {
   background: none;
   border: none;
-  color: var(--color-primary);
-  font-size: 1rem;
+  color: white;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.2s;
 }
 
-.profile-section__view-all:hover {
-  color: var(--color-secondary);
+/* SÉPARATEUR (comme HomePage) */
+.profile-section__separator {
+  width: 100%;
+  max-width: 1400px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.3) 80%,
+    transparent 100%
+  );
+  margin: var(--spacing-xl) auto;
 }
 
 .profile-section__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(3, minmax(320px, 1fr));
   gap: var(--spacing-lg);
 }
 
@@ -115,10 +124,11 @@
    ============================================ */
 
 .profile-empty {
+  max-width: 1400px;
+  margin: 0 auto;
   text-align: center;
-  padding: var(--spacing-xxl);
-  color: var(--color-text-secondary);
-  background: var(--color-bg-primary); /* Fond noir */
+  padding: var(--spacing-2xl);
+  color: var(--text-secondary);
 }
 
 .profile-empty p {
@@ -129,48 +139,37 @@
    RESPONSIVE
    ============================================ */
 
-/* Tablet (max 1024px) */
-@media (max-width: 1024px) {
+/* Tablet (max 899px) */
+@media (max-width: 899px) {
   .profile-section {
-    padding: 0 var(--spacing-md);
-  }
-
-  .profile-section__header h2 {
-    font-size: 1.5rem;
-  }
-
-  .profile-section__grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-md);
-  }
-}
-
-/* Mobile (max 768px) */
-@media (max-width: 768px) {
-  .profile-section {
-    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg) var(--spacing-md);
   }
 
   .profile-section__header {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-sm);
-  }
-
-  .profile-section__header h2 {
-    font-size: 1.25rem;
   }
 
   .profile-section__grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+  }
+}
+
+/* Mobile (max 767px) */
+@media (max-width: 767px) {
+  .profile-section {
+    padding: var(--spacing-md);
+  }
+
+  .profile-section__header h2 {
+    font-size: 1.25rem;
   }
 }
 
 /* Mobile small (max 480px) */
 @media (max-width: 480px) {
   .profile-section {
-    padding: 0 var(--spacing-sm);
+    padding: var(--spacing-sm);
   }
 
   .profile-section__header h2 {

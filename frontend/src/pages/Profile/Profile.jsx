@@ -104,6 +104,10 @@ function Profile() {
               }
             </button>
           </div>
+
+          {/* SÉPARATEUR */}
+          <div className="profile-section__separator"></div>
+
           <div className="profile-section__grid">
             {reviews.map(review => (
               <ReviewCard key={review.id} review={review} />
@@ -132,6 +136,10 @@ function Profile() {
               }
             </button>
           </div>
+
+          {/* SÉPARATEUR */}
+          <div className="profile-section__separator"></div>
+
           <div className="profile-section__grid">
             {memories.map(memory => (
               <MemoryCard key={memory.id} memory={memory} />
