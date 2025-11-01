@@ -261,6 +261,7 @@
   background-color: rgba(253, 38, 38, 0.9);
 }
 
+/* STATS */
 .memory-card__stats {
   display: flex;
   gap: 12px;
@@ -277,6 +278,65 @@
 
 .memory-card__stat svg {
   color: var(--text-secondary);
+}
+
+/* ============================================
+   BOUTON LIKE - INTERACTIF
+   ============================================ */
+
+.memory-card__stat--like {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Effet scale + couleur en Hover */
+.memory-card__stat--like:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.memory-card__stat--like:hover:not(:disabled) svg {
+  color: #ff6b6b;
+}
+
+.memory-card__stat--like:hover:not(:disabled) span {
+  color: #ff6b6b;
+}
+
+/* État liked (rouge permanent) */
+.memory-card__stat--like.liked {
+  animation: likeAnimation 0.3s ease;
+}
+
+.memory-card__stat--like.liked svg {
+  color: #ff6b6b;
+}
+
+.memory-card__stat--like.liked span {
+  color: #ff6b6b;
+}
+
+/* État pending (chargement) */
+.memory-card__stat--like.pending {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Animation au clic */
+@keyframes likeAnimation {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 /* RESPONSIVE - Tablette */

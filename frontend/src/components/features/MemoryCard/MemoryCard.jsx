@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Heart, MessageCircle, AlertTriangle } from 'lucide-react';
+import api from '../../../services/api';
 import './MemoryCard.css';
 
 const MemoryCard = ({ memory }) => {
@@ -9,8 +10,29 @@ const MemoryCard = ({ memory }) => {
   const { user } = useAuth();
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
 
+  // États pour les likes
+  const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(memory.likes_count || 0);
+  const [likePending, setLikePending] = useState(false);
+
   // Vérifier si l'utilisateur connecté est le propriétaire
   const isOwner = user && user.id === memory.user_id;
+
+  // Vérifier si l'utilisateur a déjà liké au chargement
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      if (!user) return;
+
+      try {
+        const response = await api.get(`/likes/memory/${memory.id}/check`);
+        setLiked(response.data.hasLiked);
+      } catch (error) {
+        console.error('Erreur vérification like:', error);
+      }
+    };
+
+    checkIfLiked();
+  }, [memory.id, user]);
 
   const handleRevealSpoiler = () => {
     setSpoilerRevealed(true);
@@ -26,6 +48,37 @@ const MemoryCard = ({ memory }) => {
 
   const handleReadMore = () => {
     navigate(`/memories/${memory.id}`);
+  };
+
+  // Toggle du like
+  const handleLikeToggle = async (e) => {
+    e.stopPropagation(); // Empêche la propagation vers la card
+
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    if (likePending) return; // Évite les double-clics
+
+    try {
+      setLikePending(true);
+
+      const response = await api.post('/likes/toggle', {
+        targetType: 'memory',
+        targetId: memory.id
+      });
+
+      // Mise à jour de l'état local
+      setLiked(response.data.liked);
+      setLikesCount(response.data.likesCount);
+
+    } catch (error) {
+      console.error('Erreur toggle like:', error);
+      // TODO: Afficher un message d'erreur à l'utilisateur
+    } finally {
+      setLikePending(false);
+    }
   };
 
   return (
@@ -117,10 +170,20 @@ const MemoryCard = ({ memory }) => {
 
           {/* STATS */}
           <div className="memory-card__stats">
-            <div className="memory-card__stat">
-              <Heart size={16} />
-              <span>{memory.likes_count || 0}</span>
-            </div>
+            {/* BOUTON LIKE - Maintenant cliquable */}
+            <button
+              className={`memory-card__stat memory-card__stat--like ${liked ? 'liked' : ''} ${likePending ? 'pending' : ''}`}
+              onClick={handleLikeToggle}
+              disabled={likePending}
+            >
+              <Heart
+                size={16}
+                fill={liked ? '#ff6b6b' : 'none'}
+                stroke={liked ? '#ff6b6b' : '#666'}
+              />
+              <span>{likesCount}</span>
+            </button>
+
             <div className="memory-card__stat">
               <MessageCircle size={16} />
               <span>{memory.comments_count || 0}</span>
