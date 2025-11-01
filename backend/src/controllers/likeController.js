@@ -152,3 +152,60 @@ export const checkLike = async (req, res) => {
     });
   }
 };
+
+
+/**
+ * Toggle un like (ajoute si pas présent, supprime si présent)
+ * POST /likes/toggle
+ * Body: { targetType, targetId }
+ */
+export const toggleLike = async (req, res) => {
+  try {
+    const { targetType, targetId } = req.body;
+    const userId = req.userId;
+
+    // Vérification des champs obligatoires
+    if (!targetType || !targetId) {
+      return res.status(400).json({
+        error: 'targetType et targetId sont requis'
+      });
+    }
+
+    // Vérification que targetType est valide
+    if (!['review', 'memory'].includes(targetType)) {
+      return res.status(400).json({
+        error: 'targetType doit être "review" ou "memory"'
+      });
+    }
+
+    // Vérifier si l'utilisateur a déjà liké
+    const hasLiked = await LikeModel.checkUserLiked(userId, targetType, targetId);
+
+    let liked;
+
+    if (hasLiked) {
+      // Supprimer le like
+      await LikeModel.deleteLike(userId, targetType, targetId);
+      liked = false;
+    } else {
+      // Ajouter le like
+      await LikeModel.createLike(userId, targetType, targetId);
+      liked = true;
+    }
+
+    // Récupérer le nouveau nombre de likes
+    const likesCount = await LikeModel.getLikesCountByTarget(targetType, targetId);
+
+    // Retourner le résultat
+    return res.status(200).json({
+      liked,
+      likesCount
+    });
+
+  } catch (error) {
+    console.error('Erreur lors du toggle du like:', error);
+    return res.status(500).json({
+      error: 'Erreur serveur lors du toggle du like'
+    });
+  }
+};

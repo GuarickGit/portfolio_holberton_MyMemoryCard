@@ -8,6 +8,13 @@ const router = express.Router();
 router.use(verifyToken);
 
 /**
+ * POST /likes/toggle
+ * Toggle un like (add/remove automatiquement)
+ * Body: { targetType, targetId }
+ */
+router.post('/toggle', likeController.toggleLike);
+
+/**
  * POST /likes
  * Ajouter un like
  * Body: { targetType, targetId }
