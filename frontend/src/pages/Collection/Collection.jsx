@@ -62,10 +62,12 @@ const Collection = () => {
         setGames(response.data.collection || []);
       } else {
         // Collection d'un autre user
-        // Note: Il faut un endpoint /users/:userId/collection dans le backend
-        const response = await api.get(`/users/${targetUserId}/collection`);
+        const response = await api.get(`/collections/user/${targetUserId}`);
         setGames(response.data.collection || []);
-        setProfileUser(response.data.user || null);
+
+        // Récupérer les infos du user séparément
+        const userResponse = await api.get(`/users/${targetUserId}`);
+        setProfileUser(userResponse.data.user || null);
       }
 
     } catch (err) {
