@@ -12,7 +12,6 @@ import './LikeButton.css';
  * @param {string} targetId - ID de la review ou memory
  * @param {number} initialLikesCount - Nombre initial de likes
  * @param {number} size - Taille de l'icône (défaut: 16)
- * @param {boolean} showCount - Afficher le compteur (défaut: true)
  * @param {string} variant - 'default' | 'large' (défaut: 'default')
  */
 const LikeButton = ({
@@ -20,7 +19,6 @@ const LikeButton = ({
   targetId,
   initialLikesCount = 0,
   size = 16,
-  showCount = true,
   variant = 'default'
 }) => {
   const navigate = useNavigate();
@@ -48,14 +46,14 @@ const LikeButton = ({
 
   // Toggle du like
   const handleLikeToggle = async (e) => {
-    e.stopPropagation(); // Empêche la propagation
+    e.stopPropagation();
 
     if (!user) {
       navigate('/login');
       return;
     }
 
-    if (likePending) return; // Évite les double-clics
+    if (likePending) return;
 
     try {
       setLikePending(true);
@@ -65,7 +63,6 @@ const LikeButton = ({
         targetId
       });
 
-      // Mise à jour de l'état local
       setLiked(response.data.liked);
       setLikesCount(response.data.likesCount);
 
@@ -81,14 +78,19 @@ const LikeButton = ({
       className={`like-button like-button--${variant} ${liked ? 'liked' : ''} ${likePending ? 'pending' : ''}`}
       onClick={handleLikeToggle}
       disabled={likePending}
-      aria-label={liked ? 'Retirer le like' : 'Liker'}
+      title={liked ? 'Retirer le like' : 'J\'aime'}
+      aria-label={liked ? 'Retirer le like' : 'J\'aime'}
     >
       <Heart
         size={size}
         fill={liked ? '#ff6b6b' : 'none'}
         stroke={liked ? '#ff6b6b' : 'currentColor'}
+        className="like-button__icon"
       />
-      {showCount && <span className="like-button__count">{likesCount}</span>}
+      {/* LOGIQUE AMÉLIORÉE : "J'aime" si pas liké, sinon affiche le nombre */}
+      <span className="like-button__text">
+        {liked ? likesCount : "J'aime"}
+      </span>
     </button>
   );
 };
