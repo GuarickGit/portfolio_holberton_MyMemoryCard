@@ -286,65 +286,6 @@
   color: var(--text-secondary);
 }
 
-/* ============================================
-   BOUTON LIKE - INTERACTIF
-   ============================================ */
-
-.review-card__stat--like {
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: none;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Effet scale + couleur en hover */
-.review-card__stat--like:hover:not(:disabled) {
-  transform: scale(1.1);
-}
-
-.review-card__stat--like:hover:not(:disabled) svg {
-  color: #ff6b6b;
-}
-
-.review-card__stat--like:hover:not(:disabled) span {
-  color: #ff6b6b;
-}
-
-/* État liked (rouge permanent) */
-.review-card__stat--like.liked {
-  animation: likeAnimation 0.3s ease;
-}
-
-.review-card__stat--like.liked svg {
-  color: #ff6b6b;
-}
-
-.review-card__stat--like.liked span {
-  color: #ff6b6b;
-}
-
-/* État pending (chargement) */
-.review-card__stat--like.pending {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* Animation au clic */
-@keyframes likeAnimation {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-}
-
 /* RESPONSIVE - Tablette */
 @media (max-width: 1024px) {
   .review-card {

@@ -1,20 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Star, Heart, MessageCircle, AlertTriangle } from 'lucide-react';
+import { Star, MessageCircle, AlertTriangle } from 'lucide-react';
 import Button from '../../components/ui/Button/Button';
+import LikeButton from '../../components/features/LikeButton/LikeButton';
+import CommentSection from '../../components/features/Comments/CommentSection/CommentSection';
 import api from '../../services/api';
 import './ReviewDetail.css';
 
 /**
  * ReviewDetail - Page détaillée d'une review
  * Route : /reviews/:id
- *
- * Fonctionnalités :
- * - Affiche la review complète
- * - Gestion du spoiler
- * - Bouton modifier si propriétaire
- * - Likes et commentaires (à venir)
  */
 const ReviewDetail = () => {
   const { id } = useParams();
@@ -171,18 +167,26 @@ const ReviewDetail = () => {
             </div>
           )}
 
-          {/* FOOTER - Stats */}
+          {/* FOOTER - Stats AVEC LIKEBUTTON */}
           <div className="review-detail__stats">
-            <div className="review-detail__stat">
-              <Heart size={20} />
-              <span>{review.likes_count || 0} like{review.likes_count > 1 ? 's' : ''}</span>
-            </div>
+            <LikeButton
+              targetType="review"
+              targetId={review.id}
+              initialLikesCount={review.likes_count || 0}
+              size={20}
+            />
             <div className="review-detail__stat">
               <MessageCircle size={20} />
               <span>{review.comments_count || 0} commentaire{review.comments_count > 1 ? 's' : ''}</span>
             </div>
           </div>
         </div>
+
+        {/* SECTION COMMENTAIRES */}
+        <CommentSection
+          targetType="review"
+          targetId={id}
+        />
       </div>
     </div>
   );

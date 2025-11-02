@@ -1,20 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Heart, MessageCircle, AlertTriangle } from 'lucide-react';
+import { MessageCircle, AlertTriangle } from 'lucide-react';
 import Button from '../../components/ui/Button/Button';
+import LikeButton from '../../components/features/LikeButton/LikeButton';
+import CommentSection from '../../components/features/Comments/CommentSection/CommentSection';
 import api from '../../services/api';
 import './MemoryDetail.css';
 
 /**
  * MemoryDetail - Page détaillée d'un souvenir
  * Route : /memories/:id
- *
- * Fonctionnalités :
- * - Affiche le souvenir complet
- * - Gestion du spoiler
- * - Bouton modifier si propriétaire
- * - Likes et commentaires (à venir)
  */
 const MemoryDetail = () => {
   const { id } = useParams();
@@ -150,18 +146,26 @@ const MemoryDetail = () => {
             </div>
           )}
 
-          {/* FOOTER - Stats */}
+          {/* FOOTER - Stats AVEC LIKEBUTTON */}
           <div className="memory-detail__stats">
-            <div className="memory-detail__stat">
-              <Heart size={20} />
-              <span>{memory.likes_count || 0} like{memory.likes_count > 1 ? 's' : ''}</span>
-            </div>
+            <LikeButton
+              targetType="memory"
+              targetId={memory.id}
+              initialLikesCount={memory.likes_count || 0}
+              size={20}
+            />
             <div className="memory-detail__stat">
               <MessageCircle size={20} />
               <span>{memory.comments_count || 0} commentaire{memory.comments_count > 1 ? 's' : ''}</span>
             </div>
           </div>
         </div>
+
+        {/* SECTION COMMENTAIRES */}
+        <CommentSection
+          targetType="memory"
+          targetId={id}
+        />
       </div>
     </div>
   );

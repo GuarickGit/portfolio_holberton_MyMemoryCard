@@ -1,0 +1,96 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext.jsx';
+import { Heart } from 'lucide-react';
+import api from '../../../services/api.js';
+import './LikeButton.css';
+
+/**
+ * LikeButton - Bouton like réutilisable pour reviews et memories
+ *
+ * @param {string} targetType - 'review' ou 'memory'
+ * @param {string} targetId - ID de la review ou memory
+ * @param {number} initialLikesCount - Nombre initial de likes
+ * @param {number} size - Taille de l'icône (défaut: 16)
+ * @param {boolean} showCount - Afficher le compteur (défaut: true)
+ * @param {string} variant - 'default' | 'large' (défaut: 'default')
+ */
+const LikeButton = ({
+  targetType,
+  targetId,
+  initialLikesCount = 0,
+  size = 16,
+  showCount = true,
+  variant = 'default'
+}) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(initialLikesCount);
+  const [likePending, setLikePending] = useState(false);
+
+  // Vérifier si l'utilisateur a déjà liké au chargement
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      if (!user) return;
+
+      try {
+        const response = await api.get(`/likes/${targetType}/${targetId}/check`);
+        setLiked(response.data.hasLiked);
+      } catch (error) {
+        console.error('Erreur vérification like:', error);
+      }
+    };
+
+    checkIfLiked();
+  }, [targetType, targetId, user]);
+
+  // Toggle du like
+  const handleLikeToggle = async (e) => {
+    e.stopPropagation(); // Empêche la propagation
+
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    if (likePending) return; // Évite les double-clics
+
+    try {
+      setLikePending(true);
+
+      const response = await api.post('/likes/toggle', {
+        targetType,
+        targetId
+      });
+
+      // Mise à jour de l'état local
+      setLiked(response.data.liked);
+      setLikesCount(response.data.likesCount);
+
+    } catch (error) {
+      console.error('Erreur toggle like:', error);
+    } finally {
+      setLikePending(false);
+    }
+  };
+
+  return (
+    <button
+      className={`like-button like-button--${variant} ${liked ? 'liked' : ''} ${likePending ? 'pending' : ''}`}
+      onClick={handleLikeToggle}
+      disabled={likePending}
+      aria-label={liked ? 'Retirer le like' : 'Liker'}
+    >
+      <Heart
+        size={size}
+        fill={liked ? '#ff6b6b' : 'none'}
+        stroke={liked ? '#ff6b6b' : 'currentColor'}
+      />
+      {showCount && <span className="like-button__count">{likesCount}</span>}
+    </button>
+  );
+};
+
+export default LikeButton;
