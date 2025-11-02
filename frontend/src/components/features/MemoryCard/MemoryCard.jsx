@@ -118,7 +118,7 @@ const MemoryCard = ({ memory }) => {
 
           {/* STATS */}
           <div className="memory-card__stats">
-            {/* LIKE BUTTON - REFACTORISÉ */}
+            {/* LIKE BUTTON */}
             <LikeButton
               targetType="memory"
               targetId={memory.id}
@@ -126,9 +126,12 @@ const MemoryCard = ({ memory }) => {
               size={16}
             />
 
+            {/* COMMENTAIRES - AVEC TEXTE */}
             <div className="memory-card__stat">
               <MessageCircle size={16} />
-              <span>{memory.comments_count || 0}</span>
+              <span>
+                {memory.comments_count || 0} commentaire{memory.comments_count > 1 ? 's' : ''}
+              </span>
             </div>
           </div>
         </div>

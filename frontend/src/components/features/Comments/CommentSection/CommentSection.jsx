@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../../../contexts/AuthContext.jsx';
+import { useAuth } from '../../../../contexts/AuthContext';
 import CommentForm from '../CommentForm/CommentForm.jsx';
 import CommentItem from '../CommentItem/CommentItem.jsx';
-import api from '../../../../services/api.js';
+import api from '../../../../services/api';
 import './CommentSection.css';
 
 /**
@@ -10,8 +10,9 @@ import './CommentSection.css';
  *
  * @param {string} targetType - 'review' ou 'memory'
  * @param {string} targetId - ID de la review ou memory
+ * @param {function} onCommentCountChange - Callback pour notifier le changement du nombre de commentaires
  */
-const CommentSection = ({ targetType, targetId }) => {
+const CommentSection = ({ targetType, targetId, onCommentCountChange }) => {
   const { user, isAuthenticated } = useAuth();
 
   const [comments, setComments] = useState([]);
@@ -46,6 +47,11 @@ const CommentSection = ({ targetType, targetId }) => {
   const handleCommentAdded = (newComment) => {
     // Ajoute le nouveau commentaire en haut de la liste
     setComments([newComment, ...comments]);
+
+    // Notifier le parent (+1)
+    if (onCommentCountChange) {
+      onCommentCountChange(1);
+    }
   };
 
   /**
@@ -62,6 +68,11 @@ const CommentSection = ({ targetType, targetId }) => {
    */
   const handleCommentDeleted = (commentId) => {
     setComments(comments.filter(c => c.id !== commentId));
+
+    // Notifier le parent (-1)
+    if (onCommentCountChange) {
+      onCommentCountChange(-1);
+    }
   };
 
   return (

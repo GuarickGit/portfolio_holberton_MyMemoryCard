@@ -43,6 +43,14 @@ const ReviewDetail = () => {
   // Vérifier si l'utilisateur est le propriétaire
   const isOwner = user && review && user.id === review.user_id;
 
+  // Callback pour mettre à jour le compteur de commentaires - CORRIGÉ
+  const handleCommentCountChange = (delta) => {
+    setReview(prev => ({
+      ...prev,
+      comments_count: parseInt(prev.comments_count || 0) + delta
+    }));
+  };
+
   // Générer les étoiles
   const renderStars = () => {
     if (!review) return null;
@@ -182,10 +190,11 @@ const ReviewDetail = () => {
           </div>
         </div>
 
-        {/* SECTION COMMENTAIRES */}
+        {/* SECTION COMMENTAIRES - AVEC CALLBACK */}
         <CommentSection
           targetType="review"
           targetId={id}
+          onCommentCountChange={handleCommentCountChange}
         />
       </div>
     </div>

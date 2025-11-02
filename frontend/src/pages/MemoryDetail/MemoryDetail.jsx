@@ -43,6 +43,14 @@ const MemoryDetail = () => {
   // Vérifier si l'utilisateur est le propriétaire
   const isOwner = user && memory && user.id === memory.user_id;
 
+  // Callback pour mettre à jour le compteur de commentaires - CORRIGÉ
+  const handleCommentCountChange = (delta) => {
+    setMemory(prev => ({
+      ...prev,
+      comments_count: parseInt(prev.comments_count || 0) + delta
+    }));
+  };
+
   // LOADING
   if (loading) {
     return (
@@ -161,10 +169,11 @@ const MemoryDetail = () => {
           </div>
         </div>
 
-        {/* SECTION COMMENTAIRES */}
+        {/* SECTION COMMENTAIRES - AVEC CALLBACK */}
         <CommentSection
           targetType="memory"
           targetId={id}
+          onCommentCountChange={handleCommentCountChange}
         />
       </div>
     </div>

@@ -135,7 +135,7 @@ const ReviewCard = ({ review }) => {
 
           {/* STATS */}
           <div className="review-card__stats">
-            {/* LIKE BUTTON - REFACTORISÉ */}
+            {/* LIKE BUTTON */}
             <LikeButton
               targetType="review"
               targetId={review.id}
@@ -143,9 +143,12 @@ const ReviewCard = ({ review }) => {
               size={16}
             />
 
+            {/* COMMENTAIRES - AVEC TEXTE */}
             <div className="review-card__stat">
               <MessageCircle size={16} />
-              <span>{review.comments_count || 0}</span>
+              <span>
+                {review.comments_count || 0} commentaire{review.comments_count > 1 ? 's' : ''}
+              </span>
             </div>
           </div>
         </div>
