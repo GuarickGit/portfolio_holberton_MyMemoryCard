@@ -1,0 +1,155 @@
+/* ============================================
+   COMMENT ITEM - Un commentaire individuel
+   ============================================ */
+
+.comment-item {
+  padding: var(--spacing-lg);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: border-color 0.2s;
+}
+
+.comment-item:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   HEADER - Avatar + Username + Date + Actions
+   ============================================ */
+
+.comment-item__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.comment-item__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-green);
+  flex-shrink: 0;
+}
+
+.comment-item__author {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.comment-item__username {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.comment-item__date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   ACTIONS - Modifier / Supprimer
+   ============================================ */
+
+.comment-item__actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-left: auto;
+}
+
+.comment-item__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.comment-item__action:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.comment-item__action--edit:hover {
+  color: var(--accent-cyan);
+}
+
+.comment-item__action--delete:hover {
+  color: var(--accent-red);
+}
+
+.comment-item__action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   CONTENU
+   ============================================ */
+
+.comment-item__content {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .comment-item {
+    padding: var(--spacing-md);
+  }
+
+  .comment-item__avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .comment-item__username {
+    font-size: 0.9rem;
+  }
+
+  .comment-item__date {
+    font-size: 0.75rem;
+  }
+
+  .comment-item__content {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .comment-item {
+    padding: var(--spacing-sm);
+  }
+
+  .comment-item__avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .comment-item__action {
+    width: 28px;
+    height: 28px;
+  }
+
+  .comment-item__action svg {
+    width: 12px;
+    height: 12px;
+  }
+}
