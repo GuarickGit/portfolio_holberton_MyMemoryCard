@@ -15,6 +15,9 @@ router.get('/trending', gameController.getTrendingGames);
 // GET /games/search - Rechercher des jeux sur RAWG
 router.get('/search', gameController.searchGamesController);
 
+// GET /games - Tous les jeux
+router.get('/', gameController.getAllGames);
+
 // GET /games/:rawgId - Détails d'un jeu
 router.get('/:rawgId', gameController.getGameDetails);
 

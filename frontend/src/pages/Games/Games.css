@@ -1,0 +1,259 @@
+/* ============================================
+   GAMES PAGE - Liste de tous les jeux
+   ============================================ */
+
+.games-page {
+  min-height: 100vh;
+  padding: 40px 24px;
+  background: var(--background);
+}
+
+.games-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.games-page__header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.games-page__title {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 12px 0;
+}
+
+.games-page__subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* GRID */
+.games-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+/* LOAD MORE SECTION */
+.games-page__load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.games-page__load-more-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: var(--primary-green);
+  border: none;
+  border-radius: 8px;
+  color: var(--background);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.games-page__load-more-button:hover:not(:disabled) {
+  background: #00ff84;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10, 208, 111, 0.3);
+}
+
+.games-page__load-more-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* SPINNER SMALL (pour le bouton) */
+.spinner--small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--background);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* END MESSAGE */
+.games-page__end-message {
+  text-align: center;
+  margin-top: 48px;
+  padding: 24px;
+  background: rgba(10, 208, 111, 0.1);
+  border-radius: 8px;
+}
+
+.games-page__end-message p {
+  color: var(--primary-green);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* LOADING */
+.games-page__loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.games-page__loading p {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+/* ERROR */
+.games-page__error {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.games-page__error p {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.games-page__retry {
+  padding: 12px 24px;
+  background: var(--primary-green);
+  border: none;
+  border-radius: 8px;
+  color: var(--background);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.games-page__retry:hover {
+  background: #00ff84;
+}
+
+/* EMPTY */
+.games-page__empty {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.games-page__empty p {
+  color: var(--text-secondary);
+  font-size: 18px;
+}
+
+/* RESPONSIVE - Tablette */
+@media (max-width: 1024px) {
+  .games-page__grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  .games-page__title {
+    font-size: 36px;
+  }
+
+  .games-page__subtitle {
+    font-size: 16px;
+  }
+
+  .games-page__load-more {
+    margin-top: 40px;
+  }
+
+  .games-page__end-message {
+    margin-top: 40px;
+  }
+}
+
+/* RESPONSIVE - Mobile */
+@media (max-width: 768px) {
+  .games-page {
+    padding: 24px 16px;
+  }
+
+  .games-page__grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .games-page__title {
+    font-size: 32px;
+  }
+
+  .games-page__header {
+    margin-bottom: 24px;
+  }
+
+  .games-page__load-more-button {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+
+  .games-page__load-more {
+    margin-top: 32px;
+  }
+
+  .games-page__end-message {
+    margin-top: 32px;
+    padding: 20px;
+  }
+
+  .games-page__end-message p {
+    font-size: 16px;
+  }
+}
+
+/* RESPONSIVE - Petit mobile */
+@media (max-width: 480px) {
+  .games-page__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .games-page__title {
+    font-size: 28px;
+  }
+
+  .games-page__subtitle {
+    font-size: 14px;
+  }
+
+  .games-page__load-more-button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .games-page__load-more {
+    margin-top: 24px;
+  }
+
+  .games-page__end-message {
+    margin-top: 24px;
+    padding: 16px;
+  }
+
+  .games-page__end-message p {
+    font-size: 14px;
+  }
+}

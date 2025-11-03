@@ -161,3 +161,32 @@ export const getTotalGamesCount = async (req, res) => {
     });
   }
 };
+
+
+/**
+ * GET /games
+ * Récupère tous les jeux triés par popularité globale
+ * Popularité = collections + reviews + memories
+ */
+export const getAllGames = async (req, res) => {
+  try {
+    // Paramètres de pagination optionnels
+    const limit = req.query.limit ? parseInt(req.query.limit) : null;
+    const page = parseInt(req.query.page) || 1;
+    const offset = limit ? (page - 1) * limit : 0;
+
+    const games = await Game.getAllGamesByPopularity(limit, offset);
+
+    return res.status(200).json({
+      count: games.length,
+      page: page,
+      games: games
+    });
+
+  } catch (error) {
+    console.error('Erreur dans getAllGames:', error.message);
+    return res.status(500).json({
+      error: 'Erreur lors de la récupération des jeux'
+    });
+  }
+};

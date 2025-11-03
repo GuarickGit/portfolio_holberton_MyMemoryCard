@@ -302,6 +302,65 @@ export const getGameWithStats = async (rawgId) => {
   }
 };
 
+
+/**
+ * Récupère tous les jeux triés par popularité globale
+ * Popularité = nombre total de collections + reviews + memories
+ * @param {Number} limit - Nombre de jeux à retourner (optionnel)
+ * @param {Number} offset - Offset pour la pagination (optionnel)
+ * @returns {Array} Liste des jeux avec leur score de popularité
+ */
+export const getAllGamesByPopularity = async (limit = null, offset = 0) => {
+  try {
+    let query = `
+      SELECT
+        g.id,
+        g.rawg_id,
+        g.name,
+        g.background_image,
+        g.cover_url,
+        g.released,
+        g.rating,
+        COUNT(DISTINCT c.id) as collection_count,
+        COUNT(DISTINCT r.id) as review_count,
+        COUNT(DISTINCT m.id) as memory_count,
+        (COUNT(DISTINCT c.id) + COUNT(DISTINCT r.id) + COUNT(DISTINCT m.id)) as popularity_score
+      FROM games g
+      LEFT JOIN collections c ON g.id = c.game_id
+      LEFT JOIN reviews r ON g.id = r.game_id
+      LEFT JOIN memories m ON g.id = m.game_id
+      GROUP BY g.id
+      ORDER BY popularity_score DESC, g.name ASC
+    `;
+
+    const params = [];
+
+    // Ajouter LIMIT si fourni
+    if (limit !== null) {
+      params.push(limit);
+      query += ` LIMIT $${params.length}`;
+    }
+
+    // Ajouter OFFSET
+    params.push(offset);
+    query += ` OFFSET $${params.length}`;
+
+    const result = await pool.query(query, params);
+
+    return result.rows.map(game => ({
+      ...game,
+      collection_count: parseInt(game.collection_count),
+      review_count: parseInt(game.review_count),
+      memory_count: parseInt(game.memory_count),
+      popularity_score: parseInt(game.popularity_score)
+    }));
+
+  } catch (error) {
+    console.error('Erreur dans getAllGamesByPopularity:', error.message);
+    throw error;
+  }
+};
+
 export default {
   findGameByRawgId,
   findGameById,
@@ -309,5 +368,6 @@ export default {
   createGame,
   getTopGames,
   getTrendingGames,
-  getGameWithStats
+  getGameWithStats,
+  getAllGamesByPopularity
 };
