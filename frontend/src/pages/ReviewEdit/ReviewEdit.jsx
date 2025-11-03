@@ -8,12 +8,6 @@ import './ReviewEdit.css';
 /**
  * ReviewEdit - Page d'édition d'une review
  * Route : /reviews/:id/edit
- *
- * Fonctionnalités :
- * - Charge la review existante
- * - Vérifie que l'utilisateur est bien le propriétaire
- * - Affiche le formulaire pré-rempli
- * - Redirection après modification
  */
 const ReviewEdit = () => {
   const { id } = useParams();
@@ -23,6 +17,7 @@ const ReviewEdit = () => {
   const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   // Redirection si non connecté
   useEffect(() => {
@@ -39,24 +34,46 @@ const ReviewEdit = () => {
   const fetchReview = async () => {
     try {
       setLoading(true);
-
-      // Récupérer la review via l'API
       const response = await api.get(`/reviews/${id}`);
       const reviewData = response.data.review;
 
-      // Vérifier que l'utilisateur est bien le propriétaire
       if (reviewData.user_id !== user.id) {
         setError('Vous n\'êtes pas autorisé à modifier cette critique.');
         return;
       }
 
       setReview(reviewData);
-
     } catch (err) {
       console.error('Erreur chargement review:', err);
       setError('Impossible de charger la critique.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  /**
+   * Suppression de la review
+   */
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      'Êtes-vous sûr de vouloir supprimer définitivement cette critique ? Cette action est irréversible.'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+      await api.delete(`/reviews/${id}`);
+
+      // Redirection vers le profil avec message de succès
+      navigate('/profile', {
+        state: { message: 'Critique supprimée avec succès' }
+      });
+    } catch (err) {
+      console.error('Erreur suppression review:', err);
+      alert('Impossible de supprimer la critique. Veuillez réessayer.');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -114,6 +131,15 @@ const ReviewEdit = () => {
               <h2>{review.game_name}</h2>
             </div>
           </div>
+
+          {/* BOUTON SUPPRIMER - NOUVEAU */}
+          <button
+            className="review-edit__delete"
+            onClick={handleDelete}
+            disabled={deleting}
+          >
+            {deleting ? 'Suppression...' : 'Supprimer'}
+          </button>
         </div>
 
         {/* FORMULAIRE */}

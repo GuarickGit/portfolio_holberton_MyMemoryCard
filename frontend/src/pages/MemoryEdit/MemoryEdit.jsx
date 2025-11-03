@@ -8,12 +8,6 @@ import './MemoryEdit.css';
 /**
  * MemoryEdit - Page d'édition d'un souvenir
  * Route : /memories/:id/edit
- *
- * Fonctionnalités :
- * - Charge le souvenir existant
- * - Vérifie que l'utilisateur est bien le propriétaire
- * - Affiche le formulaire pré-rempli
- * - Redirection après modification
  */
 const MemoryEdit = () => {
   const { id } = useParams();
@@ -23,6 +17,7 @@ const MemoryEdit = () => {
   const [memory, setMemory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   // Redirection si non connecté
   useEffect(() => {
@@ -39,24 +34,46 @@ const MemoryEdit = () => {
   const fetchMemory = async () => {
     try {
       setLoading(true);
-
-      // Récupérer le souvenir via l'API
       const response = await api.get(`/memories/${id}`);
       const memoryData = response.data.memory;
 
-      // Vérifier que l'utilisateur est bien le propriétaire
       if (memoryData.user_id !== user.id) {
         setError('Vous n\'êtes pas autorisé à modifier ce souvenir.');
         return;
       }
 
       setMemory(memoryData);
-
     } catch (err) {
       console.error('Erreur chargement memory:', err);
       setError('Impossible de charger le souvenir.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  /**
+   * Suppression du souvenir
+   */
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      'Êtes-vous sûr de vouloir supprimer définitivement ce souvenir ? Cette action est irréversible.'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+      await api.delete(`/memories/${id}`);
+
+      // Redirection vers le profil avec message de succès
+      navigate('/profile', {
+        state: { message: 'Souvenir supprimé avec succès' }
+      });
+    } catch (err) {
+      console.error('Erreur suppression memory:', err);
+      alert('Impossible de supprimer le souvenir. Veuillez réessayer.');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -114,6 +131,15 @@ const MemoryEdit = () => {
               <h2>{memory.game_name}</h2>
             </div>
           </div>
+
+          {/* BOUTON SUPPRIMER - NOUVEAU */}
+          <button
+            className="memory-edit__delete"
+            onClick={handleDelete}
+            disabled={deleting}
+          >
+            {deleting ? 'Suppression...' : 'Supprimer'}
+          </button>
         </div>
 
         {/* FORMULAIRE */}

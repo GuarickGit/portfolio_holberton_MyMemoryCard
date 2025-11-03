@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Star, MessageCircle, AlertTriangle } from 'lucide-react';
-import Button from '../../components/ui/Button/Button';
 import LikeButton from '../../components/features/LikeButton/LikeButton';
 import CommentSection from '../../components/features/Comments/CommentSection/CommentSection';
 import api from '../../services/api';
@@ -21,6 +20,7 @@ const ReviewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   // Charger la review
   useEffect(() => {
@@ -43,12 +43,38 @@ const ReviewDetail = () => {
   // Vérifier si l'utilisateur est le propriétaire
   const isOwner = user && review && user.id === review.user_id;
 
-  // Callback pour mettre à jour le compteur de commentaires - CORRIGÉ
+  // Callback pour mettre à jour le compteur de commentaires
   const handleCommentCountChange = (delta) => {
     setReview(prev => ({
       ...prev,
       comments_count: parseInt(prev.comments_count || 0) + delta
     }));
+  };
+
+  /**
+   * Suppression de la review
+   */
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      'Êtes-vous sûr de vouloir supprimer définitivement cette critique ? Cette action est irréversible.'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+      await api.delete(`/reviews/${id}`);
+
+      // Redirection vers le profil avec message de succès
+      navigate('/profile', {
+        state: { message: 'Critique supprimée avec succès' }
+      });
+    } catch (err) {
+      console.error('Erreur suppression review:', err);
+      alert('Impossible de supprimer la critique. Veuillez réessayer.');
+    } finally {
+      setDeleting(false);
+    }
   };
 
   // Générer les étoiles
@@ -79,7 +105,7 @@ const ReviewDetail = () => {
     return (
       <div className="review-detail__error">
         <p>{error || 'Critique introuvable'}</p>
-        <Button onClick={() => navigate(-1)}>Retour</Button>
+        <button onClick={() => navigate(-1)}>Retour</button>
       </div>
     );
   }
@@ -112,7 +138,7 @@ const ReviewDetail = () => {
 
         {/* CARD DE LA REVIEW */}
         <div className="review-detail__card">
-          {/* HEADER - Avatar + Username + Date */}
+          {/* HEADER - Avatar + Username + Date + BOUTONS */}
           <div className="review-detail__header">
             <div className="review-detail__author">
               <img
@@ -132,14 +158,23 @@ const ReviewDetail = () => {
               </div>
             </div>
 
-            {/* BOUTON MODIFIER */}
+            {/* BOUTONS MODIFIER + SUPPRIMER */}
             {isOwner && (
-              <Button
-                variant="secondary"
-                onClick={() => navigate(`/reviews/${id}/edit`)}
-              >
-                Modifier
-              </Button>
+              <div className="review-detail__actions">
+                <button
+                  className="review-detail__edit-button"
+                  onClick={() => navigate(`/reviews/${id}/edit`)}
+                >
+                  Modifier
+                </button>
+                <button
+                  className="review-detail__delete-button"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                >
+                  {deleting ? 'Suppression...' : 'Supprimer'}
+                </button>
+              </div>
             )}
           </div>
 
@@ -190,7 +225,7 @@ const ReviewDetail = () => {
           </div>
         </div>
 
-        {/* SECTION COMMENTAIRES - AVEC CALLBACK */}
+        {/* SECTION COMMENTAIRES */}
         <CommentSection
           targetType="review"
           targetId={id}

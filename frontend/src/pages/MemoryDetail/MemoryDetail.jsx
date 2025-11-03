@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { MessageCircle, AlertTriangle } from 'lucide-react';
-import Button from '../../components/ui/Button/Button';
 import LikeButton from '../../components/features/LikeButton/LikeButton';
 import CommentSection from '../../components/features/Comments/CommentSection/CommentSection';
 import api from '../../services/api';
@@ -21,6 +20,7 @@ const MemoryDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   // Charger le souvenir
   useEffect(() => {
@@ -43,12 +43,38 @@ const MemoryDetail = () => {
   // Vérifier si l'utilisateur est le propriétaire
   const isOwner = user && memory && user.id === memory.user_id;
 
-  // Callback pour mettre à jour le compteur de commentaires - CORRIGÉ
+  // Callback pour mettre à jour le compteur de commentaires
   const handleCommentCountChange = (delta) => {
     setMemory(prev => ({
       ...prev,
       comments_count: parseInt(prev.comments_count || 0) + delta
     }));
+  };
+
+  /**
+   * Suppression du souvenir
+   */
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      'Êtes-vous sûr de vouloir supprimer définitivement ce souvenir ? Cette action est irréversible.'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+      await api.delete(`/memories/${id}`);
+
+      // Redirection vers le profil avec message de succès
+      navigate('/profile', {
+        state: { message: 'Souvenir supprimé avec succès' }
+      });
+    } catch (err) {
+      console.error('Erreur suppression memory:', err);
+      alert('Impossible de supprimer le souvenir. Veuillez réessayer.');
+    } finally {
+      setDeleting(false);
+    }
   };
 
   // LOADING
@@ -66,7 +92,7 @@ const MemoryDetail = () => {
     return (
       <div className="memory-detail__error">
         <p>{error || 'Souvenir introuvable'}</p>
-        <Button onClick={() => navigate(-1)}>Retour</Button>
+        <button onClick={() => navigate(-1)}>Retour</button>
       </div>
     );
   }
@@ -99,7 +125,7 @@ const MemoryDetail = () => {
 
         {/* CARD DU SOUVENIR */}
         <div className="memory-detail__card">
-          {/* HEADER - Avatar + Username + Date */}
+          {/* HEADER - Avatar + Username + Date + BOUTONS */}
           <div className="memory-detail__header">
             <div className="memory-detail__author">
               <img
@@ -119,14 +145,23 @@ const MemoryDetail = () => {
               </div>
             </div>
 
-            {/* BOUTON MODIFIER */}
+            {/* BOUTONS MODIFIER + SUPPRIMER */}
             {isOwner && (
-              <Button
-                variant="secondary"
-                onClick={() => navigate(`/memories/${id}/edit`)}
-              >
-                Modifier
-              </Button>
+              <div className="memory-detail__actions">
+                <button
+                  className="memory-detail__edit-button"
+                  onClick={() => navigate(`/memories/${id}/edit`)}
+                >
+                  Modifier
+                </button>
+                <button
+                  className="memory-detail__delete-button"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                >
+                  {deleting ? 'Suppression...' : 'Supprimer'}
+                </button>
+              </div>
             )}
           </div>
 
@@ -169,7 +204,7 @@ const MemoryDetail = () => {
           </div>
         </div>
 
-        {/* SECTION COMMENTAIRES - AVEC CALLBACK */}
+        {/* SECTION COMMENTAIRES */}
         <CommentSection
           targetType="memory"
           targetId={id}

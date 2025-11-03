@@ -132,6 +132,7 @@
   align-items: center;
   margin-bottom: 24px;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .review-detail__author {
@@ -158,6 +159,35 @@
   color: var(--text-secondary);
   font-size: 14px;
   margin: 4px 0 0 0;
+}
+
+/* ACTIONS - Boutons Modifier + Supprimer */
+.review-detail__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.review-detail__edit-button,
+.review-detail__delete-button {
+  background-color: rgba(255, 92, 92, 0.9);
+  border: 1px solid var(--primary-green);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.review-detail__edit-button:hover,
+.review-detail__delete-button:hover:not(:disabled) {
+  background-color: rgba(253, 38, 38, 0.9);
+}
+
+.review-detail__delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* TITRE */
@@ -282,6 +312,10 @@
     align-items: flex-start;
   }
 
+  .review-detail__actions {
+    width: 100%;
+  }
+
   .review-detail__title {
     font-size: 20px;
   }
@@ -296,5 +330,14 @@
   .review-detail__stats {
     flex-direction: column;
     gap: 12px;
+  }
+
+  .review-detail__actions {
+    flex-direction: column;
+  }
+
+  .review-detail__edit-button,
+  .review-detail__delete-button {
+    width: 100%;
   }
 }
