@@ -231,20 +231,21 @@
 }
 
 .review-card__read-more {
-  background: none;
-  border: none;
+  background-color: #20945c;
+  border: 1px solid var(--primary-green);
 
   color: white;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  padding: 0;
+  padding: 6px 12px;
+  border-radius: 4px;
 
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .review-card__read-more:hover {
-  color: rgb(79, 240, 133);
+  background-color: #04d470;
 }
 
 /* BOUTON MODIFIER */

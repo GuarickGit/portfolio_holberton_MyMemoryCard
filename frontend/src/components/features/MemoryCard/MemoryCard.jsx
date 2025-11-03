@@ -105,7 +105,7 @@ const MemoryCard = ({ memory }) => {
               className="memory-card__read-more"
               onClick={handleReadMore}
             >
-              Lire le souvenir
+              Voir plus
             </button>
 
             {/* BOUTON MODIFIER - Visible seulement si propriétaire */}

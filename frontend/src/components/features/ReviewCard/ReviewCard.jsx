@@ -122,7 +122,7 @@ const ReviewCard = ({ review }) => {
               className="review-card__read-more"
               onClick={handleReadMore}
             >
-              Lire la critique
+              Voir plus
             </button>
 
             {/* BOUTON MODIFIER - Visible seulement si propriétaire */}
