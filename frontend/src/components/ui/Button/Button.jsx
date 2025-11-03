@@ -1,9 +1,13 @@
 import './Button.css';
 
-// children = le texte du bouton
-// onClick = fonction à exécuter quand on clique
-// disabled = désactive le bouton (optionnel)
-// variant = style du bouton : 'primary' (vert) ou 'secondary' (optionnel)
+/**
+ * Button - Composant bouton réutilisable
+ *
+ * @param {ReactNode} children - Le texte/contenu du bouton
+ * @param {function} onClick - Fonction à exécuter au clic
+ * @param {boolean} disabled - Désactive le bouton (défaut: false)
+ * @param {string} variant - Style du bouton : 'primary' (vert) | 'secondary' (gris) | 'danger' (rouge)
+ */
 function Button({ children, onClick, disabled = false, variant = 'primary' }) {
   return (
     <button

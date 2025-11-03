@@ -32,6 +32,7 @@
   transform: translateY(0);
 }
 
+/* Variant Secondary (transparent) */
 .button-secondary {
   background: none;
   color: white;
@@ -41,7 +42,22 @@
   transform: translateY(-2px);
 }
 
-.button-seconday:active:not(:disabled) {
+.button-secondary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Variant Danger (rouge) */
+.button-danger {
+  background-color: rgba(255, 92, 92, 0.9);
+  color: white;
+}
+
+.button-danger:hover:not(:disabled) {
+  background-color: rgba(253, 38, 38, 0.9);
+  transform: translateY(-2px);
+}
+
+.button-danger:active:not(:disabled) {
   transform: translateY(0);
 }
 
