@@ -1,0 +1,54 @@
+.follow-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0ad06f 0%, #08b55f 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(10, 208, 111, 0.3);
+}
+
+.follow-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10, 208, 111, 0.4);
+}
+
+.follow-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* État "Déjà abonné" */
+.follow-button--following {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--primary-green);
+  color: white;
+  box-shadow: none;
+}
+
+.follow-button--following:hover:not(:disabled) {
+  background: rgba(255, 92, 92, 0.9);
+  border-color: #ff4444;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+}
+
+/* État loading */
+.follow-button:disabled,
+.follow-button--loading {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .follow-button {
+    padding: 14px 28px;
+  }
+}

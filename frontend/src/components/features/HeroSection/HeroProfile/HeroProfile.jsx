@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CircularStat from '../CircularStat/CircularStat';
 import Button from '../../../ui/Button/Button';
+import FollowButton from '../../FollowButton/FollowButton';
 import GameCard from '../../GameCard/GameCard';
 import api from '../../../../services/api';
 import './HeroProfile.css';
@@ -57,6 +58,16 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
       fetchData();
     }
   }, [user?.id]);
+
+  /**
+   * Callback pour mettre à jour le compteur de followers
+   */
+  const handleFollowChange = (delta) => {
+    setStats(prev => ({
+      ...prev,
+      total_followers: Math.max(0, (prev?.total_followers || 0) + delta)
+    }));
+  };
 
   // ============================================
   // FORMULES DE PROGRESSION (basées sur xpHelper.js backend)
@@ -158,11 +169,11 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
           />
           <div className="hero-profile__follow-stats">
             <div className="hero-profile__follow-stat">
-              <strong>{stats?.total_following || 0}</strong>
+              <strong>{stats?.total_followers || 0}</strong>
               <span>abonnés</span>
             </div>
             <div className="hero-profile__follow-stat">
-              <strong>{stats?.total_followers || 0}</strong>
+              <strong>{stats?.total_following || 0}</strong>
               <span>abonnements</span>
             </div>
           </div>
@@ -181,9 +192,10 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
                 Modifier le profil
               </Button>
             ) : (
-              <Button variant="primary">
-                S'abonner
-              </Button>
+              <FollowButton
+                userId={user.id}
+                onFollowChange={handleFollowChange}
+              />
             )}
             <Button variant="secondary">
               ···
