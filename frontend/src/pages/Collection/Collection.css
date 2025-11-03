@@ -127,7 +127,13 @@
 
 .collection__sort:focus {
   outline: none;
-  border-color: var(--primary-green);
+  border-color: white;
+}
+
+.collection__sort option {
+  background-color:  #1f1f1f;
+  color: var(--text-primary);
+  padding: 10px;
 }
 
 /* GRILLE */
