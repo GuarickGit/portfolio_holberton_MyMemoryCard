@@ -26,12 +26,12 @@ router.get('/search', searchUsersController);
  * GET /users/:userId/stats
  * Récupère les statistiques d'un utilisateur
  */
-router.get('/:userId/stats', verifyToken, getUserStatsController);
+router.get('/:userId/stats', getUserStatsController);
 
 /**
  * GET /users/:userId
  * Récupère le profil public d'un utilisateur
  */
-router.get("/:userId", verifyToken, getUserProfile);
+router.get("/:userId", getUserProfile);
 
 export default router;
