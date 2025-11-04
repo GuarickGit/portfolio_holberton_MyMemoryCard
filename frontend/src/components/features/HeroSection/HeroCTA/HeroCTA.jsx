@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useAuthModal } from '../../../../contexts/AuthModalContext';
 import Button from '../../../ui/Button/Button';
 import './HeroCTA.css';
 
@@ -7,7 +7,7 @@ import './HeroCTA.css';
  * Affiche un Call-To-Action pour inciter à s'inscrire
  */
 const HeroCTA = () => {
-  const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
 
   return (
     <div className="hero-cta">
@@ -20,7 +20,7 @@ const HeroCTA = () => {
       <Button
         variant="primary"
         size="large"
-        onClick={() => navigate('/signup')}
+        onClick={() => openAuthModal('signup')}
       >
         Commencer gratuitement
       </Button>
