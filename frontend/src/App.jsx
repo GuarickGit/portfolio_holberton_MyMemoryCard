@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { AuthModalProvider } from './contexts/AuthModalContext';
+import AuthModal from './components/modals/AuthModal/AuthModal';
 import ScrollToTop from './components/features/ScrollToTop';
 import Header from './components/layout/Header/Header';
 import Home from './pages/Home/Home';
@@ -28,46 +30,50 @@ import ProfileEdit from './pages/ProfilEdit/ProfileEdit';
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh'
-        }}>
+      <AuthModalProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh'
+          }}>
 
-          <Header />
+            <Header />
 
-          <main style={{ flex: 1 }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/games" element={<Games />} />
-              <Route path="/reviews" element={<Reviews />} />
-              <Route path="/memories" element={<Memories />} />
-              <Route path="/achievements" element={<Achievements />} />
-              <Route path="/profile/:userId" element={<Profile />} />
-              <Route path="/profile/setup" element={<ProfileSetup />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/games/:rawgId" element={<GameDetails />} />
-              <Route path="/games/:rawgId/review/new" element={<ReviewCreate />} />
-              <Route path="/games/:rawgId/memory/new" element={<MemoryCreate />} />
-              <Route path="/games/:rawgId/reviews" element={<GameReviews />} />
-              <Route path="/games/:rawgId/memories" element={<GameMemories />} />
-              <Route path="/reviews/:id/edit" element={<ReviewEdit />} />
-              <Route path="/memories/:id/edit" element={<MemoryEdit />} />
-              <Route path="/collection" element={<Collection />} />
-              <Route path="/profile/:userId/collection" element={<Collection />} />
-              <Route path="/reviews/:id" element={<ReviewDetail />} />
-              <Route path="/memories/:id" element={<MemoryDetail />} />
-              <Route path="/profile/edit" element={<ProfileEdit />} />
-            </Routes>
-          </main>
+            <main style={{ flex: 1 }}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/games" element={<Games />} />
+                <Route path="/reviews" element={<Reviews />} />
+                <Route path="/memories" element={<Memories />} />
+                <Route path="/achievements" element={<Achievements />} />
+                <Route path="/profile/:userId" element={<Profile />} />
+                <Route path="/profile/setup" element={<ProfileSetup />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/faq" element={<Faq />} />
+                <Route path="/games/:rawgId" element={<GameDetails />} />
+                <Route path="/games/:rawgId/review/new" element={<ReviewCreate />} />
+                <Route path="/games/:rawgId/memory/new" element={<MemoryCreate />} />
+                <Route path="/games/:rawgId/reviews" element={<GameReviews />} />
+                <Route path="/games/:rawgId/memories" element={<GameMemories />} />
+                <Route path="/reviews/:id/edit" element={<ReviewEdit />} />
+                <Route path="/memories/:id/edit" element={<MemoryEdit />} />
+                <Route path="/collection" element={<Collection />} />
+                <Route path="/profile/:userId/collection" element={<Collection />} />
+                <Route path="/reviews/:id" element={<ReviewDetail />} />
+                <Route path="/memories/:id" element={<MemoryDetail />} />
+                <Route path="/profile/edit" element={<ProfileEdit />} />
+              </Routes>
+            </main>
 
-          <Footer />
-        </div>
-      </BrowserRouter>
+            <Footer />
+          </div>
+
+          <AuthModal />
+        </BrowserRouter>
+      </AuthModalProvider>
     </AuthProvider>
   );
 }
