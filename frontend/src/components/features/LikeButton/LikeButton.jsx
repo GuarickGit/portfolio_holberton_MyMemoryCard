@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext.jsx';
+import { useAuthModal } from '../../../contexts/AuthModalContext.jsx';
 import { Heart } from 'lucide-react';
 import api from '../../../services/api.js';
 import './LikeButton.css';
@@ -21,8 +21,8 @@ const LikeButton = ({
   size = 16,
   variant = 'default'
 }) => {
-  const navigate = useNavigate();
   const { user } = useAuth();
+  const { openAuthModal } = useAuthModal();
 
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikesCount);
@@ -49,7 +49,7 @@ const LikeButton = ({
     e.stopPropagation();
 
     if (!user) {
-      navigate('/login');
+      openAuthModal('login');
       return;
     }
 

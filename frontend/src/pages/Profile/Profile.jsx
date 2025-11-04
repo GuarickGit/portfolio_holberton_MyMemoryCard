@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import HeroSection from '../../components/features/HeroSection/HeroSection';
 import ReviewCard from '../../components/features/ReviewCard/ReviewCard';
@@ -9,6 +9,7 @@ import './Profile.css';
 
 function Profile() {
   const { userId } = useParams();
+  const navigate = useNavigate();
   const { user: currentUser } = useAuth();
 
   const [profileUser, setProfileUser] = useState(null);
@@ -19,10 +20,19 @@ function Profile() {
 
   // Détermine si c'est notre propre profil
   const isOwnProfile = currentUser && (!userId || userId === currentUser.id);
+
+  // CORRECTION : Si pas d'userId dans l'URL et pas connecté → erreur
   const targetUserId = userId || currentUser?.id;
 
   useEffect(() => {
     const fetchProfileData = async () => {
+      // Si aucun userId dans l'URL ET non connecté → redirection accueil
+      if (!userId && !currentUser) {
+        navigate('/');
+        return;
+      }
+
+      // Si pas de targetUserId → erreur
       if (!targetUserId) {
         setError('Utilisateur non trouvé');
         setLoading(false);
@@ -53,7 +63,7 @@ function Profile() {
     };
 
     fetchProfileData();
-  }, [targetUserId]);
+  }, [targetUserId, userId, currentUser, navigate]);
 
   // LOADING STATE
   if (loading) {
@@ -96,7 +106,7 @@ function Profile() {
             </h2>
             <button
               className="profile-section__view-all"
-              onClick={() => window.location.href = `/profile/${targetUserId}/reviews`}
+              onClick={() => navigate(`/profile/${targetUserId}/reviews`)}
             >
               {isOwnProfile
                 ? 'Voir toutes mes critiques →'
@@ -128,7 +138,7 @@ function Profile() {
             </h2>
             <button
               className="profile-section__view-all"
-              onClick={() => window.location.href = `/profile/${targetUserId}/memories`}
+              onClick={() => navigate(`/profile/${targetUserId}/memories`)}
             >
               {isOwnProfile
                 ? 'Voir tous mes souvenirs →'

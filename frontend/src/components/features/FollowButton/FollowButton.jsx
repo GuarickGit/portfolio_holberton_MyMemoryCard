@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useAuthModal } from '../../../contexts/AuthModalContext';
 import api from '../../../services/api';
 import './FollowButton.css';
 
@@ -11,6 +12,7 @@ import './FollowButton.css';
  */
 const FollowButton = ({ userId, onFollowChange }) => {
   const { isAuthenticated, user } = useAuth();
+  const { openAuthModal } = useAuthModal();
   const [isFollowing, setIsFollowing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
@@ -42,8 +44,7 @@ const FollowButton = ({ userId, onFollowChange }) => {
    */
   const handleToggleFollow = async () => {
     if (!isAuthenticated) {
-      // TODO: Ouvrir le modal de connexion
-      alert('Vous devez être connecté pour suivre un utilisateur');
+      openAuthModal('login');
       return;
     }
 

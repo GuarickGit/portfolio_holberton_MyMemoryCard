@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthModal } from '../../../../contexts/AuthModalContext';
 import { Star, BookmarkCheck, MessageSquare, Heart, ChevronDown } from 'lucide-react';
 import api from '../../../../services/api';
 import './GameInfo.css';
@@ -9,6 +10,7 @@ import './GameInfo.css';
  */
 const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated }) => {
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [isRatingLoading, setIsRatingLoading] = useState(false);
@@ -17,9 +19,22 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
   const isInCollection = collectionStatus?.inCollection;
 
   /**
+   * Vérifier l'authentification avant action
+   */
+  const checkAuth = () => {
+    if (!isAuthenticated) {
+      openAuthModal('login');
+      return false;
+    }
+    return true;
+  };
+
+  /**
    * Ajouter le jeu à la collection
    */
   const handleAddToCollection = async (status) => {
+    if (!checkAuth()) return;
+
     try {
       const response = await api.post('/collections', {
         rawg_id: game.rawg_id,
@@ -43,6 +58,8 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
    * Modifier le status du jeu dans la collection
    */
   const handleUpdateStatus = async (newStatus) => {
+    if (!checkAuth()) return;
+
     try {
       await api.patch(`/collections/${game.rawg_id}`, {
         status: newStatus
@@ -64,6 +81,8 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
    * Supprimer le jeu de la collection
    */
   const handleRemoveFromCollection = async () => {
+    if (!checkAuth()) return;
+
     if (!confirm('Voulez-vous vraiment retirer ce jeu de votre collection ?')) {
       return;
     }
@@ -88,6 +107,8 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
    * Noter le jeu (1-5 étoiles)
    */
   const handleRating = async (rating) => {
+    if (!checkAuth()) return;
+
     if (!isInCollection) {
       alert('Ajoutez ce jeu à votre collection pour le noter');
       return;
@@ -112,6 +133,30 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
   };
 
   /**
+   * Gérer le clic sur "Écrire une critique"
+   */
+  const handleWriteReview = () => {
+    if (!checkAuth()) return;
+    navigate(`/games/${game.rawg_id}/review/new`);
+  };
+
+  /**
+   * Gérer le clic sur "Écrire un souvenir"
+   */
+  const handleWriteMemory = () => {
+    if (!checkAuth()) return;
+    navigate(`/games/${game.rawg_id}/memory/new`);
+  };
+
+  /**
+   * Gérer l'ouverture du dropdown
+   */
+  const handleDropdownClick = () => {
+    if (!checkAuth()) return;
+    setShowStatusDropdown(!showStatusDropdown);
+  };
+
+  /**
    * Traduire le status en français
    */
   const getStatusLabel = (status) => {
@@ -131,8 +176,7 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
     return <BookmarkCheck size={18} />;
   };
 
-  if (!isAuthenticated) return null;
-
+  // Afficher les actions même si non authentifié (le modal s'ouvrira au clic)
   return (
     <div className="game-info">
       <div className="game-info__container">
@@ -141,8 +185,8 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
           {/* 1. RATING STARS */}
           <button
             className="game-info__action-item game-info__action-item--rating"
-            disabled={!isInCollection}
-            title={!isInCollection ? 'Ajoutez ce jeu à votre collection pour le noter' : ''}
+            disabled={isAuthenticated && !isInCollection}
+            title={isAuthenticated && !isInCollection ? 'Ajoutez ce jeu à votre collection pour le noter' : ''}
           >
             <div className="game-info__rating-wrapper">
               <div className="game-info__stars">
@@ -152,8 +196,8 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
                     size={24}
                     className={`game-info__star ${
                       (hoveredStar || currentRating) >= star ? 'game-info__star--filled' : ''
-                    } ${!isInCollection ? 'game-info__star--disabled' : ''}`}
-                    onMouseEnter={() => isInCollection && setHoveredStar(star)}
+                    } ${isAuthenticated && !isInCollection ? 'game-info__star--disabled' : ''}`}
+                    onMouseEnter={() => (isAuthenticated && isInCollection) && setHoveredStar(star)}
                     onMouseLeave={() => setHoveredStar(0)}
                     onClick={() => handleRating(star)}
                   />
@@ -170,14 +214,14 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
             <div className="game-info__action-dropdown">
               <button
                 className="game-info__action-item"
-                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                onClick={handleDropdownClick}
               >
                 <BookmarkCheck size={18} />
                 <span>Ajouter à ma collection</span>
                 <ChevronDown size={16} className={showStatusDropdown ? 'rotate' : ''} />
               </button>
 
-              {showStatusDropdown && (
+              {showStatusDropdown && isAuthenticated && (
                 <div className="game-info__dropdown">
                   <button onClick={() => handleAddToCollection('not_started')}>
                     Non commencé
@@ -198,7 +242,7 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
             <div className="game-info__action-dropdown">
               <button
                 className="game-info__action-item game-info__action-item--active"
-                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                onClick={handleDropdownClick}
               >
                 {getStatusIcon(collectionStatus?.status)}
                 <span>{getStatusLabel(collectionStatus?.status)}</span>
@@ -231,7 +275,7 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
           {/* 3. ÉCRIRE UNE CRITIQUE */}
           <button
             className="game-info__action-item"
-            onClick={() => navigate(`/games/${game.rawg_id}/review/new`)}
+            onClick={handleWriteReview}
           >
             <MessageSquare size={18} />
             <span>Écrire une critique</span>
@@ -240,7 +284,7 @@ const GameInfo = ({ game, collectionStatus, onCollectionUpdate, isAuthenticated 
           {/* 4. ÉCRIRE UN SOUVENIR */}
           <button
             className="game-info__action-item"
-            onClick={() => navigate(`/games/${game.rawg_id}/memory/new`)}
+            onClick={handleWriteMemory}
           >
             <Heart size={18} />
             <span>Écrire un souvenir</span>
