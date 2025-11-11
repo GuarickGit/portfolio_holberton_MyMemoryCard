@@ -152,8 +152,8 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
    * Succès : Pourcentage de succès obtenus (hardcodé pour le MVP)
    */
   const getAchievementsPercentage = () => {
-    const totalAchievements = 50; // TODO: Récupérer du backend plus tard
-    return Math.min((21 / totalAchievements) * 100, 100);
+    const totalAchievements = 50; // Récupérer du backend plus tard
+    return Math.min((0 / totalAchievements) * 100, 100);
   };
 
   return (
@@ -251,7 +251,7 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
           />
           <CircularStat
             label="succès"
-            value={21}
+            value={0}
             color="purple"
             percentage={getAchievementsPercentage()}
           />
