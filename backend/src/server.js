@@ -19,12 +19,12 @@ import adminRoutes from './routes/adminRoutes.js';
 dotenv.config() // Chargement des variables d'environnement AVANT tout le reste
 
 const app = express();
-const PORT = process.env.PORT || 5000; // Définition du port (depuis .env ou 5000 par défaut)
+const PORT = process.env.PORT
 
 // MIDDLEWARE CORS : Autorise les requêtes depuis le frontend
 app.use(cors({
   origin: process.env.FRONTEND_URL, // URL autorisée (http://localhost:5173)
-  credentials: true, // Permet l'envoi de cookies (pour les sessions si besoin)
+  credentials: true, // Permet l'envoi de cookies
 }));
 
 // MIDDLEWARE JSON : transforme le body JSON en objet JavaScript
@@ -36,20 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 // Route de test
 app.get("/", (req, res) => {
   res.json({
-    message: "🎮 MyMemoryCard API démarrée !",
+    message: "API MyMemoryCard démarrée !",
     version: "1.0.0",
-    sprint: "Sprint 5 - Likes & Comments",
-    endpoints: {
-      auth: "/auth/signup, /auth/login, /auth/logout",
-      users: "/users/me",
-      games: "/games/search",
-      collections: "/collections (POST, GET, PATCH /:gameId, DELETE /:gameId)",
-      memories: "/memories (GET, POST, PUT /:id, DELETE /:id, GET /game/:gameId, GET /user/:userId)",
-      reviews: "/reviews (GET, POST, PUT /:id, DELETE /:id, GET /game/:rawgId, GET /user/:userId)",
-      likes: "/likes (POST, DELETE, GET /:targetType/:targetId, GET /:targetType/:targetId/check)",
-      comments: "/comments (POST, GET /:targetType/:targetId, PUT /:commentId, DELETE /:commentId)",
-      follows: "/follows/:userId (POST, DELETE, GET /:userId/followers, GET /:userId/following, GET /:userId/check)"
-    }
   });
 });
 
