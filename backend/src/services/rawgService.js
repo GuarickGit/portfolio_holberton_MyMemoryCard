@@ -1,9 +1,10 @@
-import dotenv from "dotenv"; // Pour lire le .env
+import axios from 'axios';
+import dotenv from "dotenv";
 
-dotenv.config(); // Charge les variables du fichier .env dans process.env
+dotenv.config(); // Charge les variables du fichier .env
 
-const RAWG_API_KEY = process.env.RAWG_API_KEY;
-const RAWG_BASE_URL = 'https://api.rawg.io/api';
+const RAWG_API_KEY = process.env.RAWG_API_KEY; // Clé API RAWG depuis .env
+const RAWG_BASE_URL = 'https://api.rawg.io/api'; // URL de base de l'API RAWG
 
 /**
  * Recherche des jeux sur l'API RAWG
@@ -14,26 +15,26 @@ const RAWG_BASE_URL = 'https://api.rawg.io/api';
  */
 export const searchGames = async (query, page = 1, pageSize = 20) => {
   try {
-    // Construction de l'URL avec les paramètres
-    const url = `${RAWG_BASE_URL}/games?key=${RAWG_API_KEY}&search=${query}&page=${page}&page_size=${pageSize}`;
+    // Appel GET à l'API RAWG avec axios
+    // axios construit automatiquement l'URL avec les paramètres
+    const response = await axios.get(`${RAWG_BASE_URL}/games`, {
+      params: {
+        key: RAWG_API_KEY,      // Clé API pour l'authentification
+        search: query,          // Terme de recherche
+        page: page,             // Numéro de page
+        page_size: pageSize     // Nombre de résultats par page
+      }
+    });
 
-    // Appel à l'API RAWG
-    const response = await fetch(url);
-
-    // Vérifier si la requête a réussi
-    if (!response.ok) {
-      throw new Error(`Erreur RAWG API: ${response.status}`);
-    }
-
-    // Convertir la réponse en JSON
-    const data = await response.json();
-
-    // Retourner les données
-    return data;
+    // axios transforme automatiquement la réponse en JSON
+    // response.data contient directement l'objet { count, results }
+    return response.data;
 
   } catch (error) {
-    console.error('Erreur dans searchGames: ', error.message);
-    return null;
+    // En cas d'erreur (API down, mauvaise clé, etc.)
+    // error.response?.data contient les détails de l'erreur de l'API si disponible
+    console.error('Erreur dans searchGames:', error.response?.data || error.message);
+    return null; // Retourne null au lieu de crasher l'app
   }
 };
 
@@ -44,25 +45,20 @@ export const searchGames = async (query, page = 1, pageSize = 20) => {
  */
 export const getGameDetails = async (rawgId) => {
   try {
-    // Construction de l'URL pour un jeu spécifique
-    const url = `${RAWG_BASE_URL}/games/${rawgId}?key=${RAWG_API_KEY}`;
+    // Appel GET à l'API RAWG pour un jeu spécifique
+    // L'ID du jeu est directement dans l'URL : /games/{rawgId}
+    const response = await axios.get(`${RAWG_BASE_URL}/games/${rawgId}`, {
+      params: {
+        key: RAWG_API_KEY // Clé API pour l'authentification
+      }
+    });
 
-    // Appel à l'API RAWG
-    const response = await fetch(url);
-
-    // Vérifier si la requête a réussi
-    if (!response.ok) {
-      throw new Error(`Erreur RAWG API: ${response.status}`);
-    }
-
-    // Convertir la réponse en JSON
-    const data = await response.json();
-
-    // Retourner les données
-    return data;
+    // Retourne les données du jeu (nom, description, rating, plateformes, etc.)
+    return response.data;
 
   } catch (error) {
-    console.error('Erreur dans getGameDetails:', error.message);
-    return null;
+    // En cas d'erreur (jeu introuvable, API down, etc.)
+    console.error('Erreur dans getGameDetails:', error.response?.data || error.message);
+    return null; // Retourne null au lieu de crasher l'app
   }
 };
