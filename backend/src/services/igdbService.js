@@ -32,7 +32,7 @@ const getAccessToken = async () => {
     // Stocke le token et sa date d'expiration
     cachedToken = response.data.access_token;
     // Le token expire généralement après 60 jours, on le met à 59 jours pour être sûr
-    tokenExpiration = Date.now() + (59 * 24 * 60 * 60 * 1000);
+    tokenExpiration = Date.now() + (59 * 24 * 60 * 60 * 1000); // 59 jours × 24 heures × 60 minutes × 60 secondes × 1000 ms
 
     return cachedToken;
 
