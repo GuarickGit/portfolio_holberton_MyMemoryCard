@@ -33,12 +33,12 @@ export const getXpForNextLevel = (currentLevel) => {
  * @returns {number} Pourcentage de progression (0-100)
  */
 export const getProgressToNextLevel = (exp, level) => {
-  const currentLevelXp = Math.pow(level - 1, 2) * 50;
-  const nextLevelXp = getXpForNextLevel(level);
-  const xpInCurrentLevel = exp - currentLevelXp;
-  const xpNeededForLevel = nextLevelXp - currentLevelXp;
+  const xpAtLevelStart = Math.pow(level - 1, 2) * 50; // XP quand on entre dans ce niveau
+  const xpAtNextLevel = getXpForNextLevel(level); // XP pour le prochain niveau
+  const xpGainedInLevel = exp - xpAtLevelStart; // XP gagnée depuis le début du niveau
+  const xpNeededInLevel = xpAtNextLevel - xpAtLevelStart; // XP totale à gagner dans ce niveau
 
-  return Math.min(100, Math.floor((xpInCurrentLevel / xpNeededForLevel) * 100));
+  return Math.min(100, Math.floor((xpGainedInLevel / xpNeededInLevel) * 100));
 };
 
 

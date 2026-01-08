@@ -75,7 +75,7 @@ app.use((req, res) => {
 
 // Démarrage du serveur
 app.listen(PORT, () => {
-  console.log(`🚀 Le serveur est lancé sur http://localhost:${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🎮 Prêt à gérer les requêtes !`);
+  console.log(`Le serveur est lancé sur http://localhost:${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(`Prêt à gérer les requêtes !`);
 });
