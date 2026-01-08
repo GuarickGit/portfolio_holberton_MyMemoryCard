@@ -1,4 +1,4 @@
-import pkg from "pg";
+import pkg from "pg"; // pg = driver PostgreSQL pour Node.js
 const { Pool } = pkg;
 import dotenv from "dotenv";
 
