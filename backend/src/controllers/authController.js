@@ -70,7 +70,6 @@ export const signup = async (req, res) => {
       user: {
         id: newUser.id,
         username: newUser.username,
-        email: newUser.email,
         avatar_url: newUser.avatar_url,
         banner_url: newUser.banner_url,
         bio: newUser.bio
@@ -142,7 +141,6 @@ export const login = async (req, res) => {
       user: {
         id: user.id,
         username: user.username,
-        email: user.email,
         avatar_url: user.avatar_url,
         banner_url: user.banner_url,
         bio: user.bio
