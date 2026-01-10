@@ -63,10 +63,17 @@ export const signup = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    // Renvoyer la réponse avec le token et les infos user
+    // Envoyer le token dans un cookie httpOnly
+    res.cookie('token', token, {
+      httpOnly: true, // Anti-XSS
+      secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en production
+      sameSite: 'strict', // Anti-CSRF
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7j × 24h × 60min × 60sec × 1000 ms = 604 800 000 ms (7 jours)
+    });
+
+    // Renvoyer la réponse avec les infos user (Sans le token)
     res.status(201).json({
       message: "Utilisateur crée avec succès",
-      token,
       user: {
         id: newUser.id,
         username: newUser.username,
@@ -134,10 +141,17 @@ export const login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    // Envoyer le token dans un cookie httpOnly
+    res.cookie('token', token, {
+      httpOnly: true, // Anti-XSS
+      secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en production
+      sameSite: 'strict', // Anti-CSRF
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7j × 24h × 60min × 60sec × 1000 ms = 604 800 000 ms (7 jours)
+    });
+
     // Renvoyer la réponse avec le token et les infos user
     res.status(200).json({
       message: "Connexion réussie",
-      token,
       user: {
         id: user.id,
         username: user.username,
@@ -163,8 +177,12 @@ export const login = async (req, res) => {
  */
 export const logout = async (req, res) => {
   try {
-    // En JWT, on ne peut pas "invalider" un token côté serveur
-    // La déconnexion se fait côté client en supprimant le token
+    // Supprime le cookie côté serveur
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
 
     res.status(200).json({
       message: "Déconnexion réussie"

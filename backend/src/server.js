@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv"; // Pour lire les variables du fichier .env
+import cookieParser from "cookie-parser"
 
 // Import des routes
 import authRoutes from "./routes/authRoutes.js";
@@ -32,6 +33,9 @@ app.use(express.json());
 
 // MIDDLEWARE URL-ENCODED : gère les données de formulaires HTML
 app.use(express.urlencoded({ extended: true }));
+
+// MIDDLEWARE COOKIE-PARSER : pour lire les cookies
+app.use(cookieParser());
 
 // Route de test
 app.get("/", (req, res) => {
