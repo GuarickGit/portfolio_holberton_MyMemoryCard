@@ -6,23 +6,13 @@ import jwt from "jsonwebtoken";
  */
 export const verifyToken = (req, res, next) => {
   try {
-    // Récupére le header Authorization
-    const authHeader = req.headers.authorization;
+    // Récupère le token depuis le cookie
+    const token = req.cookies.token;
 
-    // Vérifie que le header existe
-    if (!authHeader) {
-      return res.status(401).json({
-        error: "Token manquant. Authentification requise."
-      });
-    }
-
-    // Extrait le token (format: "Bearer <token>")
-    const token = authHeader.split(" ")[1];
-
-    // Vérifie que le token existe après le "Bearer"
+    // Vérifie que le cookie existe
     if (!token) {
       return res.status(401).json({
-        error: "Format de token invalide."
+        error: "Token manquant. Authentification requise."
       });
     }
 

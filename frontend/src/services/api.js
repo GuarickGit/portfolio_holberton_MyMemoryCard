@@ -15,28 +15,9 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 10000, // 10 secondes max par requête
+  withCredentials: true,
 });
 
-/**
- * INTERCEPTEUR REQUEST
- * Ajoute automatiquement le token JWT à TOUTES les requêtes si l'user est connecté
- */
-api.interceptors.request.use(
-  (config) => {
-    // Récupère le token depuis localStorage
-    const token = localStorage.getItem('token');
-
-    // Si token existe, l'ajoute au header Authorization
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 /**
  * INTERCEPTEUR RESPONSE
@@ -61,7 +42,6 @@ api.interceptors.response.use(
       case 401:
         // Token invalide ou expiré
         console.error('Non autorisé - Token invalide');
-        localStorage.removeItem('token');
         localStorage.removeItem('user');
         // Ne pas rediriger si déjà sur la home
         if (window.location.pathname !== '/') {

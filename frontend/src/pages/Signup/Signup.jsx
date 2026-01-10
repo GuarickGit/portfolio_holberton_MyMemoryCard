@@ -76,7 +76,7 @@ function Signup({ onClose, onSwitchToLogin }) {
       const data = await signup(username, email, password);
 
       // Connexion automatique après inscription
-      loginUser(data.user, data.token);
+      loginUser(data.user);
 
       // Ferme la popup
       onClose();

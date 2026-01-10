@@ -20,7 +20,7 @@ function Login({ onClose, onSwitchToSignup }) {
 
     try {
       const data = await login(email, password);
-      loginUser(data.user, data.token);
+      loginUser(data.user);
       onClose();
       alert(`Bienvenue ${data.user.username} !`);
     } catch (err) {
