@@ -11,8 +11,6 @@ import gameRoutes from './routes/gameRoutes.js';
 import collectionRoutes from './routes/collectionRoutes.js';
 import memoryRoutes from './routes/memoryRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
-import likeRoutes from './routes/likeRoutes.js';
-import commentRoutes from './routes/commentRoutes.js';
 import followRoutes from './routes/followRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
@@ -52,8 +50,6 @@ app.use("/games", gameRoutes);
 app.use("/collections", collectionRoutes);
 app.use("/memories", memoryRoutes);
 app.use('/reviews', reviewRoutes);
-app.use('/likes', likeRoutes);
-app.use('/comments', commentRoutes);
 app.use('/follows', followRoutes);
 app.use('/admin', adminRoutes);
 

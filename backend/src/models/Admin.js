@@ -194,26 +194,11 @@ export const deleteReviewById = async (reviewId) => {
 };
 
 
-/**
- * Supprime un commentaire par son ID
- * @param {String} commentId - UUID du commentaire à supprimer
- * @returns {Object} Commentaire supprimé
- */
-export const deleteCommentById = async (commentId) => {
-  const result = await pool.query(
-    'DELETE FROM comments WHERE id = $1 RETURNING id, user_id, target_type, target_id, content',
-    [commentId]
-  );
-
-  return result.rows[0];
-};
-
 export default {
   getGlobalStats,
   deleteUserById,
   deleteMemoryById,
   getAllUsers,
   getUserDetails,
-  deleteReviewById,
-  deleteCommentById
+  deleteReviewById
 };

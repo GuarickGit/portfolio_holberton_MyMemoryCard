@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Star, MessageCircle, AlertTriangle } from 'lucide-react';
-import LikeButton from '../../components/features/LikeButton/LikeButton';
-import CommentSection from '../../components/features/Comments/CommentSection/CommentSection';
+import { Star, AlertTriangle } from 'lucide-react';
 import api from '../../services/api';
 import './ReviewDetail.css';
 
@@ -43,13 +41,6 @@ const ReviewDetail = () => {
   // Vérifier si l'utilisateur est le propriétaire
   const isOwner = user && review && user.id === review.user_id;
 
-  // Callback pour mettre à jour le compteur de commentaires
-  const handleCommentCountChange = (delta) => {
-    setReview(prev => ({
-      ...prev,
-      comments_count: parseInt(prev.comments_count || 0) + delta
-    }));
-  };
 
   /**
    * Suppression de la review
@@ -209,28 +200,7 @@ const ReviewDetail = () => {
               <p>{review.content}</p>
             </div>
           )}
-
-          {/* FOOTER - Stats AVEC LIKEBUTTON */}
-          <div className="review-detail__stats">
-            <LikeButton
-              targetType="review"
-              targetId={review.id}
-              initialLikesCount={review.likes_count || 0}
-              size={20}
-            />
-            <div className="review-detail__stat">
-              <MessageCircle size={20} />
-              <span>{review.comments_count || 0} commentaire{review.comments_count > 1 ? 's' : ''}</span>
-            </div>
-          </div>
         </div>
-
-        {/* SECTION COMMENTAIRES */}
-        <CommentSection
-          targetType="review"
-          targetId={id}
-          onCommentCountChange={handleCommentCountChange}
-        />
       </div>
     </div>
   );

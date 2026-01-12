@@ -181,41 +181,11 @@ export const deleteReview = async (req, res) => {
 };
 
 
-/**
- * DELETE /admin/comments/:id
- * Supprime un commentaire
- */
-export const deleteComment = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const deletedComment = await Admin.deleteCommentById(id);
-
-    if (!deletedComment) {
-      return res.status(404).json({
-        error: 'Commentaire non trouvé'
-      });
-    }
-
-    return res.status(200).json({
-      message: 'Commentaire supprimé avec succès',
-      data: deletedComment
-    });
-
-  } catch (error) {
-    console.error('Erreur lors de la suppression du commentaire:', error);
-    return res.status(500).json({
-      error: 'Erreur lors de la suppression du commentaire'
-    });
-  }
-};
-
 export default {
   getStats,
   deleteUser,
   deleteMemory,
-  getUsers,      
+  getUsers,
   getUserById,
-  deleteReview,
-  deleteComment
+  deleteReview
 };

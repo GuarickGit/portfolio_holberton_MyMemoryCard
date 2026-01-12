@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { MessageCircle, AlertTriangle } from 'lucide-react';
-import LikeButton from '../../components/features/LikeButton/LikeButton';
-import CommentSection from '../../components/features/Comments/CommentSection/CommentSection';
+import { AlertTriangle } from 'lucide-react';
 import api from '../../services/api';
 import './MemoryDetail.css';
 
@@ -42,14 +40,6 @@ const MemoryDetail = () => {
 
   // Vérifier si l'utilisateur est le propriétaire
   const isOwner = user && memory && user.id === memory.user_id;
-
-  // Callback pour mettre à jour le compteur de commentaires
-  const handleCommentCountChange = (delta) => {
-    setMemory(prev => ({
-      ...prev,
-      comments_count: parseInt(prev.comments_count || 0) + delta
-    }));
-  };
 
   /**
    * Suppression du souvenir
@@ -188,28 +178,7 @@ const MemoryDetail = () => {
               <p>{memory.content}</p>
             </div>
           )}
-
-          {/* FOOTER - Stats AVEC LIKEBUTTON */}
-          <div className="memory-detail__stats">
-            <LikeButton
-              targetType="memory"
-              targetId={memory.id}
-              initialLikesCount={memory.likes_count || 0}
-              size={20}
-            />
-            <div className="memory-detail__stat">
-              <MessageCircle size={20} />
-              <span>{memory.comments_count || 0} commentaire{memory.comments_count > 1 ? 's' : ''}</span>
-            </div>
-          </div>
         </div>
-
-        {/* SECTION COMMENTAIRES */}
-        <CommentSection
-          targetType="memory"
-          targetId={id}
-          onCommentCountChange={handleCommentCountChange}
-        />
       </div>
     </div>
   );

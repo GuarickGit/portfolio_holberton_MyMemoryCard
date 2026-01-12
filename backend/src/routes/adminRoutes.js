@@ -34,7 +34,4 @@ router.delete('/memories/:id', verifyToken, isAdmin, adminController.deleteMemor
 // DELETE /admin/reviews/:id - Supprimer une review
 router.delete('/reviews/:id', verifyToken, isAdmin, adminController.deleteReview);
 
-// DELETE /admin/comments/:id - Supprimer un commentaire
-router.delete('/comments/:id', verifyToken, isAdmin, adminController.deleteComment);
-
 export default router;

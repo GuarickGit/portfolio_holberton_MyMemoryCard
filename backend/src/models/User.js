@@ -323,23 +323,11 @@ export const getUserStats = async (userId) => {
         (SELECT COUNT(*) FROM collections WHERE user_id = $1 AND status = 'abandoned') AS games_abandoned,
         (SELECT COUNT(*) FROM memories WHERE user_id = $1) AS total_memories,
         (SELECT COUNT(*) FROM reviews WHERE user_id = $1) AS total_reviews,
-        (SELECT COUNT(*) FROM likes WHERE user_id = $1) AS total_likes_given,
-        (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id IN (
-          SELECT id FROM memories WHERE user_id = $1
-        )) AS total_likes_received_memories,
-        (SELECT COUNT(*) FROM likes WHERE target_type = 'review' AND target_id IN (
-          SELECT id FROM reviews WHERE user_id = $1
-        )) AS total_likes_received_reviews,
         (SELECT COUNT(*) FROM follows WHERE follower_id = $1) AS total_following,
         (SELECT COUNT(*) FROM follows WHERE following_id = $1) AS total_followers
     `, [userId]);
 
     const stats = result.rows[0];
-
-    // Calcul du total de likes reçus
-    const totalLikesReceived =
-      parseInt(stats.total_likes_received_memories) +
-      parseInt(stats.total_likes_received_reviews);
 
     return {
       total_games: parseInt(stats.total_games),
@@ -349,8 +337,6 @@ export const getUserStats = async (userId) => {
       games_abandoned: parseInt(stats.games_abandoned),
       total_memories: parseInt(stats.total_memories),
       total_reviews: parseInt(stats.total_reviews),
-      total_likes_given: parseInt(stats.total_likes_given),
-      total_likes_received: totalLikesReceived,
       total_following: parseInt(stats.total_following),
       total_followers: parseInt(stats.total_followers)
     };

@@ -51,9 +51,7 @@ export const getAllMemories = async (sort = 'recent', limit = 20, offset = 0) =>
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.cover_url AS game_image,
-      (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
-      (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
+      g.cover_url AS game_image
     FROM memories m
     JOIN users u ON m.user_id = u.id
     JOIN games g ON m.game_id = g.id
@@ -93,9 +91,7 @@ export const getMemoriesByGame = async (rawgId, limit = 20, offset = 0) => {
         u.level,
         g.name as game_name,
         g.cover_url as game_image,
-        g.rawg_id,
-        (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
-        (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
+        g.rawg_id
       FROM memories m
       INNER JOIN users u ON m.user_id = u.id
       INNER JOIN games g ON m.game_id = g.id
@@ -134,9 +130,7 @@ export const getMemoriesByUser = async (userId, limit = 20, offset = 0) => {
       u.username,
       u.avatar_url,
       g.name AS game_name,
-      g.background_image AS game_image,
-      (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
-      (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
+      g.background_image AS game_image
     FROM memories m
     JOIN users u ON m.user_id = u.id
     JOIN games g ON m.game_id = g.id
@@ -212,9 +206,7 @@ export const getMemoryById = async (memoryId) => {
       u.avatar_url,
       g.name AS game_name,
       g.cover_url AS game_image,
-      g.background_image,
-      (SELECT COUNT(*) FROM likes WHERE target_type = 'memory' AND target_id = m.id) as likes_count,
-      (SELECT COUNT(*) FROM comments WHERE target_type = 'memory' AND target_id = m.id) as comments_count
+      g.background_image
     FROM memories m
     JOIN users u ON m.user_id = u.id
     JOIN games g ON m.game_id = g.id

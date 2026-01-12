@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
-import { Star, MessageCircle, AlertTriangle } from 'lucide-react';
-import LikeButton from '../LikeButton/LikeButton';
+import { Star, AlertTriangle } from 'lucide-react';
 import './ReviewCard.css';
 
 const ReviewCard = ({ review }) => {
@@ -131,25 +130,6 @@ const ReviewCard = ({ review }) => {
                 Modifier
               </button>
             )}
-          </div>
-
-          {/* STATS */}
-          <div className="review-card__stats">
-            {/* LIKE BUTTON */}
-            <LikeButton
-              targetType="review"
-              targetId={review.id}
-              initialLikesCount={review.likes_count || 0}
-              size={16}
-            />
-
-            {/* COMMENTAIRES - AVEC TEXTE */}
-            <div className="review-card__stat">
-              <MessageCircle size={16} />
-              <span>
-                {review.comments_count || 0} commentaire{review.comments_count > 1 ? 's' : ''}
-              </span>
-            </div>
           </div>
         </div>
       </div>

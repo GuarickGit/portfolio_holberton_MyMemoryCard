@@ -140,15 +140,6 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
   };
 
   /**
-   * Likes : Pourcentage de likes reçus / (reviews + souvenirs)
-   */
-  const getLikesPercentage = () => {
-    const totalContent = (stats?.total_reviews || 0) + (stats?.total_memories || 0);
-    if (totalContent === 0) return 0;
-    return Math.min((stats.total_likes_received / totalContent) * 100, 100);
-  };
-
-  /**
    * Succès : Pourcentage de succès obtenus (hardcodé pour le MVP)
    */
   const getAchievementsPercentage = () => {
@@ -242,12 +233,6 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
             value={parseInt(stats.total_memories) || 0}
             color="cyan"
             percentage={getMemoriesPercentage()}
-          />
-          <CircularStat
-            label="likes"
-            value={parseInt(stats.total_likes_received) || 0}
-            color="yellow"
-            percentage={getLikesPercentage()}
           />
           <CircularStat
             label="succès"

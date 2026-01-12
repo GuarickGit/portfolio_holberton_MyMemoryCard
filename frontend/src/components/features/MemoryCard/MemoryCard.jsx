@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
-import { MessageCircle, AlertTriangle } from 'lucide-react';
-import LikeButton from '../LikeButton/LikeButton';
+import { AlertTriangle } from 'lucide-react';
 import './MemoryCard.css';
 
 const MemoryCard = ({ memory }) => {
@@ -114,25 +113,6 @@ const MemoryCard = ({ memory }) => {
                 Modifier
               </button>
             )}
-          </div>
-
-          {/* STATS */}
-          <div className="memory-card__stats">
-            {/* LIKE BUTTON */}
-            <LikeButton
-              targetType="memory"
-              targetId={memory.id}
-              initialLikesCount={memory.likes_count || 0}
-              size={16}
-            />
-
-            {/* COMMENTAIRES - AVEC TEXTE */}
-            <div className="memory-card__stat">
-              <MessageCircle size={16} />
-              <span>
-                {memory.comments_count || 0} commentaire{memory.comments_count > 1 ? 's' : ''}
-              </span>
-            </div>
           </div>
         </div>
       </div>
