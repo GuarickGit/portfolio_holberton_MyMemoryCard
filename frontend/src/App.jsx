@@ -8,7 +8,6 @@ import Home from './pages/Home/Home';
 import Games from './pages/Games/Games';
 import Reviews from './pages/Reviews/Reviews';
 import Memories from './pages/Memories/Memories';
-import Achievements from './pages/Achievements/Achievements';
 import Profile from './pages/Profile/Profile';
 import ProfileSetup from './pages/ProfileSetup/ProfileSetup';
 import About from './pages/About/About';
@@ -47,7 +46,6 @@ function App() {
                 <Route path="/games" element={<Games />} />
                 <Route path="/reviews" element={<Reviews />} />
                 <Route path="/memories" element={<Memories />} />
-                <Route path="/achievements" element={<Achievements />} />
                 <Route path="/profile/:userId" element={<Profile />} />
                 <Route path="/profile/setup" element={<ProfileSetup />} />
                 <Route path="/about" element={<About />} />

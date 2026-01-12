@@ -192,9 +192,6 @@ function Header() {
 
                 <Link to="/memories" className="header-nav-link">SOUVENIRS</Link>
                 <span className="header-nav-separator separator-yellow">›</span>
-
-                <Link to="/achievements" className="header-nav-link">SUCCÈS</Link>
-                <span className="header-nav-separator separator-green">›</span>
               </div>
             </nav>
           </div>

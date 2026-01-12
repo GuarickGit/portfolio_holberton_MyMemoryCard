@@ -139,14 +139,6 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
     return Math.min((stats.total_memories / totalGamesInDB) * 100, 100);
   };
 
-  /**
-   * Succès : Pourcentage de succès obtenus (hardcodé pour le MVP)
-   */
-  const getAchievementsPercentage = () => {
-    const totalAchievements = 50; // Récupérer du backend plus tard
-    return Math.min((0 / totalAchievements) * 100, 100);
-  };
-
   return (
     <div className="hero-profile">
       {/* Section Avatar + Infos */}
@@ -233,12 +225,6 @@ const HeroProfile = ({ user, isOwnProfile = false }) => {
             value={parseInt(stats.total_memories) || 0}
             color="cyan"
             percentage={getMemoriesPercentage()}
-          />
-          <CircularStat
-            label="succès"
-            value={0}
-            color="purple"
-            percentage={getAchievementsPercentage()}
           />
         </div>
       )}
