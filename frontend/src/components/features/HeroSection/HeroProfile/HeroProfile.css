@@ -16,7 +16,7 @@
 
 .hero-profile__header {
   display: flex;
-  align-items: stretch; /* ← CHANGE de flex-start à stretch */
+  align-items: stretch;
   gap: var(--spacing-xl);
   margin-bottom: 4rem;
   margin-left: 200px;
@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* ← AJOUTÉ : Espace entre avatar et stats */
+  justify-content: space-between;
   gap: var(--spacing-md);
 }
 
@@ -89,14 +89,14 @@
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   line-height: 1.5;
-  flex: 1; /* ← AJOUTÉ : Prend tout l'espace disponible */
+  flex: 1;
 }
 
 .hero-profile__actions {
   display: flex;
   gap: var(--spacing-xs);
   align-items: center;
-  margin-top: var(--spacing-md); /* ← CHANGE de auto à spacing-md */
+  margin-top: var(--spacing-md);
 }
 
 .hero-profile__actions button {
