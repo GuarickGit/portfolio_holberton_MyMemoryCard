@@ -13,8 +13,8 @@
 
 .circular-stat__svg {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 130%;
+  height: 130%;
   transform: rotate(-90deg);
 }
 
@@ -41,7 +41,7 @@
 }
 
 .circular-stat__value {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--color-text-primary);
   line-height: 1;
@@ -49,7 +49,7 @@
 }
 
 .circular-stat__label {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
   text-transform: lowercase;
   font-weight: 500;
@@ -107,31 +107,48 @@
 
 @media (max-width: 768px) {
   .circular-stat {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
+  }
+
+  .circular-stat__svg {
+    width: 100%;
+    height: 100%;
   }
 
   .circular-stat__value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .circular-stat__label {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
+    max-width: 70px;
+  }
+
+  .circular-stat__circle-bg,
+  .circular-stat__circle-progress {
+    stroke-width: 7;
   }
 }
 
 @media (max-width: 480px) {
   .circular-stat {
-    width: 80px;
-    height: 80px;
+    width: 75px;
+    height: 75px;
+  }
+
+  .circular-stat__svg {
+    width: 100%;
+    height: 100%;
   }
 
   .circular-stat__value {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .circular-stat__label {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
+    max-width: 60px;
   }
 
   .circular-stat__circle-bg,

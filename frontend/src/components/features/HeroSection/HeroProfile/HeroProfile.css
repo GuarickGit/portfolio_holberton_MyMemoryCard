@@ -112,7 +112,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--spacing-lg);
+  gap: 4rem;
   margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
 }
@@ -352,7 +352,7 @@
   }
 
   .hero-profile__stats {
-    gap: var(--spacing-md);
+    gap: 1rem;
   }
 
   .hero-profile__collection {
@@ -392,6 +392,10 @@
 
   .hero-profile__bio {
     font-size: 0.85rem;
+  }
+
+  .hero-profile__stats {
+  gap: 0.75rem;
   }
 
   .hero-profile__collection {
@@ -441,7 +445,7 @@
   }
 
   .hero-profile__stats {
-    gap: var(--spacing-sm);
+    gap: 0.5rem;
   }
 
   .hero-profile__collection-grid {
