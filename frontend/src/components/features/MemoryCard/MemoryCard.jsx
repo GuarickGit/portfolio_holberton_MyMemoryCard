@@ -34,7 +34,7 @@ const MemoryCard = ({ memory }) => {
       <div className="memory-card__top">
         {/* IMAGE */}
         <div className="memory-card__image">
-          <img src={memory.game_image} alt={memory.game_name} />
+          <img src={memory.game_image} alt={`Illustration de ${memory.game_name}`} />
         </div>
 
         {/* HEADER CONTENT */}
@@ -43,7 +43,7 @@ const MemoryCard = ({ memory }) => {
           <div className="memory-card__header">
             <img
               src={memory.avatar_url || '/default-avatar.png'}
-              alt={memory.username}
+              alt={`Avatar de ${memory.username}`}
               className="memory-card__avatar"
               onClick={handleProfileClick}
               style={{ cursor: 'pointer' }}
