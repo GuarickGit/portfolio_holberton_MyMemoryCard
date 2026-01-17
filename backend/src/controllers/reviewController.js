@@ -34,10 +34,22 @@ export const createReview = async (req, res) => {
       });
     }
 
+    if (title.length > 100) {
+      return res.status(400).json({
+        error: 'Le titre ne peut pas dépasser 100 caractères'
+      });
+    }
+
     // Validation du contenu (pas vide après trim)
     if (content.trim().length === 0) {
       return res.status(400).json({
         error: 'Le contenu ne peut pas être vide'
+      });
+    }
+
+    if (content.length > 5000) {
+      return res.status(400).json({
+        error: 'Le contenu ne peut pas dépasser 5000 caractères'
       });
     }
 
@@ -264,6 +276,12 @@ export const updateReview = async (req, res) => {
     if (content !== undefined && content.trim().length === 0) {
       return res.status(400).json({
         error: 'Le contenu ne peut pas être vide'
+      });
+    }
+
+    if (content !== undefined && content.length > 5000) {
+      return res.status(400).json({
+        error: 'Le contenu ne peut pas dépasser 5000 caractères'
       });
     }
 

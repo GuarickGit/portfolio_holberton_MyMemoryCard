@@ -52,6 +52,27 @@ export const updateMe = async (req, res) => {
     const userId = req.userId;
     const { username, bio, avatar_url, banner_url } = req.body;
 
+    // Validation du username si fourni
+    if (username !== undefined) {
+      if (username.trim().length === 0) {
+        return res.status(400).json({
+          error: "Le nom d'utilisateur ne peut pas être vide."
+        });
+      }
+      if (username.length > 20) {
+        return res.status(400).json({
+          error: "Le nom d'utilisateur ne peut pas dépasser 20 caractères."
+        });
+      }
+    }
+
+    // Validation de la bio si fournie
+    if (bio !== undefined && bio.length > 500) {
+      return res.status(400).json({
+        error: "La bio ne peut pas dépasser 500 caractères."
+      });
+    }
+    
     // Construit l'objet des données à mettre à jour
     const updateData = {};
 
