@@ -27,3 +27,4 @@ node_modules/cookie-signature/History.md
 node_modules/cookie-signature/index.js
 node_modules/cookie-signature/package.json
 node_modules/cookie-signature/Readme.md
+backend/.env.docker
