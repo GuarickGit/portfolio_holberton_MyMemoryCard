@@ -67,12 +67,12 @@ export const updateMe = async (req, res) => {
     }
 
     // Validation de la bio si fournie
-    if (bio !== undefined && bio.length > 500) {
+    if (bio !== undefined && bio !== null && bio.length > 500) {
       return res.status(400).json({
         error: "La bio ne peut pas dépasser 500 caractères."
       });
     }
-    
+
     // Construit l'objet des données à mettre à jour
     const updateData = {};
 

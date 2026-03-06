@@ -67,7 +67,7 @@ export const signup = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true, // Anti-XSS
       secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en production
-      sameSite: 'strict', // Anti-CSRF
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7j × 24h × 60min × 60sec × 1000 ms = 604 800 000 ms (7 jours)
     });
 

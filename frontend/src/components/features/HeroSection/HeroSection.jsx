@@ -1,5 +1,6 @@
 import HeroCTA from './HeroCTA/HeroCTA';
 import HeroProfile from './HeroProfile/HeroProfile';
+import BannerFF7 from '../../../assets/images/Banner_FF7.jpeg';
 import './HeroSection.css';
 
 /**
@@ -18,12 +19,11 @@ const HeroSection = ({
   isOwnProfile = false,
   game = null
 }) => {
-  // Déterminer l'image de fond
   const getBackgroundImage = () => {
     if (backgroundImage) return backgroundImage;
     if (type === 'profile' && user?.banner_url) return user.banner_url;
     if (type === 'game' && game?.background_image) return game.background_image;
-    return '/src/assets/images/Banner_FF7.jpeg';
+    return BannerFF7;
   };
 
   return (
@@ -33,16 +33,13 @@ const HeroSection = ({
         backgroundImage: `url(${getBackgroundImage()})`
       }}
     >
-      {/* Overlay sombre */}
       <div className="hero-section__overlay"></div>
 
-      {/* Contenu */}
       <div className="hero-section__content">
         {type === 'cta' && <HeroCTA />}
         {type === 'profile' && user && (
           <HeroProfile user={user} isOwnProfile={isOwnProfile} />
         )}
-        {/* TODO: Ajouter HeroGame pour plus tard */}
       </div>
     </section>
   );
