@@ -28,3 +28,5 @@ node_modules/cookie-signature/index.js
 node_modules/cookie-signature/package.json
 node_modules/cookie-signature/Readme.md
 backend/.env.docker
+.env
+.env.docker
