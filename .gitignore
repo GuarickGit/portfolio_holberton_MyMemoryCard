@@ -30,3 +30,5 @@ node_modules/cookie-signature/Readme.md
 backend/.env.docker
 .env
 .env.docker
+node_modules
+dump.sql
